@@ -105,6 +105,7 @@ public class MainActivity extends Activity implements OnClickListener
                 size--;
                 adapter.notifyDataSetChanged();
             } 
+            //Lägg till en kommentar för att se om det fungerar. /ERIK
         }
         catch (Exception e)
         { }         
