@@ -67,7 +67,8 @@ public class MainActivity extends Activity implements OnClickListener
             }
         }, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));  
         
-        
+        //kebab-lista
+        /*
         for (int i = 0; i < 1000; i++) {
         	HashMap<String, String> item = new HashMap<String, String>();                       
             item.put(ITEM_KEY, "KEBAB");
@@ -76,10 +77,11 @@ public class MainActivity extends Activity implements OnClickListener
             adapter.notifyDataSetChanged();
             
         }
+        */
         
         //sound Meter
-        soundMeter = new SoundMeter((TextView) findViewById(R.id.text_status), (ListView) findViewById(R.id.listView), this);
-        soundMeter.start();
+        //soundMeter = new SoundMeter((TextView) findViewById(R.id.text_status), (ListView) findViewById(R.id.listView), this);
+        //soundMeter.start();
     }
 
     public void onClick(View view) 
