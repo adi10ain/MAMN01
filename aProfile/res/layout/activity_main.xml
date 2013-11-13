@@ -8,28 +8,51 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" >
 
-<ListView
-    android:id="@+id/listView"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_above="@+id/button_scan" />
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
 
-<Button
-    android:id="@+id/button_scan"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_alignParentBottom="true"
-    android:layout_alignParentRight="true"
-    android:text="Scan" />
+        <TextView
+            android:id="@+id/currentProfile"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="#55bc75"
+            android:text="Large Text"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp" />
+         <TextView
+            android:id="@+id/desiredPreferences"
+            android:layout_width="match_parent"
+            android:layout_height="24dp"
+            android:background="#4daf7c"
+            android:text="Large Text"
+            android:textColor="#014519"
+            android:textSize="14sp" />
 
-<TextView
-    android:id="@+id/text_status"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_alignBottom="@+id/button_scan"
-    android:layout_alignLeft="@+id/listView"
-    android:layout_toLeftOf="@+id/button_scan"
-    android:text="Medium Text"
-    android:textAppearance="?android:attr/textAppearanceMedium" />
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="wrap_content"
+            android:layout_height="405dp" >
+        </ListView>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/text_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/button_scan"
+        android:layout_alignLeft="@+id/linearLayout1"
+        android:text="Medium Text"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <Button
+        android:id="@+id/button_scan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/linearLayout1"
+        android:text="Scan" />
 
 </RelativeLayout>

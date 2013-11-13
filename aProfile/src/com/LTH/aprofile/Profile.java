@@ -32,7 +32,7 @@ public class Profile {
 		
 	}
 	
-	/*loads chosen preferences
+	/*loads desired preferences only
 	 * desiredPref, preferences which we want to activate should be represented by value 1
 	 * "preferences[1] = 1" means we want to activate the preferences for BRIGHTNESS
 	 * */
