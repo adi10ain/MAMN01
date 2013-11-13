@@ -64,5 +64,10 @@ public class Profile {
 	public boolean compareBSSID(String BSSID) {
 		return (BSSID.equals(this.BSSID));
 	}
+	
+	public String toString() {
+		return ESSID;
+	}
+	
 
 }
