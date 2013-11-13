@@ -53,6 +53,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignRight="@+id/linearLayout1"
-        android:text="Scan" />
+        android:text="Connect to wifi" />
 
 </RelativeLayout>

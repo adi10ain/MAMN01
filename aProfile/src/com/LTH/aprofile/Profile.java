@@ -1,5 +1,8 @@
 package com.LTH.aprofile;
 
+import android.content.Context;
+import android.media.AudioManager;
+
 public class Profile {
 	// WiFi identifiers
 	private String ESSID; //ex. "NETGEAR"
@@ -12,12 +15,21 @@ public class Profile {
 	// preferences
 	private int preferences[] = new int[2];
 	
+	//managers
+	private Context callingContext;
+	private AudioManager audioManager;
 	
-	public Profile(String ESSID, String BSSID, int soundLevel, int brightness) {
+	
+	public Profile(String ESSID, String BSSID, int soundLevel, int brightness, Context callingContext) {
 		this.ESSID = ESSID;
 		this.BSSID = BSSID;
 		preferences[SOUNDLEVEL] = soundLevel;
 		preferences[BRIGHTNESS] = brightness;
+		
+		this.callingContext = callingContext;		
+		audioManager = (AudioManager)callingContext.getSystemService(Context.AUDIO_SERVICE);
+
+		
 		
 	}
 	
@@ -48,6 +60,7 @@ public class Profile {
 	private void loadSpecPref(int identifier) {
 		switch (identifier) {
 			case SOUNDLEVEL: System.out.print("SOUND - target "+preferences[SOUNDLEVEL]);
+			setSound(preferences[SOUNDLEVEL]);
 			break;
 			
 			case BRIGHTNESS: System.out.print("BRIGHTNESS - target "+preferences[BRIGHTNESS]);
@@ -56,6 +69,12 @@ public class Profile {
 		
 		}
 		
+	}
+	
+	//sets ring sound
+	private void setSound(int level) {
+		
+		audioManager.setStreamVolume(AudioManager.STREAM_RING, level, AudioManager.FLAG_ALLOW_RINGER_MODES|AudioManager.FLAG_PLAY_SOUND);
 	}
 	
 	/*compares the argument with the BSSID of the profile

@@ -61,16 +61,13 @@ public class MainActivity extends Activity implements OnClickListener {
 		lv.setAdapter(this.adapter);
 		
 		//generate fake profiles;
-		Profile p1 = new Profile("NETGEAR","00:13:49:A8:77:4F",10,20);
-		Profile p2 = new Profile("EDUROAM","00:11:22:A8:66:9B",0,0);
-		Profile p3 = new Profile("Mom use this one","22:31:22:B2:12:46",100,100);
+		Profile p1 = new Profile("NETGEAR","00:13:49:A8:77:4F",10,20, this);
+		Profile p2 = new Profile("EDUROAM","00:11:22:A8:66:9B",0,0, this);
+		Profile p3 = new Profile("Mom use this one","22:31:22:B2:12:46",100,100, this);
 		profiles.add(p1);
 		profiles.add(p2);
 		profiles.add(p3);
-		
-		currentProfile = p2;
-		desiredPref[0] = 1;
-		desiredPref[1] = 0;
+
 		
 		
 		
@@ -84,33 +81,27 @@ public class MainActivity extends Activity implements OnClickListener {
 		soundMeter.start(); */
 	}
 
+	
+	//temporary button, simulates WiFi connection
 	public void onClick(View view)
-	// this is a test message
 	{
-		arraylist.clear();
-		wifi.startScan();
-
-		Toast.makeText(this, "Scanning...." + size, Toast.LENGTH_SHORT).show();
-
-		try {
-			size = size - 1;
-			while (size >= 0) {
-				// Toast.makeText(this, "found " + results.get(size).SSID,
-				// Toast.LENGTH_SHORT).show();
-				HashMap<String, String> item = new HashMap<String, String>();
-				item.put(ITEM_KEY,
-						results.get(size).SSID + "  " + results.get(size).BSSID);
-
-				arraylist.add(item);
-				size--;
-				adapter.notifyDataSetChanged();
-			}
-		} catch (Exception e) {
-		}
+		currentProfile = profiles.get(1);
+		desiredPref[0] = 1;
+		desiredPref[1] = 0;
+		currentProfile.loadPref(desiredPref);
+		
+		showProfiles();
 	}
+		
+		
+		
+
 	
 	// Shows the current profile, its desired preferences and a list of all pre-set profiles 
 	private void showProfiles() {
+		//clear list
+		arraylist.clear();
+		
 		
 		if (profiles.size() > 0) {
 			//show current profile
@@ -143,26 +134,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		}
 	}
 	
-	private void initiateWIFI() {
-		wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-		if (wifi.isWifiEnabled() == false) {
-			Toast.makeText(getApplicationContext(),
-					"wifi is disabled..making it enabled", Toast.LENGTH_LONG)
-					.show();
-			wifi.setWifiEnabled(true);
-		}
 
-	
-
-		registerReceiver(new BroadcastReceiver() {
-			@Override
-			public void onReceive(Context c, Intent intent) {
-				results = wifi.getScanResults();
-				size = results.size();
-			}
-		}, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
-		
-	}
 
 	private void generateFakeWIFIlist() {
 
