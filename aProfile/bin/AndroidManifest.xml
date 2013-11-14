@@ -3,10 +3,10 @@
     package="com.LTH.aprofile"
     android:versionCode="1"
     android:versionName="1.0" >
-    
+
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
- 	<uses-permission android:name="android.permission.CHANGE_WIFI_STATE" /> 
-     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -26,8 +26,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
+        <activity
+            android:name="com.LTH.aprofile.NewprofileActivity"
+            android:label="@string/title_activity_newprofile" >
+        </activity>
     </application>
-
 
 </manifest>

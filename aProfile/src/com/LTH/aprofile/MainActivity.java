@@ -21,6 +21,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnClickListener {
+	//CONSTANTS
+	private static final int REQUEST_CODE_NEW_PROFILE = 1;
+	
+	public static final int APPROVE_NEW_PROFILE = 1;
+	public static final int DECLINE_NEW_PROFILE = 2;
+	
+	
 	WifiManager wifi;
 	ListView lv;
 	TextView textStatus;
@@ -40,6 +47,10 @@ public class MainActivity extends Activity implements OnClickListener {
 	private int[] desiredPref = new int[2]; 
 	private TextView TW_currentProfile;
 	private TextView TW_desiredPref;
+	
+	//experimental
+	public static Profile targetProfile;
+	
 
 	/* Called when the activity is first created. */
 	@Override
@@ -85,10 +96,15 @@ public class MainActivity extends Activity implements OnClickListener {
 	//temporary button, simulates WiFi connection
 	public void onClick(View view)
 	{
-		currentProfile = profiles.get(1);
+		
+		
+		targetProfile = profiles.get(1);
 		desiredPref[0] = 1;
 		desiredPref[1] = 0;
-		currentProfile.loadPref(desiredPref);
+		//currentProfile.loadPref(desiredPref);
+		
+		Intent myIntent = new Intent(this, NewprofileActivity.class);
+		this.startActivityForResult(myIntent, REQUEST_CODE_NEW_PROFILE);
 		
 		showProfiles();
 	}
@@ -134,6 +150,24 @@ public class MainActivity extends Activity implements OnClickListener {
 		}
 	}
 	
+	//Results returned from called activity
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+	    Toast.makeText(this, "result Code "+resultCode, 3).show();
+	    if (requestCode == REQUEST_CODE_NEW_PROFILE) {
+	    	switch (resultCode) {
+	    	//if new profile was approved
+	    	case APPROVE_NEW_PROFILE: 
+	    		currentProfile = targetProfile;
+	    		currentProfile.loadPref();
+	    		showProfiles();
+	    		break;
+	    	
+	    	}
+	    	
+	    	
+	    	
+	    }
+	}
 
 
 	private void generateFakeWIFIlist() {

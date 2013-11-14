@@ -88,5 +88,9 @@ public class Profile {
 		return ESSID;
 	}
 	
+	public int[] getPref() {
+		return preferences;
+	}
+	
 
 }
