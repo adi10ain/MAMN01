@@ -9,8 +9,8 @@ public class Profile {
 	private String BSSID; //ex. "00:11:22:33:44:55"
 	
 	//CONSTANTS
-	private final int SOUNDLEVEL = 0;
-	private final int BRIGHTNESS = 1;
+	public static final int SOUNDLEVEL = 0;
+	public static final int BRIGHTNESS = 1;
 		
 	// preferences
 	private int preferences[] = new int[2];
@@ -19,6 +19,10 @@ public class Profile {
 	private Context callingContext;
 	private AudioManager audioManager;
 	
+	public Profile() {
+		this.BSSID = "Not set";
+		this.ESSID = "Profile not set";
+	}
 	
 	public Profile(String ESSID, String BSSID, int soundLevel, int brightness, Context callingContext) {
 		this.ESSID = ESSID;
@@ -73,7 +77,6 @@ public class Profile {
 	
 	//sets ring sound
 	private void setSound(int level) {
-		
 		audioManager.setStreamVolume(AudioManager.STREAM_RING, level, AudioManager.FLAG_ALLOW_RINGER_MODES|AudioManager.FLAG_PLAY_SOUND);
 	}
 	
