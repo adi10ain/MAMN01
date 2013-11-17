@@ -20,14 +20,12 @@
             android:gravity="bottom"
             android:textSize="32sp" />
 
-         <TextView
-             android:id="@+id/desiredPreferences"
-             android:layout_width="fill_parent"
-             android:layout_height="40dp"
-             android:background="#4daf7c"
-             android:text="Large Text"
-             android:textColor="#014519"
-             android:textSize="14sp" />
+        <LinearLayout
+            android:id="@+id/desiredPreferences"
+           	android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:background="#4daf7c"/>
 
         <ListView
             android:id="@+id/listView"
