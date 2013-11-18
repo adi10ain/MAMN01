@@ -34,13 +34,22 @@
         </activity>
         <activity
             android:name="com.LTH.aprofile.SetBrightness"
-            android:theme="@style/Theme.Transparent"
-            android:label="@string/title_activity_set_brightness" >
+            android:label="@string/title_activity_set_brightness"
+            android:theme="@style/Theme.Transparent" >
         </activity>
-
         <activity
             android:name="com.LTH.aprofile.SettingsActivity"
             android:label="@string/title_activity_settings" >
+        </activity>
+      
+    <activity
+            android:name="com.LTH.aprofile.AddProfile"
+            android:label="@string/title_activity_add_profile" >
+        </activity>
+        
+             <activity
+            android:name="com.LTH.aprofile.Confirm"
+            android:label="@string/title_activity_confirm" >
         </activity>
     </application>
 

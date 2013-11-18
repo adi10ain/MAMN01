@@ -21,7 +21,7 @@ import android.widget.TextView;
 import com.LTH.aprofile.Preferences.BrightnessPreference;
 import com.LTH.aprofile.Preferences.SoundLevelPreference;
 
-public class MainActivity extends Activity implements OnClickListener {
+public class MainActivity extends Activity {
 	// CONSTANTS
 	public static final int REQUEST_CODE_NEW_PROFILE = 1;
 
@@ -55,8 +55,6 @@ public class MainActivity extends Activity implements OnClickListener {
 		setContentView(R.layout.activity_main);
 
 		// get UI elements
-		buttonScan = (Button) findViewById(R.id.button_scan);
-		buttonScan.setOnClickListener(this);
 		lv = (ListView) findViewById(R.id.listView);
 		TW_currentProfile = (TextView) findViewById(R.id.currentProfile);
 
@@ -75,7 +73,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	}
 
 	// temporary button, simulates a new connection to WiFi AP
-	public void onClick(View view) {
+	public void scanButton(View view) {
 
 		targetProfile = settings.getProfile("00:11:22:A8:66:9B");
 
@@ -149,14 +147,9 @@ public class MainActivity extends Activity implements OnClickListener {
 		Profile p3 = new Profile("Mom use this one", "22:31:22:B2:12:46");
 
 
-		//Hej hej hej hej hej
-
-
 		settings.addProfile(p1);
 		settings.addProfile(p2);
 		settings.addProfile(p3);
-
-		//test johnny
 
 
 	}
