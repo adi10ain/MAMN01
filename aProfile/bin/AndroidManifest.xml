@@ -41,17 +41,15 @@
             android:name="com.LTH.aprofile.SettingsActivity"
             android:label="@string/title_activity_settings" >
         </activity>
-<<<<<<< HEAD
+
       
     <activity
             android:name="com.LTH.aprofile.AddProfile"
             android:label="@string/title_activity_add_profile" >
         </activity>
         
-             <activity
-=======
+         
         <activity
->>>>>>> branch 'master' of https://github.com/adi10ain/MAMN01.git
             android:name="com.LTH.aprofile.Confirm"
             android:label="@string/title_activity_confirm" >
         </activity>
