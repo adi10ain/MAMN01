@@ -152,6 +152,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		settings.addProfile(p1);
 		settings.addProfile(p2);
 		settings.addProfile(p3);
+		//test johnny
 
 	}
 
