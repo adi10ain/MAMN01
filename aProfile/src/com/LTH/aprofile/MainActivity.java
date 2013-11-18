@@ -5,11 +5,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import com.LTH.aprofile.Preferences.BrightnessPreference;
-import com.LTH.aprofile.Preferences.Preference;
-import com.LTH.aprofile.Preferences.SoundLevelPreference;
-
-import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.wifi.ScanResult;
@@ -17,13 +12,14 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+
+import com.LTH.aprofile.Preferences.BrightnessPreference;
+import com.LTH.aprofile.Preferences.SoundLevelPreference;
 
 public class MainActivity extends Activity implements OnClickListener {
 	// CONSTANTS
@@ -152,12 +148,12 @@ public class MainActivity extends Activity implements OnClickListener {
 
 		Profile p3 = new Profile("Mom use this one", "22:31:22:B2:12:46");
 		
-		
+		//kommentar test johnny
 
 		settings.addProfile(p1);
 		settings.addProfile(p2);
 		settings.addProfile(p3);
-		//test johnny
+
 	}
 
 }
