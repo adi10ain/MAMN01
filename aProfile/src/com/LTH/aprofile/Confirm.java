@@ -24,7 +24,7 @@ public class Confirm extends Activity implements SensorEventListener {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_confirm);
 		mInitialized = false;
 		mgr = (SensorManager) this.getSystemService(SENSOR_SERVICE);
 		acc = mgr.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
