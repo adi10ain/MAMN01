@@ -148,12 +148,16 @@ public class MainActivity extends Activity implements OnClickListener {
 
 		Profile p3 = new Profile("Mom use this one", "22:31:22:B2:12:46");
 
-		
+
 		//Hej hej hej hej hej
+
 
 		settings.addProfile(p1);
 		settings.addProfile(p2);
 		settings.addProfile(p3);
+
+		//test johnny
+
 
 	}
 
