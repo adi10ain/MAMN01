@@ -27,7 +27,7 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity implements OnClickListener {
 	// CONSTANTS
-	private static final int REQUEST_CODE_NEW_PROFILE = 1;
+	public static final int REQUEST_CODE_NEW_PROFILE = 1;
 
 	public static final int APPROVE_NEW_PROFILE = 1;
 	public static final int DECLINE_NEW_PROFILE = 2;
@@ -83,7 +83,11 @@ public class MainActivity extends Activity implements OnClickListener {
 
 		targetProfile = settings.getProfile("00:11:22:A8:66:9B");
 
+		//set Brightness activity experiment
 		Intent myIntent = new Intent(this, NewprofileActivity.class);
+		
+		
+		//Intent myIntent = new Intent(this, NewprofileActivity.class);
 		this.startActivityForResult(myIntent, REQUEST_CODE_NEW_PROFILE);
 
 	}
@@ -141,8 +145,8 @@ public class MainActivity extends Activity implements OnClickListener {
 		p1.addPref(pref1);
 
 		Profile p2 = new Profile("EDUROAM", "00:11:22:A8:66:9B");
-		SoundLevelPreference pref2 = new SoundLevelPreference(0, this);
-		BrightnessPreference pref3 = new BrightnessPreference(80, this);
+		SoundLevelPreference pref2 = new SoundLevelPreference(20, this);
+		BrightnessPreference pref3 = new BrightnessPreference(120, this);
 		p2.addPref(pref2);
 		p2.addPref(pref3);
 

@@ -6,9 +6,11 @@ import java.util.HashMap;
 import com.LTH.aprofile.Preferences.Preference;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 public class Profile {
 	// WiFi identifiers
@@ -18,9 +20,6 @@ public class Profile {
 	// CONSTANTS
 	public static final int SOUNDLEVEL = 0;
 	public static final int BRIGHTNESS = 1;
-	
-	public static final int ALPHA_BTN = 80; // Opacity for toggled off button (0-255)
-	public static final int ALPHA_MAX = 255;
 
 	// preferences
 	HashMap<Integer, Preference> preferences = new HashMap<Integer, Preference>();
@@ -58,27 +57,19 @@ public class Profile {
 		return genPrefButtons(activity, null);
 	}
 
-	// returns a LinearLayout with icons of the profile's preferences with (on/off) visualization
-	public LinearLayout genPrefButtons(Activity activity,
+	// returns a LinearLayout with icons of the profile's preferences with
+	// (on/off) visualization
+	public LinearLayout genPrefButtons(final Activity activity,
 			ArrayList<Integer> desiredPref) {
 		LinearLayout A = new LinearLayout(activity);
 		A.setOrientation(LinearLayout.HORIZONTAL);
 		for (Preference p : getPref().values()) {
-			final ImageView imageView = new ImageView(activity);
-			imageView.setImageResource(p.getIconResId());
 
-			int alpha = ALPHA_BTN;
-			if (desiredPref == null || desiredPref.contains(p.getType()))
-				alpha = ALPHA_MAX;
+			Boolean toggle = (desiredPref == null || desiredPref.contains(p
+					.getType()));
+			ImageView imageView = p.getIconButton(toggle);
 
-			imageView.setAlpha(alpha);
 			
-			imageView.setOnClickListener(new View.OnClickListener() {
-	            public void onClick(View view) {
-	               	int alpha = (imageView.getImageAlpha() == ALPHA_MAX) ? ALPHA_BTN : ALPHA_MAX;
-	               	imageView.setAlpha(alpha);
-	            }
-	        });
 			imageView.setId(p.getType());
 			A.addView(imageView);
 
