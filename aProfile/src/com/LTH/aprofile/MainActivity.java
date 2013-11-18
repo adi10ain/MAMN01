@@ -85,6 +85,12 @@ public class MainActivity extends Activity {
 		this.startActivityForResult(myIntent, REQUEST_CODE_NEW_PROFILE);
 
 	}
+	
+	public void confirmButton(View view){
+		Intent myIntent = new Intent(this, Confirm.class);
+		this.startActivity(myIntent);
+		
+	}
 
 	// Shows the current profile, its desired preferences and a list of all
 	// pre-set profiles
