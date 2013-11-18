@@ -34,14 +34,21 @@
         </ListView>
     </LinearLayout>
 
-
-
     <Button
         android:id="@+id/button_scan"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/linearLayout1"
+        android:layout_toLeftOf="@+id/button_confirm"
+        android:onClick="scanButton"
         android:text="Connect to wifi" />
+
+    <Button
+        android:id="@+id/button_confirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:text="Comfirm" />
 
 </RelativeLayout>
