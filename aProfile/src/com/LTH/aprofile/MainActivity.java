@@ -150,8 +150,8 @@ public class MainActivity extends Activity implements OnClickListener {
 		//aswdasdasd
 		
 		//merge merge merge
-		//mergeeeee
-
+		//test m,erge test
+			
 
 		settings.addProfile(p1);
 		settings.addProfile(p2);
