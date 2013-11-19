@@ -1,4 +1,8 @@
-package com.LTH.aprofile;
+package com.LTH.aprofile.Classes;
+
+import com.LTH.aprofile.R;
+import com.LTH.aprofile.R.id;
+import com.LTH.aprofile.R.layout;
 
 import android.os.Bundle;
 import android.view.Display;
@@ -67,7 +71,7 @@ public class SetBrightness extends Activity {
 
 					if (action == MotionEvent.ACTION_MOVE) {
 
-						int add = (int) ((currentXPosition/displayWidth*1.0)*displayHeight*0.5);
+						int add = (int) ((currentXPosition/displayWidth)*displayHeight*0.5);
 						if (Math.abs(prevY - currentYPosition) > 5) {
 							
 							currentHeight =(linearLayout.getChildAt(0)).getHeight();

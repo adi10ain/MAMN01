@@ -1,4 +1,4 @@
-package com.LTH.aprofile;
+package com.LTH.aprofile.Classes;
 
 import android.app.Activity;
 import android.content.Context;

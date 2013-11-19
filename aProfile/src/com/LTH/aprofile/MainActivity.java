@@ -19,6 +19,9 @@ import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import com.LTH.aprofile.Classes.GestureSelector;
+import com.LTH.aprofile.Classes.Profile;
+import com.LTH.aprofile.Classes.Settings;
 import com.LTH.aprofile.Preferences.BrightnessPreference;
 import com.LTH.aprofile.Preferences.SoundLevelPreference;
 
@@ -83,6 +86,11 @@ public class MainActivity extends Activity {
 		Intent myIntent = new Intent(this, Confirm.class);
 		this.startActivity(myIntent);
 
+	}
+	
+	public void settingsButton(View view) {
+		Intent myIntent = new Intent(this, AddProfileActivity.class);
+		this.startActivity(myIntent);
 	}
 
 	// Shows the current profile, its desired preferences and a list of all

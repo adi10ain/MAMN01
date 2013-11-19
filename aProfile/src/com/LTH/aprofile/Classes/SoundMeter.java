@@ -1,4 +1,4 @@
-package com.LTH.aprofile;
+package com.LTH.aprofile.Classes;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;

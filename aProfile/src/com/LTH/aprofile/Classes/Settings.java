@@ -1,4 +1,4 @@
-package com.LTH.aprofile;
+package com.LTH.aprofile.Classes;
 
 import java.util.ArrayList;
 import java.util.Iterator;

@@ -1,4 +1,4 @@
-package com.LTH.aprofile;
+package com.LTH.aprofile.Classes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,7 +22,7 @@ public class Profile {
 	public static final int BRIGHTNESS = 1;
 
 	// preferences
-	HashMap<Integer, Preference> preferences = new HashMap<Integer, Preference>();
+	public HashMap<Integer, Preference> preferences = new HashMap<Integer, Preference>();
 
 	public Profile() {
 		this.BSSID = "Not set";

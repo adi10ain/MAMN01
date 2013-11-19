@@ -56,6 +56,14 @@
             android:layout_height="wrap_content"
             android:onClick="confirmButton"
             android:text="Confirm" />
+
+        <Button
+            android:id="@+id/ButtonSettings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="settingsButton"
+            android:text="Imba" />
+
     </LinearLayout>
 
 </RelativeLayout>

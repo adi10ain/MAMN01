@@ -3,6 +3,8 @@ package com.LTH.aprofile;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import com.LTH.aprofile.Classes.GestureSelector;
+import com.LTH.aprofile.Classes.Profile;
 import com.LTH.aprofile.Preferences.Preference;
 
 import android.os.Bundle;

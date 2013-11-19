@@ -1,7 +1,7 @@
 package com.LTH.aprofile.Preferences;
 
-import com.LTH.aprofile.Profile;
 import com.LTH.aprofile.R;
+import com.LTH.aprofile.Classes.Profile;
 
 import android.app.Activity;
 import android.provider.Settings;

@@ -2,7 +2,7 @@ package com.LTH.aprofile.Preferences;
 
 import com.LTH.aprofile.MainActivity;
 import com.LTH.aprofile.NewprofileActivity;
-import com.LTH.aprofile.SetBrightness;
+import com.LTH.aprofile.Classes.SetBrightness;
 
 import android.R;
 import android.app.Activity;
