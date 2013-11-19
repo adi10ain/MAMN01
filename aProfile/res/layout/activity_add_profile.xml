@@ -14,43 +14,95 @@
             android:layout_height="fill_parent"
             android:orientation="horizontal" >
 
-            <TextView
-                android:id="@+id/status1"
+            <LinearLayout
+                android:id="@+id/bar1"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#A200FF"
-                android:text="Button1" />
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:orientation="vertical" >
 
-            <TextView
-                android:id="@+id/status2"
+                <TextView
+                    android:id="@+id/status1"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:background="#80A200FF" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/bar2"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#00ABA9"
-                android:text="Button2" />
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:orientation="vertical" >
 
-            <TextView
-                android:id="@+id/status3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#A05000"
-                android:text="Button3" />
+                <TextView
+                    android:id="@+id/status2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
-            <TextView
-                android:id="@+id/status4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#1BA1E2"
-                android:text="Button4" />
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:background="#8000ABA9" />
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/status5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:background="#339933"
-                android:text="Button5" />
+            <LinearLayout
+                android:id="@+id/bar3"
+                android:layout_width="0px"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:orientation="vertical" >
 
+                <TextView
+                    android:id="@+id/status3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:background="#80A05000" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/bar4"
+                android:layout_width="0px"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/status4"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:background="#801BA1E2" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/bar5"
+                android:layout_width="0px"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/status5"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:background="#80339933" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
@@ -64,38 +116,39 @@
 
         <TextView
             android:id="@+id/button1"
-            android:layout_width="wrap_content"
+            android:layout_width="0px"
             android:layout_height="fill_parent"
-            android:background="#A200FF"
-            android:text="Button1" />
+            android:layout_weight="1"
+            android:background="#A200FF" />
 
         <TextView
             android:id="@+id/button2"
-            android:layout_width="wrap_content"
+            android:layout_width="0px"
             android:layout_height="fill_parent"
-            android:background="#00ABA9"
-            android:text="Button2" />
+            android:layout_weight="1"
+            android:background="#00ABA9" />
 
         <TextView
             android:id="@+id/button3"
-            android:layout_width="wrap_content"
+            android:layout_width="0px"
             android:layout_height="fill_parent"
-            android:background="#A05000"
-            android:text="Button3" />
+            android:layout_weight="1"
+            android:background="#A05000" />
 
         <TextView
             android:id="@+id/button4"
-            android:layout_width="wrap_content"
+            android:layout_width="0px"
             android:layout_height="fill_parent"
-            android:background="#1BA1E2"
-            android:text="Button4" />
+            android:layout_weight="1"
+            android:background="#1BA1E2"/>
 
         <TextView
             android:id="@+id/button5"
-            android:layout_width="wrap_content"
+            android:layout_width="0px"
             android:layout_height="fill_parent"
+            android:layout_weight="1"
             android:background="#339933"
-            android:text="Button5" />
+ />
     </LinearLayout>
 
 </RelativeLayout>

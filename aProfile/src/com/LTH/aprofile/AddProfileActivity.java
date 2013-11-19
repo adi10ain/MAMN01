@@ -1,6 +1,9 @@
 package com.LTH.aprofile;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import com.LTH.aprofile.Classes.ResizeAnimation;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -24,19 +27,26 @@ public class AddProfileActivity extends Activity {
 	private TextView status4;
 	private TextView status5;
 
-	private TextView button1;
-	private TextView button2;
-	private TextView button3;
-	private TextView button4;
-	private TextView button5;
-	ArrayList<TextView> list;
+	private View bar1;
+	private View bar2;
+	private View bar3;
+	private View bar4;
+	private View bar5;
+	HashMap<View,TextView> list;
 	
+
 	private int prevY;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_profile);
+		
+		bar1 = findViewById(R.id.bar1);
+		bar2 = findViewById(R.id.bar2);
+		bar3 = findViewById(R.id.bar3);
+		bar4 = findViewById(R.id.bar4);
+		bar5 = findViewById(R.id.bar5);
 
 		status1 = (TextView) findViewById(R.id.status1);
 		status2 = (TextView) findViewById(R.id.status2);
@@ -44,18 +54,16 @@ public class AddProfileActivity extends Activity {
 		status4 = (TextView) findViewById(R.id.status4);
 		status5 = (TextView) findViewById(R.id.status5);
 
-		button1 = (TextView) findViewById(R.id.button1);
-		button2 = (TextView) findViewById(R.id.button2);
-		button3 = (TextView) findViewById(R.id.button3);
-		button4 = (TextView) findViewById(R.id.button4);
-		button5 = (TextView) findViewById(R.id.button5);
+	
 		
-		list = new ArrayList<TextView>();
-		list.add(status1);
-		list.add(status2);
-		list.add(status3);
-		list.add(status4);
-		list.add(status5);
+		list = new HashMap<View, TextView>();
+		list.put(bar1, status1);
+		list.put(bar2, status2);
+		list.put(bar3, status3);
+		list.put(bar4, status4);
+		list.put(bar5, status5);
+		
+
 		
 		LinearLayout touchPanel = (LinearLayout) findViewById(R.id.touchPanel);
 		
@@ -79,14 +87,17 @@ public class AddProfileActivity extends Activity {
 	}
 	
 	private void test(MotionEvent me) {
-		for (TextView button : list) {
+		for (View bar : list.keySet()) {
 			
 			//Log.d("add profile", "test "+button3.getLeft() +" " +button3.getTop()+" " +button3.getRight()+" " +button3.getBottom());
-			Rect r = new Rect(button.getLeft(), button.getTop(), button.getRight(), button.getBottom());
+			Rect r = new Rect(bar.getLeft(), bar.getTop(), bar.getRight(), bar.getBottom());
+			Log.d("add profile", "left "+bar.getLeft() +" right "+bar.getRight() +" x "+me.getX());
 			if(r.contains((int) me.getX(), 0)){
-	        	Log.d("add profile", "träff"+button.getText());
+				TextView button = list.get(bar);
+	        	Log.d("add profile", "left "+button.getLeft() +" right "+button.getRight() +" x "+me.getX());
 	        	Display display = getWindowManager().getDefaultDisplay();
 	        	int add =  (int) (display.getWidth()*0.1);
+
 	        	
 	        	if (r.contains(r)) {
 	        		int height = (int) ((me.getY()/100)*display.getWidth());
