@@ -12,6 +12,15 @@ public class ResizeAnimation extends Animation {
 
     private float mToWidth;
     private float mFromWidth;
+    
+    public ResizeAnimation(View v, float scale) {
+    	mFromWidth = v.getWidth();
+    	mFromHeight = v.getHeight();
+    	mToWidth = mFromWidth*scale;
+    	mToHeight = mFromHeight*scale;
+    }
+    		
+    		
 
     public ResizeAnimation(View v, float fromWidth, float fromHeight, float toWidth, float toHeight) {
         mToHeight = toHeight;

@@ -15,7 +15,7 @@ public class GestureSensor implements SensorEventListener  {
 	private SensorManager mgr;
 	private Sensor acc;
 	private boolean mInitialized;
-	private final float NOISE = (float) 2.0;
+	private final float NOISE = 0.5f;
 	private Activity activity;
 	private GestureSelector gestSelect;
 	

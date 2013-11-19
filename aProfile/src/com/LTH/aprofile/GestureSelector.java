@@ -3,9 +3,13 @@ package com.LTH.aprofile;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ValueAnimator;
 import android.app.Activity;
+import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 
@@ -14,6 +18,8 @@ public class GestureSelector {
 	private int selectedX;
 	private int selectedY;
 	private Activity activity;
+	
+	private Animation lastAnimation;
 
 	ArrayList<ArrayList<View>> buttons;
 
@@ -29,7 +35,7 @@ public class GestureSelector {
 		gestureSensor = new GestureSensor(activity, this);
 
 	}
-	
+
 	public void clear() {
 		buttons.clear();
 	}
@@ -99,15 +105,19 @@ public class GestureSelector {
 
 	public void onGesture(int gesture) {
 		if (!(buttons.isEmpty() || buttons.get(0).isEmpty())) {
-			View prevButton = buttons.get(selectedY).get(selectedX);
-			animate(prevButton, 1.3f, 1f, 1.3f, 1f, 300);
-
+		
+			
+			int prevX = selectedX;
+			int prevY = selectedY;
+					
+			
 			switch (gesture) {
 			case GestureSensor.GESTURE_UP:
 				if (selectedY > 0) {
 					selectedX = 0;
 					selectedY--;
 				}
+				
 				break;
 			case GestureSensor.GESTURE_RIGHT:
 				if (selectedX < buttons.get(selectedY).size() - 1)
@@ -124,22 +134,37 @@ public class GestureSelector {
 					selectedX--;
 				break;
 			}
-
+			
 			View selectedButton = buttons.get(selectedY).get(selectedX);
-			animate(selectedButton, 1f, 1.3f, 1f, 1.3f, 600);
+			
+			//animate only if selection were changed
+			if(prevX != selectedX || prevY != selectedY) {
+				selectedButton.bringToFront();
+				animate(selectedButton, 1f, 1.3f, 1f, 1.3f, 300);
+				View prevButton = buttons.get(prevY).get(prevX);
+				animate(prevButton, 1.3f, 1f, 1.3f, 1f, 1700);
+				
+			}
 		}
 
 	}
 
-	public void animate(View target, float fromX, float toX, float fromY,
+	private Animation animate(View target, float fromX, float toX, float fromY,
 			float toY, int duration) {
-		ScaleAnimation animation = new ScaleAnimation(fromX, toX, fromY, toY,
-				Animation.RELATIVE_TO_SELF, (float) 0.5,
-				Animation.RELATIVE_TO_SELF, (float) 0.5);
+		target.setVisibility(View.VISIBLE);
+		
+		AlphaAnimation animation1 = new AlphaAnimation(1f, 0.3f);
+		    animation1.setDuration(10000);
+		    animation1.setFillAfter(true);
+		target.startAnimation(animation1);
+		
+		ScaleAnimation animation = new ScaleAnimation(fromX, toX, fromY, toY);
 		animation.setInterpolator(activity, android.R.anim.bounce_interpolator);
 		animation.setDuration(duration);
 		animation.setFillAfter(true);
 		target.startAnimation(animation);
+		return animation;
+
 	}
 
 }
