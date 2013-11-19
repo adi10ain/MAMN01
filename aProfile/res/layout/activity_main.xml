@@ -25,31 +25,38 @@
            	android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="40dp"
+            android:padding="5dp"
             android:background="#4daf7c"/>
-
-        <ListView
-            android:id="@+id/listView"
+         <LinearLayout
+            android:id="@+id/listProfiles"
             android:layout_width="fill_parent"
-            android:layout_height="425dp" >
-        </ListView>
+            android:layout_height="wrap_content"
+            android:orientation="vertical"/>
+        
+       
     </LinearLayout>
 
-    <Button
-        android:id="@+id/button_scan"
+    <LinearLayout
+        android:id="@+id/bottomButtons"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@+id/button_confirm"
-        android:onClick="scanButton"
-        android:text="Connect to wifi" />
+        android:layout_alignParentLeft="true"
+        android:orientation="horizontal" >
 
-    <Button
-        android:id="@+id/button_confirm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:onClick="confirmButton"
-        android:text="Comfirm" />
+        <Button
+            android:id="@+id/button_scan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="scanButton"
+            android:text="Connect to wifi" />
+
+        <Button
+            android:id="@+id/button_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="confirmButton"
+            android:text="Confirm" />
+    </LinearLayout>
 
 </RelativeLayout>

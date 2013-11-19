@@ -28,15 +28,10 @@ public class MainActivity extends Activity {
 	public static final int APPROVE_NEW_PROFILE = 1;
 	public static final int DECLINE_NEW_PROFILE = 2;
 
-	WifiManager wifi;
-	ListView lv;
-	Button buttonScan;
-	int size = 0;
-	List<ScanResult> results;
+	private GestureSelector gestSelect;
 
-	String ITEM_KEY = "key";
-	ArrayList<HashMap<String, String>> arraylist = new ArrayList<HashMap<String, String>>();
-	SimpleAdapter adapter;
+	LinearLayout list_Profiles;
+	Button buttonScan;
 
 	private TextView TW_currentProfile;
 
@@ -55,21 +50,19 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 
 		// get UI elements
-		lv = (ListView) findViewById(R.id.listView);
+		list_Profiles = (LinearLayout) findViewById(R.id.listProfiles);
 		TW_currentProfile = (TextView) findViewById(R.id.currentProfile);
 
-		// adapter for making the WiFi list
-		this.adapter = new SimpleAdapter(MainActivity.this, arraylist,
-				android.R.layout.simple_list_item_1, new String[] { ITEM_KEY },
-				new int[] { android.R.id.text1 });
-		lv.setAdapter(this.adapter);
-		
 		settings = new Settings();
 		loadSettings();
 
 		currentProfile = new Profile();
 
+		gestSelect = new GestureSelector(this);
+		gestSelect.initGestureSensor();
 		showProfiles();
+
+
 	}
 
 	// temporary button, simulates a new connection to WiFi AP
@@ -77,25 +70,26 @@ public class MainActivity extends Activity {
 
 		targetProfile = settings.getProfile("00:11:22:A8:66:9B");
 
-		//set Brightness activity experiment
+		// set Brightness activity experiment
 		Intent myIntent = new Intent(this, NewprofileActivity.class);
-		
-		
-		//Intent myIntent = new Intent(this, NewprofileActivity.class);
+
+		// Intent myIntent = new Intent(this, NewprofileActivity.class);
 		this.startActivityForResult(myIntent, REQUEST_CODE_NEW_PROFILE);
 
 	}
-	
-	public void confirmButton(View view){
+
+	public void confirmButton(View view) {
 		Intent myIntent = new Intent(this, Confirm.class);
 		this.startActivity(myIntent);
-		
+
 	}
 
 	// Shows the current profile, its desired preferences and a list of all
 	// pre-set profiles
 	private void showProfiles() {
 
+		gestSelect.clear();
+		
 		// Displays current active profile
 		TW_currentProfile.setText("" + currentProfile);
 
@@ -103,20 +97,32 @@ public class MainActivity extends Activity {
 		LinearLayout linearLayout = (LinearLayout) findViewById(R.id.desiredPreferences);
 		linearLayout.removeAllViews();
 		linearLayout.addView(currentProfile.genPrefButtons(this, desiredPref));
+		LinearLayout preferenceButtons = (LinearLayout) ((LinearLayout) findViewById(R.id.desiredPreferences))
+				.getChildAt(0);
+
+		if (currentProfile.preferences.size() > 0) {
+
+			gestSelect.addChildrenToRow(preferenceButtons);
+		}
 
 		// Clear old wifi-profiles list
-		arraylist.clear();
-
+		list_Profiles.removeAllViews();
 		// Displays all profiles in the wifi-profiles list
 		Iterator<Profile> profiles = settings.getProfiles();
 		while (profiles.hasNext()) {
 			Profile profile = profiles.next();
-			HashMap<String, String> item = new HashMap<String, String>();
-			item.put(ITEM_KEY, "" + profile);
-			arraylist.add(item);
-			adapter.notifyDataSetChanged();
 
+			TextView tv = new TextView(this);
+			tv.setText("" + profile);
+			list_Profiles.addView(tv);
 		}
+
+
+		gestSelect.addChildrenToRows(list_Profiles);
+		
+		LinearLayout bottomButtons = (LinearLayout) findViewById(R.id.bottomButtons);
+		gestSelect.addChildrenToRow(bottomButtons);
+
 	}
 
 	// Method called when returning from called activity
@@ -137,8 +143,7 @@ public class MainActivity extends Activity {
 	}
 
 	private void loadSettings() {
-		
-		
+
 		// generate fake profiles;
 		Profile p1 = new Profile("NETGEAR", "00:13:49:A8:77:4F");
 		SoundLevelPreference pref1 = new SoundLevelPreference(0, this);
@@ -152,11 +157,9 @@ public class MainActivity extends Activity {
 
 		Profile p3 = new Profile("Mom use this one", "22:31:22:B2:12:46");
 
-
 		settings.addProfile(p1);
 		settings.addProfile(p2);
 		settings.addProfile(p3);
-
 
 	}
 

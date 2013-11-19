@@ -1,5 +1,6 @@
 package com.LTH.aprofile;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import com.LTH.aprofile.Preferences.Preference;
@@ -11,37 +12,50 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 public class NewprofileActivity extends Activity {
 	private Profile targetProfile;
 
 	private TextView TV_profileName;
 
+	private GestureSelector gestSelect;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-	
+
 		setContentView(R.layout.activity_newprofile);
 
 		targetProfile = MainActivity.targetProfile;
 
 		TV_profileName = (TextView) findViewById(R.id.ProfileName);
 		TV_profileName.setText("" + targetProfile);
-		
+
 		LinearLayout linearLayout = (LinearLayout) findViewById(R.id.desiredPreferences);
 		linearLayout.addView(targetProfile.genPrefButtons(this));
-		
-		
+
+		gestSelect = new GestureSelector(this);
+		gestSelect.initGestureSensor();
+
+		// first row of buttons
+		ArrayList<View> rowButtons1 = new ArrayList<View>();
+		rowButtons1.add(findViewById(R.id.declineProfile));
+		rowButtons1.add(findViewById(R.id.acceptProfile));
+
+		LinearLayout preferenceButtons = (LinearLayout) linearLayout
+				.getChildAt(0);
+
+		gestSelect.addRow(rowButtons1);
+		gestSelect.addChildrenToRow(preferenceButtons);
 
 	}
 
 	// When pressed accept button
 	public void btnApprove(View view) {
-		
+
 		LinkedList<Integer> pref = new LinkedList<Integer>();
-		
-		//Find out what preferences we want to affect
+
+		// Find out what preferences we want to affect
 		for (Preference p : targetProfile.getPref().values()) {
 			ImageView btn = (ImageView) findViewById(p.getType());
 			if (btn.isSelected())

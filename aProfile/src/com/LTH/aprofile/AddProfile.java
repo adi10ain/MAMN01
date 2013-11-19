@@ -16,8 +16,9 @@ public class AddProfile extends Activity {
 		
 		availableAP = (ListView) findViewById(R.id.listAvailableAP);
 		
-		
-		availableAP.addView(null);
+		TextView tv=new TextView(getApplicationContext());
+	    tv.setText("TEST");
+		availableAP.addView(tv);
 	}
 
 	@Override

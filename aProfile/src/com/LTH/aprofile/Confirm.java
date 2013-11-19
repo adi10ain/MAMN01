@@ -42,6 +42,7 @@ public class Confirm extends Activity implements SensorEventListener {
 		mgr.unregisterListener(this);
 	}
 
+	@Override
 	public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
 	}
