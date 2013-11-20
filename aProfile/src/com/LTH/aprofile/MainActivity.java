@@ -28,23 +28,24 @@ import com.LTH.aprofile.Preferences.SoundLevelPreference;
 public class MainActivity extends Activity {
 	// CONSTANTS
 	public static final int REQUEST_CODE_NEW_PROFILE = 1;
+	public static final int REQUEST_CODE_SETTINGS = 2;
 
 	public static final int APPROVE_NEW_PROFILE = 1;
 	public static final int DECLINE_NEW_PROFILE = 2;
 
 	private GestureSelector gestSelect;
 
-	LinearLayout list_Profiles;
 	Button buttonScan;
 
 	private TextView TW_currentProfile;
 
-	private Settings settings;
+	public static Settings settings;
 
 	// experimental
 	private Profile currentProfile;
 
 	public static Profile targetProfile;
+
 	private ArrayList<Integer> desiredPref = new ArrayList<Integer>();
 
 	/* Called when the activity is first created. */
@@ -54,7 +55,6 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 
 		// get UI elements
-		list_Profiles = (LinearLayout) findViewById(R.id.listProfiles);
 		TW_currentProfile = (TextView) findViewById(R.id.currentProfile);
 
 		settings = new Settings();
@@ -65,7 +65,6 @@ public class MainActivity extends Activity {
 		gestSelect = new GestureSelector(this);
 		gestSelect.initGestureSensor();
 		showProfiles();
-
 
 	}
 
@@ -87,10 +86,11 @@ public class MainActivity extends Activity {
 		this.startActivity(myIntent);
 
 	}
-	
+
 	public void settingsButton(View view) {
-		Intent myIntent = new Intent(this, AddProfileActivity.class);
-		this.startActivity(myIntent);
+		// settingsProfile = settings.getProfile("00:11:22:A8:66:9B");
+		Intent myIntent = new Intent(this, SettingsActivity.class);
+		this.startActivityForResult(myIntent, REQUEST_CODE_SETTINGS);
 	}
 
 	// Shows the current profile, its desired preferences and a list of all
@@ -98,7 +98,7 @@ public class MainActivity extends Activity {
 	private void showProfiles() {
 
 		gestSelect.clear();
-		
+
 		// Displays current active profile
 		TW_currentProfile.setText("" + currentProfile);
 
@@ -109,26 +109,10 @@ public class MainActivity extends Activity {
 		LinearLayout preferenceButtons = (LinearLayout) ((LinearLayout) findViewById(R.id.desiredPreferences))
 				.getChildAt(0);
 
-		if (currentProfile.preferences.size() > 0) {
-
+		if (currentProfile.preferences.size() > 0)
 			gestSelect.addChildrenToRow(preferenceButtons);
-		}
 
-		// Clear old wifi-profiles list
-		list_Profiles.removeAllViews();
-		// Displays all profiles in the wifi-profiles list
-		Iterator<Profile> profiles = settings.getProfiles();
-		while (profiles.hasNext()) {
-			Profile profile = profiles.next();
-
-			TextView tv = new TextView(this);
-			tv.setText("" + profile);
-			list_Profiles.addView(tv);
-		}
-
-
-		gestSelect.addChildrenToRows(list_Profiles);
-		
+	
 		LinearLayout bottomButtons = (LinearLayout) findViewById(R.id.bottomButtons);
 		gestSelect.addChildrenToRow(bottomButtons);
 
@@ -149,27 +133,39 @@ public class MainActivity extends Activity {
 
 			}
 		}
+		showProfiles();
 	}
 
 	private void loadSettings() {
 
 		// generate fake profiles;
 		Profile p1 = new Profile("NETGEAR", "00:13:49:A8:77:4F");
+		p1.setName("NETGEAR");
 		SoundLevelPreference pref1 = new SoundLevelPreference(0, this);
 		p1.addPref(pref1);
 
 		Profile p2 = new Profile("EDUROAM", "00:11:22:A8:66:9B");
+		p2.setName("EDUROAM");
 		SoundLevelPreference pref2 = new SoundLevelPreference(20, this);
-		BrightnessPreference pref3 = new BrightnessPreference(120, this);
+		BrightnessPreference pref3 = new BrightnessPreference(50, this);
 		p2.addPref(pref2);
 		p2.addPref(pref3);
 
-		Profile p3 = new Profile("Mom use this one", "22:31:22:B2:12:46");
+		Profile p3 = new Profile("WiFi hotspot", "22:31:22:B2:12:46");
+		SoundLevelPreference pref4 = new SoundLevelPreference(100, this);
+		BrightnessPreference pref5 = new BrightnessPreference(50, this);
+		p3.addPref(pref4);
+		p3.addPref(pref5);
+		p3.setName("WiFi hotspot");
 
 		settings.addProfile(p1);
 		settings.addProfile(p2);
 		settings.addProfile(p3);
 
+	}
+
+	public Settings getSettings() {
+		return settings;
 	}
 
 }

@@ -41,14 +41,10 @@
             android:name="com.LTH.aprofile.SettingsActivity"
             android:label="@string/title_activity_settings" >
         </activity>
-
-      
-    <activity
-            android:name="com.LTH.aprofile.AddProfileActivity"
+        <activity
+            android:name="com.LTH.aprofile.EditProfileActivity"
             android:label="@string/title_activity_add_profile" >
         </activity>
-        
-         
         <activity
             android:name="com.LTH.aprofile.Confirm"
             android:label="@string/title_activity_confirm" >

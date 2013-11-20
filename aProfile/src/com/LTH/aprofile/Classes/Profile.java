@@ -13,6 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 public class Profile {
+	
+	private String profileName;
 	// WiFi identifiers
 	private String ESSID; // ex. "NETGEAR"
 	private String BSSID; // ex. "00:11:22:33:44:55"
@@ -25,14 +27,21 @@ public class Profile {
 	public HashMap<Integer, Preference> preferences = new HashMap<Integer, Preference>();
 
 	public Profile() {
+		this.profileName = "New profile";
 		this.BSSID = "Not set";
-		this.ESSID = "Profile not set";
+		this.ESSID = "Not set";
+		
 	}
 
 	public Profile(String ESSID, String BSSID) {
+		this.profileName = "New profile";
 		this.ESSID = ESSID;
 		this.BSSID = BSSID;
 
+	}
+	
+	public void setName(String name) {
+		this.profileName = name;
 	}
 
 	public void addPref(Preference pref) {
@@ -61,8 +70,8 @@ public class Profile {
 	// (on/off) visualization
 	public LinearLayout genPrefButtons(final Activity activity,
 			ArrayList<Integer> desiredPref) {
-		LinearLayout A = new LinearLayout(activity);
-		A.setOrientation(LinearLayout.HORIZONTAL);
+		LinearLayout ll = new LinearLayout(activity);
+		ll.setOrientation(LinearLayout.HORIZONTAL);
 		for (Preference p : getPref().values()) {
 
 			Boolean toggle = (desiredPref == null || desiredPref.contains(p
@@ -71,11 +80,11 @@ public class Profile {
 
 			
 			imageView.setId(p.getType());
-			A.addView(imageView);
+			ll.addView(imageView);
 
 		}
 
-		return A;
+		return ll;
 	}
 
 	/*
@@ -87,7 +96,7 @@ public class Profile {
 	}
 
 	public String toString() {
-		return ESSID;
+		return profileName;
 	}
 
 	public HashMap<Integer, Preference> getPref() {

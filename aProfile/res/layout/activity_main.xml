@@ -28,11 +28,7 @@
             android:orientation="horizontal"
             android:padding="5dp" />
 
-        <LinearLayout
-            android:id="@+id/listProfiles"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" />
+       
     </LinearLayout>
 
     <LinearLayout
@@ -49,20 +45,20 @@
             android:layout_height="wrap_content"
             android:onClick="scanButton"
             android:text="Connect to wifi" />
-
+<!-- 
         <Button
             android:id="@+id/button_confirm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="confirmButton"
-            android:text="Confirm" />
+            android:text="Confirm" /> -->
 
         <Button
             android:id="@+id/ButtonSettings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="settingsButton"
-            android:text="Imba" />
+            android:text="Settings" />
 
     </LinearLayout>
 
