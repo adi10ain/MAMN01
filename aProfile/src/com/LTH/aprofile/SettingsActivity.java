@@ -11,6 +11,7 @@ import com.LTH.aprofile.Preferences.SoundLevelPreference;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.Menu;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -52,6 +53,7 @@ public class SettingsActivity extends Activity {
 	}
 
 	private void listAllProfiles() {
+		gestSelect.clear();
 		// Clear old wifi-profiles list
 		list_Profiles.removeAllViews();
 		// Displays all profiles in the wifi-profiles list
@@ -86,7 +88,8 @@ public class SettingsActivity extends Activity {
 		newProfile.addPref(pref4);
 		newProfile.addPref(pref5);
 		TextView tv = new TextView(this);
-		tv.setText("" + newProfile);
+		tv.setText("Add " + newProfile);
+		tv.setBackgroundColor(Color.GRAY);
 		tv.setTextSize(20.0f);
 		tv.setPadding(10, 20, 20, 20);
 
