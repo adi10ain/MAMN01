@@ -82,7 +82,7 @@ public class MainActivity extends Activity {
 	}
 
 	public void confirmButton(View view) {
-		Intent myIntent = new Intent(this, Confirm.class);
+		Intent myIntent = new Intent(this, Test_Orientation.class);
 		this.startActivity(myIntent);
 
 	}

@@ -49,6 +49,10 @@
             android:name="com.LTH.aprofile.Confirm"
             android:label="@string/title_activity_confirm" >
         </activity>
+        <activity
+            android:name="com.LTH.aprofile.Test_Orientation"
+            android:label="@string/title_activity_test__orientation" >
+        </activity>
     </application>
 
 </manifest>
