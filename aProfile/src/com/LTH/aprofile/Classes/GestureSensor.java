@@ -8,16 +8,12 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 public class GestureSensor implements SensorEventListener {
 	private float mLastX, mLastY, mLastZ;
 	private SensorManager mgr;
 	private Sensor acc, gyro, orient;
 	private boolean mInitialized;
-	private final float NOISE = 0.5f;
 	private Activity activity;
 	private GestureSelector gestSelect;
 
@@ -27,11 +23,12 @@ public class GestureSensor implements SensorEventListener {
 	public static final int GESTURE_RIGHT = 1;
 	public static final int GESTURE_DOWN = 2;
 	public static final int GESTURE_LEFT = 3;
-	public float yViewp = 10;
-	public float yViewn = -10;
-	public float zViewp = 10;
-	public float zViewn = -10;
+	public float yViewp = 5;
+	public float yViewn = -5;
+	public float zViewp = 5;
+	public float zViewn = -5;
 	private long prevTime = 0;
+	private long delay = (long) 0.4; // delay seconds
 
 	public GestureSensor(Activity activity, GestureSelector gestSelect) {
 		super();
@@ -107,45 +104,44 @@ public class GestureSensor implements SensorEventListener {
 			float deltaX = (mLastX - x);
 			float deltaY = (mLastY - y);
 			float deltaZ = (mLastZ - z);
-			if (deltaY > (yViewp)) {
+			//If the event is a tilt motion
+			if((deltaY > (yViewp)) || (deltaY < (yViewn)) || (deltaZ > (zViewp)) || (deltaZ < (zViewn)) ){
 				long tmp = (long) ((event.timestamp - prevTime) / 1e9);
-				if (tmp > 0.5) {
+			
+			
+			if (deltaY > (yViewp)) {
+				if (tmp > delay) {
 					gestSelect.onGesture(GESTURE_UP);
 					prevTime = event.timestamp;
 				}
 
 			} else if (deltaY < (yViewn)) {
-				long tmp = (long) ((event.timestamp - prevTime) / 1e9);
-				if (tmp > 0.5) {
+	
+				if (tmp > delay) {
 					gestSelect.onGesture(GESTURE_DOWN);
 					prevTime = event.timestamp;
 				}
 
 			} else if (deltaZ > (zViewp)) {
-				long tmp = (long) ((event.timestamp - prevTime) / 1e9);
-				if (tmp > 0.5) {
+	
+				if (tmp > delay) {
 					gestSelect.onGesture(GESTURE_RIGHT);
 					prevTime = event.timestamp;
 				}
 
 			} else if (deltaZ < (zViewn)) {
-				long tmp = (long) ((event.timestamp - prevTime) / 1e9);
-				if (tmp > 0.5) {
+		
+				if (tmp > delay) {
 					gestSelect.onGesture(GESTURE_LEFT);
 					prevTime = event.timestamp;
 				}
 
-				// filterZn = 10;
-				// filterZp = 0;
-				// filterYp = 0;
-				// filterYn = 0;
-
 			}
+			
+		}
 			mLastX = x;
 			mLastY = y;
 			mLastZ = z;
-
-		}
 	}
-
+	}
 }
