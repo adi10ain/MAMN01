@@ -53,6 +53,10 @@
             android:name="com.LTH.aprofile.Test_Orientation"
             android:label="@string/title_activity_test__orientation" >
         </activity>
+        <activity
+            android:name="com.LTH.aprofile.Test_orient2"
+            android:label="@string/title_activity_test_orient2" >
+        </activity>
     </application>
 
 </manifest>

@@ -11,5 +11,6 @@
     <string name="title_activity_add_profile">AddProfile</string>
     <string name="title_activity_confirm">Confirm</string>
     <string name="title_activity_test__orientation">Test_Orientation</string>
+    <string name="title_activity_test_orient2">Test_orient2</string>
 
 </resources>
