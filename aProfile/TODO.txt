@@ -1,0 +1,34 @@
+TO-DO list:
+
+Gestures
+[ ] Correct bug in gesture-selector
+[ ] Use pre-made gesture-sensor with modification (?) calibrate and make the scrolling speed dependent on the tilt angle
+[ ] Shake gesture
+[ ] Make gesture-selector able to jump to closest view in the y-axis rather than the first one
+[ ] Make the gesture-sensor usable in different angles
+[ ] Handle different sensor sample times. Some devices are more sensitive than others!
+
+Wi-Fi
+[ ] push WiFi listener (johnny cage)
+[ ] Ability to remove WiFi hotspot from profile
+
+Profiles & settings
+[ ] Set fallback on previous settings when switching off a profile
+[ ] Make autosave for Settings & load them when starting app
+[ ] Ability to delete profile
+[ ] Add more preferences
+	[ ] Screensaver timeout
+	[ ]	Energysave mode
+	[ ] toggle Rotate screen
+	[ ] sound preference: Silent/vibration
+	[ ] flightmode
+	[ ] nightmode
+
+Design & feedback
+[ ] Vibration/sound feedback
+[ ] UI animation, design and feedback (overall user-experience)
+[ ] User testing
+[ ] Tutorial(?)
+
+
+
