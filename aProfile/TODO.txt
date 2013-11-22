@@ -28,6 +28,7 @@ Profiles & settings
 
 Design & feedback
 [ ] Vibration/sound feedback
+[ ] Correct sound feedback in when editing profile
 [ ] UI animation, design and feedback (overall user-experience)
 [ ] User testing
 [ ] Tutorial(?)
