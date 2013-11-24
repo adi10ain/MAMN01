@@ -2,6 +2,7 @@ package com.LTH.aprofile.Classes;
 
 import java.util.ArrayList;
 import android.app.Activity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -103,11 +104,11 @@ public class GestureSelector {
 			addViewToRow(view.getChildAt(i));
 
 	}
-	
-	//adds ArrayList<View> to a new row
+
+	// adds ArrayList<View> to a new row
 	public void addRow(ArrayList<View> rowButtons) {
 		buttons.add(rowButtons);
-		
+
 	}
 
 	// ####################################### Animation & Gesture handler
@@ -122,7 +123,7 @@ public class GestureSelector {
 			switch (gesture) {
 			case GestureSensor.GESTURE_UP:
 				if (selectedY > 0) {
-					selectedX = 0;
+					selectedX = findClosestViewInXAxis(selectedY - 1);
 					selectedY--;
 				}
 
@@ -133,13 +134,16 @@ public class GestureSelector {
 				break;
 			case GestureSensor.GESTURE_DOWN:
 				if (selectedY < buttons.size() - 1) {
-					selectedX = 0;
+					selectedX = findClosestViewInXAxis(selectedY + 1);
 					selectedY++;
 				}
 				break;
 			case GestureSensor.GESTURE_LEFT:
 				if (selectedX > 0)
 					selectedX--;
+				break;
+			case GestureSensor.GESTURE_SHAKE:
+				// shake gesture detected -- do something
 				break;
 			}
 
@@ -157,6 +161,33 @@ public class GestureSelector {
 
 	}
 
+	// Returns the closes view in X axis for the current view selected
+	private int findClosestViewInXAxis(int targetRow) {
+		View currentView = buttons.get(selectedY).get(selectedX);
+		int currentViewXpos = currentView.getLeft();
+
+		ArrayList<View> row = buttons.get(targetRow);
+
+		View v = row.get(0);
+
+		int smallestDiff = Math.abs(currentViewXpos - v.getLeft());
+		int xPos = 0;
+
+		for (int i = 0; i < row.size(); i++) {
+
+			v = row.get(i);
+			int diff = Math.abs(currentViewXpos - v.getLeft());
+
+			if (diff < smallestDiff) {
+				smallestDiff = diff;
+				xPos = i;
+			}
+		}
+
+		return xPos;
+
+	}
+
 	// ScaleAnimation of target View
 	private Animation animate(View target, float fromX, float toX, float fromY,
 			float toY, int duration) {
@@ -169,7 +200,5 @@ public class GestureSelector {
 		return animation;
 
 	}
-
-
 
 }

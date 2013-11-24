@@ -25,6 +25,7 @@ public class GestureSensor implements SensorEventListener {
 	public static final int GESTURE_RIGHT = 1;
 	public static final int GESTURE_DOWN = 2;
 	public static final int GESTURE_LEFT = 3;
+	public static final int GESTURE_SHAKE = 4;
 
 	public GestureSensor(Activity activity, GestureSelector gestSelect) {
 		super();
@@ -80,12 +81,9 @@ public class GestureSensor implements SensorEventListener {
 				float speed = Math.abs(x + y + z - last_x - last_y - last_z)
 						/ diffTime * 10000;
 
-				if (speed > SHAKE_THRESHOLD) {
-					Log.d("sensor", "shake detected w/ speed: " + speed);
-					// testView.setText("SHAKE "+speed);
-					// Toast.makeText(this, "shake detected w/ speed: " + speed,
-					// Toast.LENGTH_SHORT).show();
-				}
+				if (speed > SHAKE_THRESHOLD)
+					gestSelect.onGesture(GESTURE_SHAKE);
+
 				last_x = x;
 				last_y = y;
 				last_z = z;

@@ -5,8 +5,8 @@ Gestures
 [X] Use pre-made gesture-sensor with modification
 [ ] Calibrate and make the scrolling speed dependent on the tilt angle
 [ ] "Gesture" for pressing selected button
-[ ] Shake gesture
-[ ] Make gesture-selector able to jump to closest view in the y-axis rather than the first one
+[o] Shake gesture (implemented in GestureSelector, needs to be used)
+[X] Make gesture-selector able to jump to closest view in the y-axis rather than the first one
 [ ] Make the gesture-sensor usable in different angles
 [ ] Handle different sensor sample times. Some devices are more sensitive than others!
 
