@@ -8,140 +8,89 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.util.Log;
 
 public class GestureSensor implements SensorEventListener {
-	private float mLastX, mLastY, mLastZ;
-	private SensorManager mgr;
-	private Sensor acc, gyro, orient;
-	private boolean mInitialized;
-	private Activity activity;
-	private GestureSelector gestSelect;
+	private static final float SHAKE_THRESHOLD = 2000;
+	float last_x;
+	float last_y;
+	float last_z;
+	SensorManager sensorManager;
 
+	GestureSelector gestSelect;
 
-	// CONSTANTS
+	long lastUpdate;
+
 	public static final int GESTURE_UP = 0;
 	public static final int GESTURE_RIGHT = 1;
 	public static final int GESTURE_DOWN = 2;
 	public static final int GESTURE_LEFT = 3;
-	public float yViewp = 5;
-	public float yViewn = -5;
-	public float zViewp = 5;
-	public float zViewn = -5;
-	private long prevTime = 0;
-	private long delay = (long) 0.4; // delay seconds
 
 	public GestureSensor(Activity activity, GestureSelector gestSelect) {
 		super();
 		this.gestSelect = gestSelect;
-		mInitialized = false;
-		mgr = (SensorManager) activity.getSystemService(Context.SENSOR_SERVICE);
-		intiSensors();
-		this.activity = activity;
-		// GUI stuff
+		sensorManager = (SensorManager) activity
+				.getSystemService(activity.SENSOR_SERVICE);
+		sensorManager.registerListener(this,
+				sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+				SensorManager.SENSOR_DELAY_NORMAL);
+		lastUpdate = System.currentTimeMillis();
 
-
-
-	}
-
-	// Register all sensors
-	private void intiSensors() {
-		// Accelerometer sensor
-		acc = mgr.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-		mgr.registerListener(this, acc, SensorManager.SENSOR_DELAY_NORMAL);
-		// Gyro sensor
-		gyro = mgr.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
-		mgr.registerListener(this, gyro, SensorManager.SENSOR_DELAY_NORMAL);
-		// Orientation Sensor
-		orient = mgr.getDefaultSensor(Sensor.TYPE_ORIENTATION);
-		mgr.registerListener(this, orient, SensorManager.SENSOR_DELAY_NORMAL);
-
-	}
-
-	// Implementeras vid senare tillfälle
-	protected void onResume() {
-		// mgr.registerListener(this, acc, SensorManager.SENSOR_DELAY_NORMAL);
-		// ((NewprofileActivity)activity).onResume();
-		intiSensors();
-	}
-
-	protected void onPause() {
-		// ((NewprofileActivity)activity).onPause();
-		mgr.unregisterListener(this);
 	}
 
 	@Override
-	public void onAccuracyChanged(Sensor arg0, int arg1) {
-		// TODO Auto-generated method stub
-
+	public void onAccuracyChanged(Sensor sensor, int accuracy) {
+		// Do something here if sensor accuracy changes.
+		// You must implement this callback in your code.
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void onSensorChanged(SensorEvent event) {
+		if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
 
-		switch (event.sensor.getType()) {
-		case Sensor.TYPE_ORIENTATION:
-			calcOrientation(event);
-			break;
+			float[] values = event.values;
 
-		}
+			// Movement
+			float x = values[0];
+			float y = values[1];
+			float z = values[2];
 
-	}
+			/*
+			 * float accelationSquareRoot = (x * x + y * y + z * z) /
+			 * (SensorManager.AXIS_X * SensorManager.AXIS_X);
+			 */
 
-	private void calcOrientation(SensorEvent event) {
+			Log.d("Shakes", "X: " + x + "  Y: " + y + "  Z: " + z);
 
-		float x = event.values[0];
-		float y = event.values[1];
-		float z = event.values[2];
+			long actualTime = System.currentTimeMillis();
+			if ((actualTime - lastUpdate) > 100) {
+				long diffTime = (actualTime - lastUpdate);
+				lastUpdate = actualTime;
 
-		if (!mInitialized) {
-			mLastX = x;
-			mLastY = y;
-			mLastZ = z;
-			mInitialized = true;
-
-		} else {
-			float deltaX = (mLastX - x);
-			float deltaY = (mLastY - y);
-			float deltaZ = (mLastZ - z);
-			//If the event is a tilt motion
-			if((deltaY > (yViewp)) || (deltaY < (yViewn)) || (deltaZ > (zViewp)) || (deltaZ < (zViewn)) ){
-				long tmp = (long) ((event.timestamp - prevTime) / 1e9);
-			
-			
-			if (deltaY > (yViewp)) {
-				if (tmp > delay) {
-					gestSelect.onGesture(GESTURE_UP);
-					prevTime = event.timestamp;
-				}
-
-			} else if (deltaY < (yViewn)) {
-	
-				if (tmp > delay) {
-					gestSelect.onGesture(GESTURE_DOWN);
-					prevTime = event.timestamp;
-				}
-
-			} else if (deltaZ > (zViewp)) {
-	
-				if (tmp > delay) {
-					gestSelect.onGesture(GESTURE_RIGHT);
-					prevTime = event.timestamp;
-				}
-
-			} else if (deltaZ < (zViewn)) {
-		
-				if (tmp > delay) {
+				if (x > 2.0000)
 					gestSelect.onGesture(GESTURE_LEFT);
-					prevTime = event.timestamp;
-				}
+				else if (x < -2.0000)
+					gestSelect.onGesture(GESTURE_RIGHT);
 
+				else if (z > 2 && z < 9.5 && y > 0)
+					gestSelect.onGesture(GESTURE_DOWN);
+				else if (z > 2 && z < 9.5 && y < 0)
+					gestSelect.onGesture(GESTURE_UP);
+
+				float speed = Math.abs(x + y + z - last_x - last_y - last_z)
+						/ diffTime * 10000;
+
+				if (speed > SHAKE_THRESHOLD) {
+					Log.d("sensor", "shake detected w/ speed: " + speed);
+					// testView.setText("SHAKE "+speed);
+					// Toast.makeText(this, "shake detected w/ speed: " + speed,
+					// Toast.LENGTH_SHORT).show();
+				}
+				last_x = x;
+				last_y = y;
+				last_z = z;
 			}
-			
 		}
-			mLastX = x;
-			mLastY = y;
-			mLastZ = z;
-	}
+
 	}
 }

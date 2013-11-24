@@ -103,6 +103,12 @@ public class GestureSelector {
 			addViewToRow(view.getChildAt(i));
 
 	}
+	
+	//adds ArrayList<View> to a new row
+	public void addRow(ArrayList<View> rowButtons) {
+		buttons.add(rowButtons);
+		
+	}
 
 	// ####################################### Animation & Gesture handler
 
@@ -163,5 +169,7 @@ public class GestureSelector {
 		return animation;
 
 	}
+
+
 
 }

@@ -2,7 +2,8 @@ TO-DO list:
 
 Gestures
 [X] Correct bug in gesture-selector
-[ ] Use pre-made gesture-sensor with modification (?) calibrate and make the scrolling speed dependent on the tilt angle
+[X] Use pre-made gesture-sensor with modification
+[ ] Calibrate and make the scrolling speed dependent on the tilt angle
 [ ] "Gesture" for pressing selected button
 [ ] Shake gesture
 [ ] Make gesture-selector able to jump to closest view in the y-axis rather than the first one
