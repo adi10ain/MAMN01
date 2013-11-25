@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.view.Menu;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -26,6 +27,8 @@ public class SettingsActivity extends Activity {
 
 	private static Activity activity;
 
+	private CheckBox toggleGesture;
+
 	public static final int REQUEST_CODE_CHANGE_PROFILE = 1;
 
 	@Override
@@ -33,9 +36,13 @@ public class SettingsActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.settings);
 
+		settings = MainActivity.settings;
+
 		gestSelect = new GestureSelector(this);
 		gestSelect.initGestureSensor();
-		settings = MainActivity.settings;
+		
+		toggleGesture = (CheckBox) findViewById(R.id.GestureToggle);
+		toggleGesture.setChecked(settings.getGestureToggle());
 
 		list_Profiles = (LinearLayout) findViewById(R.id.listProfiles);
 
@@ -56,6 +63,7 @@ public class SettingsActivity extends Activity {
 		gestSelect.clear();
 		// Clear old wifi-profiles list
 		list_Profiles.removeAllViews();
+
 		// Displays all profiles in the wifi-profiles list
 		Iterator<Profile> profiles = settings.getProfiles();
 		while (profiles.hasNext()) {
@@ -79,6 +87,7 @@ public class SettingsActivity extends Activity {
 			});
 
 			list_Profiles.addView(tv);
+			
 		}
 
 		// Add new profile item
@@ -112,9 +121,16 @@ public class SettingsActivity extends Activity {
 
 	}
 
+	public void btn_gesture_toggle(View view) {
+		CheckBox cb = (CheckBox) view;
+
+		settings.setGestureToggle(cb.isChecked());
+	}
+
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
 		listAllProfiles();
+
 	}
 
 	@Override

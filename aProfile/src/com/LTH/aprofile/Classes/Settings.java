@@ -10,10 +10,15 @@ public class Settings {
 	private ArrayList<Profile> profiles;
 
 	private HashMap<WiFiHotspot, Profile> AP_Profile_link;
+	private HashMap<int[], Profile> Gesture_Profile_link;
+
+	private Boolean GestureSensorToggleOn;
 
 	public Settings() {
 		profiles = new ArrayList<Profile>();
 		AP_Profile_link = new HashMap<WiFiHotspot, Profile>();
+		Gesture_Profile_link = new HashMap<int[], Profile>();
+		GestureSensorToggleOn = false;
 	}
 
 	// adds profile
@@ -33,7 +38,14 @@ public class Settings {
 		}
 		return ret;
 	}
+	
+	public Boolean getGestureToggle() {
+		return GestureSensorToggleOn;
+	}
 
+	public void setGestureToggle(Boolean b) {
+		GestureSensorToggleOn = b;
+	}
 	// deletes profile
 	public void delProfile(Profile profile) {
 		profiles.remove(profile);

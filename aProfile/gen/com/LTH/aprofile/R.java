@@ -36,9 +36,10 @@ public final class R {
     }
     public static final class id {
         public static final int ButtonSettings=0x7f09000e;
+        public static final int GestureToggle=0x7f090017;
         public static final int ProfileName=0x7f090010;
         public static final int acceptProfile=0x7f090013;
-        public static final int action_settings=0x7f090018;
+        public static final int action_settings=0x7f090019;
         public static final int addWIFI=0x7f090007;
         public static final int bottomButtons=0x7f09000c;
         public static final int button_confirm=0x7f09000f;
@@ -48,7 +49,7 @@ public final class R {
         public static final int desiredPreferences=0x7f09000b;
         public static final int image=0x7f090003;
         public static final int linearLayout1=0x7f090009;
-        public static final int listProfiles=0x7f090017;
+        public static final int listProfiles=0x7f090018;
         public static final int profileName=0x7f090005;
         public static final int profileType=0x7f090011;
         public static final int row=0x7f090016;

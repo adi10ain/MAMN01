@@ -7,12 +7,22 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".SettingsActivity" >
-
+<CheckBox
+             android:id="@+id/GestureToggle"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:onClick="btn_gesture_toggle"
+             android:text="Gesture Navigation" />
      <LinearLayout
             android:id="@+id/listProfiles"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" />
+            android:layout_below="@id/GestureToggle"
+            android:orientation="vertical" >
+
+         
+
+     </LinearLayout>
 
 
 </RelativeLayout>

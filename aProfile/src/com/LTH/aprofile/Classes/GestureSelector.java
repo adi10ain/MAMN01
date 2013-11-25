@@ -2,6 +2,8 @@ package com.LTH.aprofile.Classes;
 
 import java.util.ArrayList;
 
+import com.LTH.aprofile.MainActivity;
+
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -28,8 +30,6 @@ public class GestureSelector {
 	
 	private static int SELECT_BUTTON_TIMER = 3000;
 	
-	private static Boolean toggleOn = true;
-
 	public GestureSelector(Activity activity) {
 		selectedX = 0;
 		selectedY = 0;
@@ -213,7 +213,7 @@ public class GestureSelector {
 		s.setFillAfter(true);
 		
 	
-		if (toggleOn) 
+		if (MainActivity.settings.getGestureToggle()) 
 			target.startAnimation(s);
 
 		if (fromX > toX) {

@@ -89,13 +89,13 @@ public class GestureSensor implements SensorEventListener {
 
 			if (shakeSpeed > SHAKE_THRESHOLD)
 				gesture = GESTURE_SHAKE;
-			else if (x > 2.0000)
+			else if (x > 3.0000)
 				gesture = GESTURE_LEFT;
-			else if (x < -2.0000)
+			else if (x < -3.0000)
 				gesture = GESTURE_RIGHT;
-			else if (z > 4 && y > 0)
+			else if (z > 8  && y > 1)
 				gesture = GESTURE_DOWN;
-			else if (z > 4&& y < 0)
+			else if (z > 8  && y < -1)
 				gesture = GESTURE_UP;
 
 			if (gestSelect != null && (actualTime - lastUpdate) > 100) {
