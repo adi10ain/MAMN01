@@ -6,13 +6,20 @@ import java.util.Iterator;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.net.wifi.ScanResult;
+import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -22,7 +29,9 @@ import android.widget.TextView;
 import com.LTH.aprofile.Classes.GestureSelector;
 import com.LTH.aprofile.Classes.Profile;
 import com.LTH.aprofile.Classes.Settings;
+import com.LTH.aprofile.Classes.WiFiHotspot;
 import com.LTH.aprofile.Preferences.BrightnessPreference;
+import com.LTH.aprofile.Preferences.Preference;
 import com.LTH.aprofile.Preferences.SoundLevelPreference;
 
 public class MainActivity extends Activity {
@@ -48,6 +57,8 @@ public class MainActivity extends Activity {
 
 	private ArrayList<Integer> desiredPref = new ArrayList<Integer>();
 
+	private WifiReceiver wifiReceiver;
+
 	/* Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -64,6 +75,10 @@ public class MainActivity extends Activity {
 
 		gestSelect = new GestureSelector(this);
 		gestSelect.initGestureSensor();
+
+		wifiReceiver = new WifiReceiver();
+		this.registerReceiver(wifiReceiver, new IntentFilter(
+				ConnectivityManager.CONNECTIVITY_ACTION));
 		showProfiles();
 
 	}
@@ -73,18 +88,39 @@ public class MainActivity extends Activity {
 
 		targetProfile = settings.getProfile("00:11:22:A8:66:9B");
 
-		// set Brightness activity experiment
+		newProfileConnected();
+
+	}
+
+	public void newProfileConnected() {
+
 		Intent myIntent = new Intent(this, NewprofileActivity.class);
-
-		// Intent myIntent = new Intent(this, NewprofileActivity.class);
 		this.startActivityForResult(myIntent, REQUEST_CODE_NEW_PROFILE);
-
 	}
 
 	public void confirmButton(View view) {
 		Intent myIntent = new Intent(this, Test_Orientation.class);
 		this.startActivity(myIntent);
 
+	}
+
+	private void showSettingsButtons() {
+		for (Preference p : currentProfile.getPref().values()) {
+			LinearLayout settingsBar = (LinearLayout) findViewById(R.id.desiredPreferences);
+			ImageView icon = new ImageView(this);
+			icon.setImageResource(p.getIconResId());
+			LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+					10, LinearLayout.LayoutParams.MATCH_PARENT, 1f);
+			icon.setLayoutParams(layoutParams);
+			// icon.setBackgroundColor(p.getColorCode());
+			icon.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+			int padding = 25;
+			icon.setPadding(padding, padding, padding, padding);
+			// icon.getBackground().setAlpha(150);
+
+			settingsBar.addView(icon);
+
+		}
 	}
 
 	public void settingsButton(View view) {
@@ -105,16 +141,18 @@ public class MainActivity extends Activity {
 		// Displays current preferences of active profile
 		LinearLayout linearLayout = (LinearLayout) findViewById(R.id.desiredPreferences);
 		linearLayout.removeAllViews();
-		linearLayout.addView(currentProfile.genPrefButtons(this, desiredPref));
-		LinearLayout preferenceButtons = (LinearLayout) ((LinearLayout) findViewById(R.id.desiredPreferences))
-				.getChildAt(0);
+		// linearLayout.addView(currentProfile.genPrefButtons(this,
+		// desiredPref));
+		// LinearLayout preferenceButtons = (LinearLayout) ((LinearLayout)
+		// findViewById(R.id.desiredPreferences))
+		// .getChildAt(0);
 
-		if (currentProfile.preferences.size() > 0)
-			gestSelect.addChildrenToRow(preferenceButtons);
+		// if (currentProfile.preferences.size() > 0)
+		// gestSelect.addChildrenToRow(preferenceButtons);
 
-	
 		LinearLayout bottomButtons = (LinearLayout) findViewById(R.id.bottomButtons);
 		gestSelect.addChildrenToRow(bottomButtons);
+		showSettingsButtons();
 
 	}
 
@@ -167,5 +205,30 @@ public class MainActivity extends Activity {
 	public Settings getSettings() {
 		return settings;
 	}
+
+	class WifiReceiver extends BroadcastReceiver {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			WifiManager wifi = (WifiManager) context
+					.getSystemService(Context.WIFI_SERVICE);
+			WifiInfo wifiInfo = wifi.getConnectionInfo();
+			if (wifi.isWifiEnabled() == true) {
+				WiFiHotspot hotspot = new WiFiHotspot(wifiInfo.getSSID(),
+						wifiInfo.getBSSID());
+
+				// check if the new wifi connection is associated with a profile
+				Profile p = settings.checkIfLinkedWifi(hotspot);
+				if (p != null) {
+					targetProfile = p;
+					newProfileConnected();
+				}
+				Log.d("debug", "wifi connected");
+			} else {
+				Log.d("debug", "wifi disconnected");
+			}
+
+		}
+	};
 
 }

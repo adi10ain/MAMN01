@@ -1,6 +1,7 @@
 package com.LTH.aprofile.Classes;
 
 import com.LTH.aprofile.R;
+import com.LTH.aprofile.Test_Orientation;
 
 import android.app.Activity;
 import android.content.Context;
@@ -17,19 +18,36 @@ public class GestureSensor implements SensorEventListener {
 	float last_z;
 	SensorManager sensorManager;
 
-	GestureSelector gestSelect;
+	private GestureSelector gestSelect;
+	// change class name later
+	private Test_Orientation gestureProfileSelector;
 
 	long lastUpdate;
 
+	public static final int GESTURE_NOT_FOUND = -1;
 	public static final int GESTURE_UP = 0;
 	public static final int GESTURE_RIGHT = 1;
 	public static final int GESTURE_DOWN = 2;
 	public static final int GESTURE_LEFT = 3;
 	public static final int GESTURE_SHAKE = 4;
+	
 
 	public GestureSensor(Activity activity, GestureSelector gestSelect) {
 		super();
 		this.gestSelect = gestSelect;
+		sensorManager = (SensorManager) activity
+				.getSystemService(activity.SENSOR_SERVICE);
+		sensorManager.registerListener(this,
+				sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+				SensorManager.SENSOR_DELAY_NORMAL);
+		lastUpdate = System.currentTimeMillis();
+
+	}
+
+	public GestureSensor(Activity activity,
+			Test_Orientation gestureProfileSelector) {
+		super();
+		this.gestureProfileSelector = gestureProfileSelector;
 		sensorManager = (SensorManager) activity
 				.getSystemService(activity.SENSOR_SERVICE);
 		sensorManager.registerListener(this,
@@ -61,32 +79,35 @@ public class GestureSensor implements SensorEventListener {
 			 * (SensorManager.AXIS_X * SensorManager.AXIS_X);
 			 */
 
-			Log.d("Shakes", "X: " + x + "  Y: " + y + "  Z: " + z);
-
 			long actualTime = System.currentTimeMillis();
-			if ((actualTime - lastUpdate) > 100) {
-				long diffTime = (actualTime - lastUpdate);
-				lastUpdate = actualTime;
+			int gesture = GESTURE_NOT_FOUND;
+			long diffTime = (actualTime - lastUpdate);
+			
 
-				if (x > 2.0000)
-					gestSelect.onGesture(GESTURE_LEFT);
-				else if (x < -2.0000)
-					gestSelect.onGesture(GESTURE_RIGHT);
+			float shakeSpeed = Math.abs(x + y + z - last_x - last_y - last_z)
+					/ diffTime * 10000;
 
-				else if (z > 2 && z < 9.5 && y > 0)
-					gestSelect.onGesture(GESTURE_DOWN);
-				else if (z > 2 && z < 9.5 && y < 0)
-					gestSelect.onGesture(GESTURE_UP);
+			if (shakeSpeed > SHAKE_THRESHOLD)
+				gesture = GESTURE_SHAKE;
+			else if (x > 2.0000)
+				gesture = GESTURE_LEFT;
+			else if (x < -2.0000)
+				gesture = GESTURE_RIGHT;
+			else if (z > 4 && y > 0)
+				gesture = GESTURE_DOWN;
+			else if (z > 4&& y < 0)
+				gesture = GESTURE_UP;
 
-				float speed = Math.abs(x + y + z - last_x - last_y - last_z)
-						/ diffTime * 10000;
+			if (gestSelect != null && (actualTime - lastUpdate) > 100) {
 
-				if (speed > SHAKE_THRESHOLD)
-					gestSelect.onGesture(GESTURE_SHAKE);
+				gestSelect.onGesture(gesture);
 
 				last_x = x;
 				last_y = y;
 				last_z = z;
+				lastUpdate = actualTime;
+			} else if (gestureProfileSelector != null) {
+				gestureProfileSelector.onGesture(gesture);
 			}
 		}
 

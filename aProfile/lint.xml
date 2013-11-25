@@ -3,4 +3,7 @@
     <issue id="InlinedApi">
         <ignore path="src/com/LTH/aprofile/MainActivity.java" />
     </issue>
+    <issue id="NewApi">
+        <ignore path="src/com/LTH/aprofile/Classes/PieChart.java" />
+    </issue>
 </lint>

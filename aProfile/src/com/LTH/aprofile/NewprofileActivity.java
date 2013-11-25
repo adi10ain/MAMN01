@@ -51,6 +51,8 @@ public class NewprofileActivity extends Activity {
 		gestSelect.addChildrenToRow(preferenceButtons);
 
 	}
+	
+	
 
 	// When pressed accept button
 	public void btnApprove(View view) {

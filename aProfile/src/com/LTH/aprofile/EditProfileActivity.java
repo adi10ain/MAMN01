@@ -3,10 +3,19 @@ package com.LTH.aprofile;
 import java.util.HashMap;
 
 import com.LTH.aprofile.Classes.Profile;
+import com.LTH.aprofile.Classes.WiFiHotspot;
 import com.LTH.aprofile.Preferences.Preference;
 
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Rect;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,6 +23,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -29,6 +39,11 @@ public class EditProfileActivity extends Activity {
 
 	private LinearLayout statusPanel;
 	private LinearLayout touchPanel;
+	private TextView wifiList;
+	public Button btn_addWIFI;
+
+	private WifiReceiver wifiReceiver;
+	public static WiFiHotspot connectedWiFi;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +53,16 @@ public class EditProfileActivity extends Activity {
 		barStatusMap = new HashMap<View, TextView>();
 
 		profile = SettingsActivity.selectedProfile;
+		wifiReceiver = new WifiReceiver();
+		this.registerReceiver(wifiReceiver, new IntentFilter(
+				ConnectivityManager.CONNECTIVITY_ACTION));
 
 		profileName = (EditText) findViewById(R.id.profileName);
 		profileName.setText("" + profile);
+
+		btn_addWIFI = (Button) findViewById(R.id.addWIFI);
+
+		wifiList = (TextView) findViewById(R.id.wifiList);
 
 		profileName.addTextChangedListener(new TextWatcher() {
 			public void afterTextChanged(Editable s) {
@@ -60,9 +82,27 @@ public class EditProfileActivity extends Activity {
 		touchPanel = (LinearLayout) findViewById(R.id.touchPanel);
 
 		generateBars();
-
+		showWiFiList();
+		
 		setTouchListener(touchPanel, this);
 
+	}
+
+	public void btn_addWiFiHotspot(View view) {
+		if (connectedWiFi != null
+				&& MainActivity.settings.addWifiProfileLink(connectedWiFi,
+						profile))
+			profile.addHotspot(connectedWiFi);
+		showWiFiList();
+	}
+
+	private void showWiFiList() {
+		String s = "";
+
+		for (WiFiHotspot w : profile.getHotspots()) {
+			s += " " + w.getName() + " ";
+		}
+		wifiList.setText(s);
 	}
 
 	private void generateBars() {
@@ -113,6 +153,8 @@ public class EditProfileActivity extends Activity {
 
 			barStatusMap.put(col, tv_status);
 			lastView = col;
+			
+			
 
 		}
 
@@ -180,8 +222,9 @@ public class EditProfileActivity extends Activity {
 		targetValue = (targetValue <= 0) ? 1 : targetValue;
 
 		int height = ((int) (((100 - targetValue) / 100) * col.getHeight()));
-		
-		Log.d("height ", "height :"+col.getHeight()+ "targetValue" +targetValue);
+
+		Log.d("height ", "height :" + col.getHeight() + "targetValue"
+				+ targetValue);
 
 		statusChanger.setHeight(height);
 
@@ -193,3 +236,25 @@ public class EditProfileActivity extends Activity {
 	}
 
 }
+
+class WifiReceiver extends BroadcastReceiver {
+
+	@Override
+	public void onReceive(Context context, Intent intent) {
+		WifiManager wifi = (WifiManager) context
+				.getSystemService(Context.WIFI_SERVICE);
+		WifiInfo wifiInfo = wifi.getConnectionInfo();
+		if (wifi.isWifiEnabled() == true) {
+
+			EditProfileActivity.connectedWiFi = new WiFiHotspot(
+					wifiInfo.getSSID(), wifiInfo.getBSSID());
+			((EditProfileActivity) context).btn_addWIFI.setClickable(true);
+			Log.d("debug", "connect");
+		} else {
+			((EditProfileActivity) context).btn_addWIFI.setClickable(false);
+			EditProfileActivity.connectedWiFi = null;
+			Log.d("debug", "disconnect");
+		}
+
+	}
+};

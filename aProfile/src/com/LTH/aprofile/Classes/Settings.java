@@ -1,18 +1,37 @@
 package com.LTH.aprofile.Classes;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+
+import android.util.Log;
 
 public class Settings {
 	private ArrayList<Profile> profiles;
 
+	private HashMap<WiFiHotspot, Profile> AP_Profile_link;
+
 	public Settings() {
 		profiles = new ArrayList<Profile>();
+		AP_Profile_link = new HashMap<WiFiHotspot, Profile>();
 	}
 
 	// adds profile
 	public void addProfile(Profile profile) {
 		profiles.add(profile);
+	}
+
+	public Profile checkIfLinkedWifi(WiFiHotspot wifi) {
+		return AP_Profile_link.get(wifi);
+	}
+
+	public boolean addWifiProfileLink(WiFiHotspot wifi, Profile p) {
+		Boolean ret = false;
+		if (!AP_Profile_link.containsKey(wifi)) {
+			AP_Profile_link.put(wifi, p);
+			ret = true;
+		}
+		return ret;
 	}
 
 	// deletes profile
@@ -25,7 +44,7 @@ public class Settings {
 
 		Profile ret = null;
 		Iterator<Profile> it = profiles.iterator();
-		
+
 		while (it.hasNext()) {
 			Profile p = (Profile) it.next();
 			if (p.compareBSSID(BSSID)) {
@@ -36,8 +55,8 @@ public class Settings {
 
 		return ret;
 	}
-	
-	//returns iterator of all profiles
+
+	// returns iterator of all profiles
 	public Iterator<Profile> getProfiles() {
 		return profiles.iterator();
 	}

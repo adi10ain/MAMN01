@@ -1,11 +1,19 @@
 package com.LTH.aprofile.Classes;
 
 import java.util.ArrayList;
+
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.app.Activity;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.DecelerateInterpolator;
 import android.view.animation.ScaleAnimation;
 
 public class GestureSelector {
@@ -15,6 +23,12 @@ public class GestureSelector {
 	private Activity activity;
 
 	ArrayList<ArrayList<View>> buttons;
+
+	Animation prevFadeOutAnim;
+	
+	private static int SELECT_BUTTON_TIMER = 3000;
+	
+	private static Boolean toggleOn = true;
 
 	public GestureSelector(Activity activity) {
 		selectedX = 0;
@@ -151,15 +165,66 @@ public class GestureSelector {
 
 			// animate only if selection were changed
 			if (prevX != selectedX || prevY != selectedY) {
-				selectedButton.bringToFront();
-				animate(selectedButton, 1f, 1.3f, 1f, 1.3f, 300);
+				animate(selectedButton, 1f, 1.3f, 1f, 1.3f, 1000);
 				View prevButton = buttons.get(prevY).get(prevX);
-				animate(prevButton, 1.3f, 1f, 1.3f, 1f, 1700);
+				animate(prevButton, 1.3f, 1f, 1.3f, 1f, 500);
 
 			}
 		}
 
 	}
+
+	// ScaleAnimation of target View
+	private Animation animate(View target, float fromX, float toX, float fromY,
+			float toY, int duration) {
+
+		ScaleAnimation animation = new ScaleAnimation(fromX, toX, fromY, toY,Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+		animation.setInterpolator(activity, android.R.anim.bounce_interpolator);
+		animation.setDuration(duration);
+		animation.setFillAfter(true);
+
+		Animation fadeOut = new AlphaAnimation(1, 0.05f);
+		fadeOut.setInterpolator(new DecelerateInterpolator()); // add this
+		fadeOut.setStartTime(duration);
+		fadeOut.setDuration(SELECT_BUTTON_TIMER);
+		fadeOut.setFillAfter(false);
+		prevFadeOutAnim = fadeOut;
+		
+		//when fade out animation finished
+		prevFadeOutAnim.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {}
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+            	View selectedButton = buttons.get(selectedY).get(selectedX);
+            	selectedButton.performClick();
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {}});
+
+		AnimationSet s = new AnimationSet(false);// false mean dont share
+						
+		
+
+		s.addAnimation(animation);
+		s.addAnimation(fadeOut);
+		s.setFillAfter(true);
+		
+	
+		if (toggleOn) 
+			target.startAnimation(s);
+
+		if (fromX > toX) {
+			prevFadeOutAnim.cancel();
+		}
+		// target.startAnimation(animation);
+		return animation;
+
+	}
+	
+
 
 	// Returns the closes view in X axis for the current view selected
 	private int findClosestViewInXAxis(int targetRow) {
@@ -185,19 +250,6 @@ public class GestureSelector {
 		}
 
 		return xPos;
-
-	}
-
-	// ScaleAnimation of target View
-	private Animation animate(View target, float fromX, float toX, float fromY,
-			float toY, int duration) {
-
-		ScaleAnimation animation = new ScaleAnimation(fromX, toX, fromY, toY);
-		animation.setInterpolator(activity, android.R.anim.bounce_interpolator);
-		animation.setDuration(duration);
-		animation.setFillAfter(true);
-		target.startAnimation(animation);
-		return animation;
 
 	}
 

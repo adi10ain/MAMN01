@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity" >
+    tools:context=".MainActivity"
+    android:background="@color/METRO_VERY_LIGHT_BROWN">
 
     <LinearLayout
         android:id="@+id/linearLayout1"
@@ -18,55 +19,54 @@
             android:gravity="bottom"
             android:text="Large Text"
             android:textColor="#FFFFFF"
-            android:textSize="32sp" />
+            android:textSize="32sp"
+            android:padding="10dp"/>
 
         <LinearLayout
             android:id="@+id/desiredPreferences"
             android:layout_width="fill_parent"
-            android:layout_height="40dp"
-            android:background="#4daf7c"
-            android:orientation="horizontal"
-            android:padding="5dp" />
-
-       
+             android:layout_height="50dp"
+             android:background="#4daf7c"
+            android:orientation="horizontal"/>
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/bottomButtons"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="75dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:orientation="horizontal" >
 
         <Button
             android:id="@+id/button_scan"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@color/METRO_LIGHT_BROWN"
             android:onClick="scanButton"
-            android:text="Connect to wifi" />
-<!-- 
-        <Button
-            android:id="@+id/button_confirm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="confirmButton"
-            android:text="Confirm" /> -->
+            android:text="Connect"
+            android:textColor="@color/WHITE" />
 
         <Button
             android:id="@+id/ButtonSettings"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@color/METRO_LIGHT_BROWN"
             android:onClick="settingsButton"
-            android:text="Settings" />
+            android:text="Settings"
+            android:textColor="@color/WHITE" />
 
         <Button
             android:id="@+id/button_confirm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@color/METRO_LIGHT_BROWN"
             android:onClick="confirmButton"
-            android:text="Test" />
-
+            android:text="Test"
+            android:textColor="@color/WHITE" />
     </LinearLayout>
 
 </RelativeLayout>

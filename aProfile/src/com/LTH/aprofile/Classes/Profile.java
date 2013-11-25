@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 public class Profile {
-	
+
 	private String profileName;
 	// WiFi identifiers
 	private String ESSID; // ex. "NETGEAR"
@@ -26,20 +26,37 @@ public class Profile {
 	// preferences
 	public HashMap<Integer, Preference> preferences = new HashMap<Integer, Preference>();
 
+	ArrayList<WiFiHotspot> hotspots;
+
 	public Profile() {
 		this.profileName = "New profile";
 		this.BSSID = "Not set";
 		this.ESSID = "Not set";
-		
+		hotspots = new ArrayList<WiFiHotspot>();
+
 	}
 
 	public Profile(String ESSID, String BSSID) {
 		this.profileName = "New profile";
 		this.ESSID = ESSID;
 		this.BSSID = BSSID;
+		hotspots = new ArrayList<WiFiHotspot>();
 
 	}
-	
+
+	public Boolean addHotspot(WiFiHotspot w) {
+		Boolean ret = false;
+		if (!hotspots.contains(w)) {
+			hotspots.add(w);
+			ret = true;
+		}
+		return ret;
+	}
+
+	public ArrayList<WiFiHotspot> getHotspots() {
+		return hotspots;
+	}
+
 	public void setName(String name) {
 		this.profileName = name;
 	}
@@ -78,7 +95,6 @@ public class Profile {
 					.getType()));
 			ImageView imageView = p.getIconButton(toggle);
 
-			
 			imageView.setId(p.getType());
 			ll.addView(imageView);
 
