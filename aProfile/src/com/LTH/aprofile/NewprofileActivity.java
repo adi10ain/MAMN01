@@ -43,6 +43,8 @@ public class NewprofileActivity extends GestureActivity {
 		addListenForGesture(GESTURE_RIGHT);
 		addListenForGesture(GESTURE_LEFT);
 		setGestureUpdateInterval(300);
+		setRepeatSameGestures(false);
+		gestureSensor.initiate();
 
 		setContentView(R.layout.activity_newprofile);
 

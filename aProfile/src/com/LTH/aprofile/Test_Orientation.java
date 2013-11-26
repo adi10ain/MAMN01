@@ -33,7 +33,6 @@ public class Test_Orientation extends GestureActivity {
 
 	private static int MAX_AMOUNT_GESTURES;
 
-	GestureSensor gestSensor;
 
 	ArrayList<int[]> savedGestures;
 	ArrayList<int[]> possibleGestures;
@@ -46,6 +45,7 @@ public class Test_Orientation extends GestureActivity {
 		addListenForGesture(GESTURE_DOWN);
 		addListenForGesture(GESTURE_RIGHT);
 		addListenForGesture(GESTURE_LEFT);
+		gestureSensor.initiate();
 
 		setContentView(R.layout.activity_test__orientation);
 		row = (LinearLayout) findViewById(R.id.row);
@@ -54,7 +54,6 @@ public class Test_Orientation extends GestureActivity {
 		gestureSeries = new int[MAX_AMOUNT_GESTURES];
 		currentPos = -1;
 		currentGesture = -1;
-		gestSensor = new GestureSensor(this);
 
 		savedGestures = new ArrayList<int[]>();
 

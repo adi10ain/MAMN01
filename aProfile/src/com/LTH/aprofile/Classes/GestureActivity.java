@@ -16,24 +16,29 @@ public abstract class GestureActivity extends Activity {
 	public static final int GESTURE_SHAKE = 4;
 
 	// minimum time between a new gesture is reported (0 for no limit)
-	private int[] minUpdateInterval;
+	private int minUpdateInterval;
 
 	// list of gestures to listen for
 	private ArrayList<Integer> listenForTheseGestures;
 
-	private GestureSensor gestureSensor;
+	protected GestureSensor gestureSensor;
+
+	// determines if same gestures could be sent in a row
+	private Boolean repeatSameGestures;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		listenForTheseGestures = new ArrayList<Integer>();
-		minUpdateInterval = new int[] { 0};
+		minUpdateInterval = 0;
+		repeatSameGestures = true;
 		gestureSensor = new GestureSensor(this);
+		
 
 	}
 
 	// minimum time between a new gesture is reported (0 for no limit - default)
-	protected void setGestureUpdateInterval(Integer interval) {
-		minUpdateInterval[0] = interval;
+	protected void setGestureUpdateInterval(int interval) {
+		minUpdateInterval = interval;
 	}
 
 	// adds a gesture to listen for
@@ -44,12 +49,20 @@ public abstract class GestureActivity extends Activity {
 	// called when a gesture is recognized
 	public abstract void onGesture(int gesture);
 
-	public int[] getUpdateInterval() {
+	public int getUpdateInterval() {
 
 		return minUpdateInterval;
 	}
 
 	public ArrayList<Integer> getGestureList() {
 		return listenForTheseGestures;
+	}
+
+	public void setRepeatSameGestures(Boolean repeatSameGestures) {
+		this.repeatSameGestures = repeatSameGestures;
+	}
+
+	public Boolean getRepeatSameGestures() {
+		return repeatSameGestures;
 	}
 }

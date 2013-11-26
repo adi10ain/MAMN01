@@ -40,6 +40,7 @@ public class SettingsActivity extends GestureActivity {
 		addListenForGesture(GESTURE_DOWN);
 		addListenForGesture(GESTURE_RIGHT);
 		addListenForGesture(GESTURE_LEFT);
+		gestureSensor.initiate();
 		
 		setContentView(R.layout.settings);
 

@@ -20,35 +20,41 @@ public class GestureSensor implements SensorEventListener {
 
 	private GestureActivity gestureListener;
 
-	//ugly solution, array to pass reference to int rather than the value
-	private int[] minUpdateInterval;
-	
+	// ugly solution, array to pass reference to int rather than the value
+	private int minUpdateInterval;
+
 	private ArrayList<Integer> listenForTheseGestures;
 
 	long lastUpdate;
-	
+
 	private int prevGesture;
+
+	// determines if same gestures could be sent in a row
+	private Boolean repeatSameGestures;
 
 	public GestureSensor(GestureActivity gestureListener) {
 		super();
 		this.gestureListener = gestureListener;
-		minUpdateInterval = gestureListener.getUpdateInterval();
-	
-		listenForTheseGestures = gestureListener.getGestureList();
-		
-		if (listenForTheseGestures == null)
-			listenForTheseGestures = new ArrayList<Integer>();
 
 		sensorManager = (SensorManager) gestureListener
 				.getSystemService(gestureListener.SENSOR_SERVICE);
 		sensorManager.registerListener(this,
 				sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
 				SensorManager.SENSOR_DELAY_NORMAL);
-		lastUpdate = System.currentTimeMillis();
 
 	}
 
+	public void initiate() {
+		minUpdateInterval = gestureListener.getUpdateInterval();
 
+		listenForTheseGestures = gestureListener.getGestureList();
+		repeatSameGestures = gestureListener.getRepeatSameGestures();
+
+		lastUpdate = System.currentTimeMillis();
+
+		if (listenForTheseGestures == null)
+			listenForTheseGestures = new ArrayList<Integer>();
+	}
 
 	@Override
 	public void onAccuracyChanged(Sensor sensor, int accuracy) {
@@ -76,7 +82,6 @@ public class GestureSensor implements SensorEventListener {
 			int gesture = gestureListener.GESTURE_NOT_FOUND;
 			long diffTime = (actualTime - lastUpdate);
 
-
 			float shakeSpeed = Math.abs(x + y + z - last_x - last_y - last_z)
 					/ diffTime * 10000;
 
@@ -96,9 +101,9 @@ public class GestureSensor implements SensorEventListener {
 					.contains(gestureListener.GESTURE_UP) && z > 8 && y < -1)
 				gesture = gestureListener.GESTURE_UP;
 
-			if ((actualTime - lastUpdate) > minUpdateInterval[0]) {
-				//do not send same gesture twice in a row
-				if (prevGesture != gesture)
+			if ((actualTime - lastUpdate) > minUpdateInterval) {
+				
+				if (repeatSameGestures || prevGesture != gesture)
 					gestureListener.onGesture(gesture);
 
 				last_x = x;
@@ -107,11 +112,8 @@ public class GestureSensor implements SensorEventListener {
 				lastUpdate = actualTime;
 				prevGesture = gesture;
 			}
-			
-		
-			
+
 		}
-		
 
 	}
 }
