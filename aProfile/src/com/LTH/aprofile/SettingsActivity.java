@@ -35,7 +35,7 @@ public class SettingsActivity extends GestureActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setGestureUpdateInterval(100);
+		setGestureUpdateInterval(500);
 		addListenForGesture(GESTURE_UP);
 		addListenForGesture(GESTURE_DOWN);
 		addListenForGesture(GESTURE_RIGHT);

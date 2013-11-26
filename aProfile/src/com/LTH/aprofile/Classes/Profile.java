@@ -37,7 +37,7 @@ public class Profile {
 	}
 
 	public Profile(String ESSID, String BSSID) {
-		this.profileName = "New profile";
+		this.profileName = "Not Connected";
 		this.ESSID = ESSID;
 		this.BSSID = BSSID;
 		hotspots = new ArrayList<WiFiHotspot>();
