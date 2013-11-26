@@ -3,23 +3,10 @@ package com.LTH.aprofile;
 import java.util.ArrayList;
 
 import com.LTH.aprofile.Classes.GestureActivity;
-import com.LTH.aprofile.Classes.GestureSensor;
-import com.LTH.aprofile.Classes.KeyPress;
 
 import android.graphics.Color;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.os.Vibrator;
-import android.app.Activity;
-import android.content.Context;
-import android.util.Log;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
