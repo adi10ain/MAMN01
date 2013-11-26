@@ -178,28 +178,18 @@ public class MainActivity extends GestureActivity {
 	private void loadSettings() {
 
 		// generate fake profiles;
-		Profile p1 = new Profile("NETGEAR", "00:13:49:A8:77:4F");
-		p1.setName("NETGEAR");
-		SoundLevelPreference pref1 = new SoundLevelPreference(0, this);
-		p1.addPref(pref1);
 
-		Profile p2 = new Profile("EDUROAM", "00:11:22:A8:66:9B");
-		p2.setName("EDUROAM");
+		Profile p1 = new Profile("EDUROAM", "00:11:22:A8:66:9B");
+		p1.setName("EDUROAM");
 		SoundLevelPreference pref2 = new SoundLevelPreference(20, this);
 		BrightnessPreference pref3 = new BrightnessPreference(50, this);
-		p2.addPref(pref2);
-		p2.addPref(pref3);
+		p1.addPref(pref2);
+		p1.addPref(pref3);
 
-		Profile p3 = new Profile("WiFi hotspot", "22:31:22:B2:12:46");
-		SoundLevelPreference pref4 = new SoundLevelPreference(100, this);
-		BrightnessPreference pref5 = new BrightnessPreference(50, this);
-		p3.addPref(pref4);
-		p3.addPref(pref5);
-		p3.setName("WiFi hotspot");
+
 
 		settings.addProfile(p1);
-		settings.addProfile(p2);
-		settings.addProfile(p3);
+	
 
 	}
 
