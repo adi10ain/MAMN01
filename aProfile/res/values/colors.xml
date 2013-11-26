@@ -2,7 +2,8 @@
 <resources>
 
     <color name="METRO_LIGHT_BROWN">#776b5F</color>
-    <color name="METRO_VERY_LIGHT_BROWN">#f5f0ec</color>
+    <color name="METRO_VERY_LIGHT_BROWN">#f5f0EC</color>
+    <color name="METRO_DARK_BROWN">#64584C</color>
     <color name="WHITE">#FFFFFF</color>
 
 </resources>

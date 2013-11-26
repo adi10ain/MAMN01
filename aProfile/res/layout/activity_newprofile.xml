@@ -2,51 +2,70 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+
     tools:context=".NewprofileActivity" >
 
-    <TextView
-        android:id="@+id/ProfileName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/profileType"
-        android:layout_marginTop="33dp"
-        android:layout_toRightOf="@+id/profileType"
-        android:text="Profile name"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <Button
-        android:id="@+id/declineProfile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/acceptProfile"
-        android:layout_alignBottom="@+id/acceptProfile"
-        android:layout_alignLeft="@+id/profileType"
-        android:text="Decline"
-        android:onClick="btnDecline" />
-    
-        <Button
-        android:id="@+id/acceptProfile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ProfileName"
-        android:layout_marginTop="38dp"
-        android:layout_toRightOf="@+id/declineProfile"
-        android:text="Accept"
-        android:onClick="btnApprove" />
-
     <LinearLayout
-        android:id="@+id/desiredPreferences"
         android:layout_width="fill_parent"
-        android:layout_height="40dp"
-        android:layout_alignLeft="@+id/declineProfile"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="140dp"
-        android:background="#4daf7c"
-        android:orientation="horizontal" >
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/ProfileName"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3pt"
+            android:layout_marginBottom="3pt"
+            android:gravity="center"
+            android:text="Profile name"
+            android:layout_weight="1"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/METRO_DARK_BROWN" />
+
+        <RelativeLayout
+            android:id="@+id/pieChart"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:orientation="vertical" >
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/declineProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:onClick="btnDecline"
+                android:background="@color/METRO_LIGHT_BROWN"
+                android:textColor="@color/WHITE" 
+                android:text="Decline" />
+
+            <Button
+                android:id="@+id/acceptProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_below="@+id/ProfileName"
+                android:layout_weight="1"
+                android:onClick="btnApprove"
+                android:background="@color/METRO_LIGHT_BROWN"
+                android:textColor="@color/WHITE" 
+                android:text="Accept" />
+        </LinearLayout>
+
+        <!--
+        <LinearLayout
+            android:id="@+id/desiredPreferences"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="#4daf7c"
+            android:orientation="horizontal" >
+        </LinearLayout> -->
     </LinearLayout>
 
 </RelativeLayout>

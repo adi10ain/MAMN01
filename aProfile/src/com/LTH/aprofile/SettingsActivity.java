@@ -2,6 +2,7 @@ package com.LTH.aprofile;
 
 import java.util.Iterator;
 
+import com.LTH.aprofile.Classes.GestureActivity;
 import com.LTH.aprofile.Classes.GestureSelector;
 import com.LTH.aprofile.Classes.Profile;
 import com.LTH.aprofile.Classes.Settings;
@@ -18,7 +19,7 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class SettingsActivity extends Activity {
+public class SettingsActivity extends GestureActivity {
 
 	LinearLayout list_Profiles;
 	private static Settings settings;
@@ -34,13 +35,18 @@ public class SettingsActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setGestureUpdateInterval(100);
+		addListenForGesture(GESTURE_UP);
+		addListenForGesture(GESTURE_DOWN);
+		addListenForGesture(GESTURE_RIGHT);
+		addListenForGesture(GESTURE_LEFT);
+		
 		setContentView(R.layout.settings);
 
 		settings = MainActivity.settings;
 
 		gestSelect = new GestureSelector(this);
-		gestSelect.initGestureSensor();
-		
+
 		toggleGesture = (CheckBox) findViewById(R.id.GestureToggle);
 		toggleGesture.setChecked(settings.getGestureToggle());
 
@@ -87,7 +93,7 @@ public class SettingsActivity extends Activity {
 			});
 
 			list_Profiles.addView(tv);
-			
+
 		}
 
 		// Add new profile item
@@ -116,7 +122,7 @@ public class SettingsActivity extends Activity {
 		});
 
 		list_Profiles.addView(tv);
-
+		gestSelect.addViewToRow(toggleGesture);
 		gestSelect.addChildrenToRows(list_Profiles);
 
 	}
@@ -140,4 +146,9 @@ public class SettingsActivity extends Activity {
 		return true;
 	}
 
+	@Override
+	public void onGesture(int gesture) {
+		gestSelect.onGesture(gesture);
+
+	};
 }

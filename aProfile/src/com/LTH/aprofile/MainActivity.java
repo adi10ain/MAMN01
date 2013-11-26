@@ -1,9 +1,6 @@
 package com.LTH.aprofile;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -11,21 +8,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
-import android.net.wifi.ScanResult;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import com.LTH.aprofile.Classes.GestureActivity;
 import com.LTH.aprofile.Classes.GestureSelector;
 import com.LTH.aprofile.Classes.Profile;
 import com.LTH.aprofile.Classes.Settings;
@@ -34,7 +27,9 @@ import com.LTH.aprofile.Preferences.BrightnessPreference;
 import com.LTH.aprofile.Preferences.Preference;
 import com.LTH.aprofile.Preferences.SoundLevelPreference;
 
-public class MainActivity extends Activity {
+public class MainActivity extends GestureActivity {
+	
+	
 	// CONSTANTS
 	public static final int REQUEST_CODE_NEW_PROFILE = 1;
 	public static final int REQUEST_CODE_SETTINGS = 2;
@@ -62,7 +57,14 @@ public class MainActivity extends Activity {
 	/* Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		
 		super.onCreate(savedInstanceState);
+		setGestureUpdateInterval(100);
+		addListenForGesture(GESTURE_UP);
+		addListenForGesture(GESTURE_DOWN);
+		addListenForGesture(GESTURE_RIGHT);
+		addListenForGesture(GESTURE_LEFT);
+		
 		setContentView(R.layout.activity_main);
 
 		// get UI elements
@@ -74,7 +76,6 @@ public class MainActivity extends Activity {
 		currentProfile = new Profile();
 
 		gestSelect = new GestureSelector(this);
-		gestSelect.initGestureSensor();
 
 		wifiReceiver = new WifiReceiver();
 		this.registerReceiver(wifiReceiver, new IntentFilter(
@@ -117,7 +118,6 @@ public class MainActivity extends Activity {
 			int padding = 25;
 			icon.setPadding(padding, padding, padding, padding);
 			// icon.getBackground().setAlpha(150);
-
 			settingsBar.addView(icon);
 
 		}
@@ -229,6 +229,12 @@ public class MainActivity extends Activity {
 			}
 
 		}
+	}
+
+	@Override
+	public void onGesture(int gesture) {
+		gestSelect.onGesture(gesture);
+		
 	};
 
 }

@@ -11,9 +11,10 @@ public final class R {
     public static final class attr {
     }
     public static final class color {
+        public static final int METRO_DARK_BROWN=0x7f040002;
         public static final int METRO_LIGHT_BROWN=0x7f040000;
         public static final int METRO_VERY_LIGHT_BROWN=0x7f040001;
-        public static final int WHITE=0x7f040002;
+        public static final int WHITE=0x7f040003;
     }
     public static final class dimen {
         /**  Default screen margins, per the Android Design guidelines. 
@@ -50,8 +51,8 @@ public final class R {
         public static final int image=0x7f090003;
         public static final int linearLayout1=0x7f090009;
         public static final int listProfiles=0x7f090018;
+        public static final int pieChart=0x7f090011;
         public static final int profileName=0x7f090005;
-        public static final int profileType=0x7f090011;
         public static final int row=0x7f090016;
         public static final int statusPanel=0x7f090008;
         public static final int textView1=0x7f090014;

@@ -2,6 +2,7 @@ package com.LTH.aprofile;
 
 import java.util.ArrayList;
 
+import com.LTH.aprofile.Classes.GestureActivity;
 import com.LTH.aprofile.Classes.GestureSensor;
 import com.LTH.aprofile.Classes.KeyPress;
 
@@ -22,7 +23,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class Test_Orientation extends Activity {
+public class Test_Orientation extends GestureActivity {
 
 	LinearLayout row;
 
@@ -40,6 +41,11 @@ public class Test_Orientation extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setGestureUpdateInterval(100);
+		addListenForGesture(GESTURE_UP);
+		addListenForGesture(GESTURE_DOWN);
+		addListenForGesture(GESTURE_RIGHT);
+		addListenForGesture(GESTURE_LEFT);
 
 		setContentView(R.layout.activity_test__orientation);
 		row = (LinearLayout) findViewById(R.id.row);
@@ -48,7 +54,7 @@ public class Test_Orientation extends Activity {
 		gestureSeries = new int[MAX_AMOUNT_GESTURES];
 		currentPos = -1;
 		currentGesture = -1;
-		gestSensor = new GestureSensor(this, this);
+		gestSensor = new GestureSensor(this);
 
 		savedGestures = new ArrayList<int[]>();
 
@@ -66,7 +72,7 @@ public class Test_Orientation extends Activity {
 
 	// Called whenever a gesture is detected
 	public void onGesture(int gesture) {
-		if (gesture != GestureSensor.GESTURE_NOT_FOUND
+		if (gesture != GestureActivity.GESTURE_NOT_FOUND
 				&& currentPos < MAX_AMOUNT_GESTURES - 1) {
 			currentGesture = gesture;
 			int nextPos = currentPos + 1;
@@ -144,22 +150,22 @@ public class Test_Orientation extends Activity {
 	public String gestureToString(int gesture) {
 		String ret = "error gestureToString";
 		switch (gesture) {
-		case GestureSensor.GESTURE_UP:
+		case GestureActivity.GESTURE_UP:
 			ret = "^";
 			break;
-		case GestureSensor.GESTURE_RIGHT:
+		case GestureActivity.GESTURE_RIGHT:
 			ret = ">";
 			break;
-		case GestureSensor.GESTURE_DOWN:
+		case GestureActivity.GESTURE_DOWN:
 			ret = "v";
 			break;
-		case GestureSensor.GESTURE_LEFT:
+		case GestureActivity.GESTURE_LEFT:
 			ret = "<";
 			break;
-		case GestureSensor.GESTURE_SHAKE:
+		case GestureActivity.GESTURE_SHAKE:
 			ret = "*";
 			break;
-		case GestureSensor.GESTURE_NOT_FOUND:
+		case GestureActivity.GESTURE_NOT_FOUND:
 			break;
 		}
 

@@ -4,12 +4,6 @@ import java.util.ArrayList;
 
 import com.LTH.aprofile.MainActivity;
 
-import android.animation.ArgbEvaluator;
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
-import android.app.Activity;
-import android.graphics.Color;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
@@ -19,29 +13,23 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.ScaleAnimation;
 
 public class GestureSelector {
-	private GestureSensor gestureSensor;
+
 	private int selectedX;
 	private int selectedY;
-	private Activity activity;
+	private GestureActivity gestureActivity;
 
 	ArrayList<ArrayList<View>> buttons;
 
 	Animation prevFadeOutAnim;
-	
+
 	private static int SELECT_BUTTON_TIMER = 3000;
-	
-	public GestureSelector(Activity activity) {
+
+	public GestureSelector(GestureActivity gestureActivity) {
 		selectedX = 0;
 		selectedY = 0;
-		this.activity = activity;
+		this.gestureActivity = gestureActivity;
 
 		buttons = new ArrayList<ArrayList<View>>();
-	}
-
-	// Initiates the GestureSensor
-	public void initGestureSensor() {
-		gestureSensor = new GestureSensor(activity, this);
-
 	}
 
 	// Resets the GestureSelector
@@ -135,28 +123,28 @@ public class GestureSelector {
 			int prevY = selectedY;
 
 			switch (gesture) {
-			case GestureSensor.GESTURE_UP:
+			case GestureActivity.GESTURE_UP:
 				if (selectedY > 0) {
 					selectedX = findClosestViewInXAxis(selectedY - 1);
 					selectedY--;
 				}
 
 				break;
-			case GestureSensor.GESTURE_RIGHT:
+			case GestureActivity.GESTURE_RIGHT:
 				if (selectedX < buttons.get(selectedY).size() - 1)
 					selectedX++;
 				break;
-			case GestureSensor.GESTURE_DOWN:
+			case GestureActivity.GESTURE_DOWN:
 				if (selectedY < buttons.size() - 1) {
 					selectedX = findClosestViewInXAxis(selectedY + 1);
 					selectedY++;
 				}
 				break;
-			case GestureSensor.GESTURE_LEFT:
+			case GestureActivity.GESTURE_LEFT:
 				if (selectedX > 0)
 					selectedX--;
 				break;
-			case GestureSensor.GESTURE_SHAKE:
+			case GestureActivity.GESTURE_SHAKE:
 				// shake gesture detected -- do something
 				break;
 			}
@@ -178,8 +166,11 @@ public class GestureSelector {
 	private Animation animate(View target, float fromX, float toX, float fromY,
 			float toY, int duration) {
 
-		ScaleAnimation animation = new ScaleAnimation(fromX, toX, fromY, toY,Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-		animation.setInterpolator(activity, android.R.anim.bounce_interpolator);
+		ScaleAnimation animation = new ScaleAnimation(fromX, toX, fromY, toY,
+				Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
+				0.5f);
+		animation.setInterpolator(gestureActivity,
+				android.R.anim.bounce_interpolator);
 		animation.setDuration(duration);
 		animation.setFillAfter(true);
 
@@ -189,31 +180,31 @@ public class GestureSelector {
 		fadeOut.setDuration(SELECT_BUTTON_TIMER);
 		fadeOut.setFillAfter(false);
 		prevFadeOutAnim = fadeOut;
-		
-		//when fade out animation finished
+
+		// when fade out animation finished
 		prevFadeOutAnim.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {}
+			@Override
+			public void onAnimationStart(Animation animation) {
+			}
 
-            @Override
-            public void onAnimationEnd(Animation animation) {
-            	View selectedButton = buttons.get(selectedY).get(selectedX);
-            	selectedButton.performClick();
-            }
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				View selectedButton = buttons.get(selectedY).get(selectedX);
+				selectedButton.performClick();
+			}
 
-            @Override
-            public void onAnimationRepeat(Animation animation) {}});
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+			}
+		});
 
 		AnimationSet s = new AnimationSet(false);// false mean dont share
-						
-		
 
 		s.addAnimation(animation);
 		s.addAnimation(fadeOut);
-		s.setFillAfter(true);
-		
-	
-		if (MainActivity.settings.getGestureToggle()) 
+		s.setFillAfter(false);
+
+		if (MainActivity.settings.getGestureToggle())
 			target.startAnimation(s);
 
 		if (fromX > toX) {
@@ -223,8 +214,6 @@ public class GestureSelector {
 		return animation;
 
 	}
-	
-
 
 	// Returns the closes view in X axis for the current view selected
 	private int findClosestViewInXAxis(int targetRow) {
