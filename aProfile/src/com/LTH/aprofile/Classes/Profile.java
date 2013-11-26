@@ -22,9 +22,10 @@ public class Profile {
 	// CONSTANTS
 	public static final int SOUNDLEVEL = 0;
 	public static final int BRIGHTNESS = 1;
+	public static final int VIBRATION = 2;
 
 	// preferences
-	public HashMap<Integer, Preference> preferences = new HashMap<Integer, Preference>();
+	public HashMap<Integer, Preference> preferences ;
 
 	ArrayList<WiFiHotspot> hotspots;
 
@@ -33,16 +34,10 @@ public class Profile {
 		this.BSSID = "Not set";
 		this.ESSID = "Not set";
 		hotspots = new ArrayList<WiFiHotspot>();
+		preferences = new HashMap<Integer, Preference>();
 
 	}
 
-	public Profile(String ESSID, String BSSID) {
-		this.profileName = "Not Connected";
-		this.ESSID = ESSID;
-		this.BSSID = BSSID;
-		hotspots = new ArrayList<WiFiHotspot>();
-
-	}
 
 	public Boolean addHotspot(WiFiHotspot w) {
 		Boolean ret = false;

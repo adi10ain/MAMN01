@@ -21,7 +21,6 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-       
         <activity
             android:name="com.LTH.aprofile.MainActivity"
             android:label="@string/app_name" >
@@ -30,8 +29,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-            
         </activity>
         <activity
             android:name="com.LTH.aprofile.NewprofileActivity"
@@ -49,7 +46,6 @@
         <activity
             android:name="com.LTH.aprofile.EditProfileActivity"
             android:label="@string/title_activity_add_profile" >
-            
         </activity>
         <activity
             android:name="com.LTH.aprofile.Confirm"
@@ -62,6 +58,10 @@
         <activity
             android:name="com.LTH.aprofile.Test_orient2"
             android:label="@string/title_activity_test_orient2" >
+        </activity>
+        <activity
+            android:name="com.LTH.aprofile.SettingsChartActivity"
+            android:label="@string/title_activity_settings_chart" >
         </activity>
     </application>
 

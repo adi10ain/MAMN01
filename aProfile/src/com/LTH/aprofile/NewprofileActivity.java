@@ -7,6 +7,7 @@ import com.LTH.aprofile.Classes.GestureActivity;
 import com.LTH.aprofile.Classes.GestureSelector;
 import com.LTH.aprofile.Classes.Profile;
 import com.LTH.aprofile.Preferences.Preference;
+import com.LTH.aprofile.Preferences.VibrationPreference;
 
 import android.R.interpolator;
 import android.os.Bundle;
@@ -39,10 +40,11 @@ public class NewprofileActivity extends GestureActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		VibrationPreference.vibrate(VibrationPreference.VIBRATE_PATTERN);
 		addListenForGesture(GESTURE_DOWN);
 		addListenForGesture(GESTURE_RIGHT);
 		addListenForGesture(GESTURE_LEFT);
-		setGestureUpdateInterval(300);
+		setGestureUpdateInterval(1000);
 		setRepeatSameGestures(false);
 		gestureSensor.initiate();
 
@@ -205,7 +207,7 @@ class PieChartOverlay extends PieChartView {
 		rotate = new DynamicAnimation(0, 0, size, size);
 		rotate.setFillAfter(true);
 		rotate.setDuration(2000);
-		rotate.setRepeatCount(1000);
+		rotate.setRepeatCount(Animation.INFINITE);
 
 		startAnimation(rotate);
 	}

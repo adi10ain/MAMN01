@@ -38,7 +38,6 @@ public class SoundLevelPreference extends Preference {
 		int ringVolume = (int) ((targetValue/100.0)*ringMaxVolume);
 		int systemVolume = (int) ((targetValue/100.0)*systemMaxVolume);
 		int musicVolume = (int) ((targetValue/100.0)*musicMaxVolume);
-		Log.d("test   ",""+targetValue);
 		
 		audioManager.setStreamVolume(AudioManager.STREAM_RING, ringVolume, AudioManager.FLAG_ALLOW_RINGER_MODES|AudioManager.FLAG_PLAY_SOUND);
 		audioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, systemVolume, AudioManager.FLAG_ALLOW_RINGER_MODES|AudioManager.FLAG_PLAY_SOUND);
