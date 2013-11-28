@@ -67,6 +67,10 @@
             android:name="com.LTH.aprofile.Test_orient2"
             android:label="@string/title_activity_test_orient2" >
         </activity>
+        <activity
+            android:name="com.LTH.aprofile.SettingsChartActivity"
+            android:label="@string/title_activity_settings_chart" >
+        </activity>
     </application>
 
 </manifest>

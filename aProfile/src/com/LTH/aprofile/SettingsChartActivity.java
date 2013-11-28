@@ -26,6 +26,8 @@ import android.view.animation.Transformation;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+
+
 public class SettingsChartActivity extends GestureActivity {
 
 	private PieChartOverlay2 pieChart;
@@ -61,6 +63,12 @@ public class SettingsChartActivity extends GestureActivity {
 
 	}
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.settings_chart, menu);
+		return true;
+	}
 
 
 	@Override

@@ -22,15 +22,19 @@ public class Profile {
 	public static final int VIBRATION = 2;
 
 	// preferences
-	public HashMap<Integer, Preference> preferences = new HashMap<Integer, Preference>();
+	public HashMap<Integer, Preference> preferences ;
 
 	ArrayList<WiFiHotspot> hotspots;
 
 	public Profile() {
 		this.profileName = "New profile";
 		hotspots = new ArrayList<WiFiHotspot>();
+		hotspots = new ArrayList<WiFiHotspot>();
+		preferences = new HashMap<Integer, Preference>();
 
 	}
+
+
 
 	public Boolean addHotspot(WiFiHotspot w) {
 		Boolean ret = false;

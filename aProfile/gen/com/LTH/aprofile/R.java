@@ -84,8 +84,9 @@ public final class R {
         public static final int newprofile=0x7f080003;
         public static final int set_brightness=0x7f080004;
         public static final int settings=0x7f080005;
-        public static final int test__orientation=0x7f080006;
-        public static final int test_orient2=0x7f080007;
+        public static final int settings_chart=0x7f080006;
+        public static final int test__orientation=0x7f080007;
+        public static final int test_orient2=0x7f080008;
     }
     public static final class string {
         public static final int action_settings=0x7f060001;
@@ -97,6 +98,7 @@ public final class R {
         public static final int title_activity_set_brightness=0x7f060004;
         public static final int title_activity_set_brightness2=0x7f060005;
         public static final int title_activity_settings=0x7f060006;
+        public static final int title_activity_settings_chart=0x7f06000b;
         public static final int title_activity_test__orientation=0x7f060009;
         public static final int title_activity_test_orient2=0x7f06000a;
     }

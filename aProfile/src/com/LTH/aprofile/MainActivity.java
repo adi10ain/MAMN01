@@ -31,8 +31,7 @@ import com.LTH.aprofile.Preferences.SoundLevelPreference;
 import com.LTH.aprofile.Preferences.VibrationPreference;
 
 public class MainActivity extends GestureActivity {
-	
-	
+
 	// CONSTANTS
 	public static final int REQUEST_CODE_NEW_PROFILE = 1;
 	public static final int REQUEST_CODE_SETTINGS = 2;
@@ -62,7 +61,7 @@ public class MainActivity extends GestureActivity {
 	/* Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		
+
 		super.onCreate(savedInstanceState);
 		profileExchanger = new ProfileExchanger(this);
 		setGestureUpdateInterval(100);
@@ -71,7 +70,7 @@ public class MainActivity extends GestureActivity {
 		addListenForGesture(GESTURE_RIGHT);
 		addListenForGesture(GESTURE_LEFT);
 		gestureSensor.initiate();
-		
+
 		setContentView(R.layout.activity_main);
 
 		// get UI elements
@@ -100,8 +99,10 @@ public class MainActivity extends GestureActivity {
 	// temporary button, simulates a new connection to WiFi AP
 	public void scanButton(View view) {
 
+
 		WiFiHotspot eduroam = new WiFiHotspot("Eduroam", "00:11:22:A8:66:9B");
 		targetProfile = settings.getProfile(eduroam);
+
 
 		newProfileConnected();
 
@@ -114,7 +115,7 @@ public class MainActivity extends GestureActivity {
 	}
 
 	public void confirmButton(View view) {
-		Intent myIntent = new Intent(this, Test_Orientation.class);
+		Intent myIntent = new Intent(this, SettingsChartActivity.class);
 		this.startActivity(myIntent);
 		
 
@@ -200,8 +201,11 @@ public class MainActivity extends GestureActivity {
 
 		Profile p1 = new Profile();
 		p1.setName("EDUROAM");
+
 		WiFiHotspot eduroam = new WiFiHotspot("Eduroam", "00:11:22:A8:66:9B");
 		p1.addHotspot(eduroam);
+
+
 		SoundLevelPreference pref2 = new SoundLevelPreference(20, this);
 		BrightnessPreference pref3 = new BrightnessPreference(50, this);
 		VibrationPreference pref4 = new VibrationPreference(0, this);
@@ -210,9 +214,7 @@ public class MainActivity extends GestureActivity {
 		p1.addPref(pref4);
 
 
-
 		settings.addProfile(p1);
-	
 
 	}
 
@@ -248,7 +250,7 @@ public class MainActivity extends GestureActivity {
 	@Override
 	public void onGesture(int gesture) {
 		gestSelect.onGesture(gesture);
-		
+
 	};
 
 }

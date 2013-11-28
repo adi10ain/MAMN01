@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import com.LTH.aprofile.Classes.Profile;
 import com.LTH.aprofile.Classes.Sensors.GestureActivity;
 import com.LTH.aprofile.Preferences.Preference;
+import com.LTH.aprofile.Preferences.VibrationPreference;
 
 import android.os.Bundle;
 import android.content.Context;
@@ -36,7 +37,7 @@ public class NewprofileActivity extends GestureActivity {
 		addListenForGesture(GESTURE_DOWN);
 		addListenForGesture(GESTURE_RIGHT);
 		addListenForGesture(GESTURE_LEFT);
-		setGestureUpdateInterval(300);
+		setGestureUpdateInterval(1000);
 		setRepeatSameGestures(false);
 		gestureSensor.initiate();
 

@@ -11,6 +11,7 @@ import com.LTH.aprofile.Classes.Profile;
 public class VibrationPreference extends Preference {
 	// vibration patterns
 	public final static int VIBRATE_SINGLE = 0;
+
 	public final static int VIBRATE_PROFILE_CONNECTED = 1;
 	public final static int VIBRATE_SHARE_PROFILE_RECEIVE = 2;
 	public final static int VIBRATE_SHARE_PROFILE_SEND = 3;
@@ -106,7 +107,5 @@ public class VibrationPreference extends Preference {
 
 		}
 		vibrator.vibrate(pattern, -1);
-
-	}
-
+}
 }

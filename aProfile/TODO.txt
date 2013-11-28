@@ -28,7 +28,7 @@ Profiles & settings
 	[ ] nightmode
 
 Design & feedback
-[ ] Vibration/sound feedback
+[o] Vibration/sound feedback //needs to affect system settings and not only current application
 [ ] Correct sound feedback in when editing profile
 [ ] UI animation, design and feedback (overall user-experience)
 [ ] User testing
