@@ -194,6 +194,8 @@ public class MainActivity extends GestureActivity {
 		}
 		showProfiles();
 	}
+	
+
 
 	private void loadSettings() {
 

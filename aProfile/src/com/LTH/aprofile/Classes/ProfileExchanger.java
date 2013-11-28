@@ -16,8 +16,7 @@ package com.LTH.aprofile.Classes;
  *    limitations under the License.
  */
 
-import java.util.Timer;
-import java.util.TimerTask;
+
 
 import org.alljoyn.bus.BusAttachment;
 import org.alljoyn.bus.BusException;
@@ -25,16 +24,14 @@ import org.alljoyn.bus.BusObject;
 import org.alljoyn.bus.SignalEmitter;
 import org.alljoyn.bus.Status;
 import org.alljoyn.bus.annotation.BusSignalHandler;
-import org.json.JSONObject;
+
 
 import com.LTH.aprofile.MainActivity;
 import com.LTH.aprofile.Classes.Sensors.ProximitySensor;
-import com.LTH.aprofile.Preferences.BrightnessPreference;
-import com.LTH.aprofile.Preferences.Preference;
-import com.LTH.aprofile.Preferences.SoundLevelPreference;
 import com.LTH.aprofile.Preferences.VibrationPreference;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.HandlerThread;
 
@@ -51,7 +48,7 @@ public class ProfileExchanger {
 	protected final int myId;
 
 	ProximitySensor proxSens;
-	private Activity activity;
+	private MainActivity activity;
 
 
 
@@ -61,7 +58,7 @@ public class ProfileExchanger {
 		System.loadLibrary("alljoyn_java");
 	}
 
-	public ProfileExchanger(final Activity activity) {
+	public ProfileExchanger(final MainActivity activity) {
 		HandlerThread busThread = new HandlerThread("BusHandler");
 		busThread.start();
 		mBusHandler = new Handler(busThread.getLooper(),
@@ -199,7 +196,9 @@ public class ProfileExchanger {
 				Profile receivedProfile = Profile.profileFromString(message,
 						activity);
 				MainActivity.settings.addProfile(receivedProfile);
-				MainActivity.currentProfile = receivedProfile;
+				MainActivity.targetProfile = receivedProfile;
+				activity.newProfileConnected();
+			
 
 			}
 
