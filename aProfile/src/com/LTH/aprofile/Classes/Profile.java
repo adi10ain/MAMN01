@@ -6,6 +6,7 @@ import java.util.HashMap;
 import com.LTH.aprofile.Preferences.BrightnessPreference;
 import com.LTH.aprofile.Preferences.Preference;
 import com.LTH.aprofile.Preferences.SoundLevelPreference;
+import com.LTH.aprofile.Preferences.VibrationPreference;
 
 import android.app.Activity;
 import android.util.Log;
@@ -126,7 +127,7 @@ public class Profile {
 		profile.setName(separatedValues[0]); // name
 
 		Preference preference = null;
-		Log.d("heeelo", "length "+separatedValues.length);
+
 		for (int i = 1; i < separatedValues.length; i++) {
 			String[] pref = separatedValues[i].split(":");
 			int type = Integer.parseInt(pref[0]);
@@ -134,11 +135,12 @@ public class Profile {
 			switch (type) {
 			case Profile.BRIGHTNESS:
 				preference = new BrightnessPreference(prefValue, activity);
-				Log.d("heeelo", "brightness pref");
 				break;
 			case Profile.SOUNDLEVEL:
 				preference = new SoundLevelPreference(prefValue, activity);
-				Log.d("heeelo", "sound pref");
+				break;
+			case Profile.VIBRATION:
+				preference = new VibrationPreference(prefValue, activity);
 				break;
 
 			}
