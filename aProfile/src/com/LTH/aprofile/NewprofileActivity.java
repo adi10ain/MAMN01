@@ -3,27 +3,21 @@ package com.LTH.aprofile;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-import com.LTH.aprofile.Classes.GestureActivity;
-import com.LTH.aprofile.Classes.GestureSelector;
 import com.LTH.aprofile.Classes.Profile;
+import com.LTH.aprofile.Classes.Sensors.GestureActivity;
 import com.LTH.aprofile.Preferences.Preference;
 
-import android.R.interpolator;
 import android.os.Bundle;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.Animation;
-import android.view.animation.RotateAnimation;
 import android.view.animation.Transformation;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -205,7 +199,7 @@ class PieChartOverlay extends PieChartView {
 		rotate = new DynamicAnimation(0, 0, size, size);
 		rotate.setFillAfter(true);
 		rotate.setDuration(2000);
-		rotate.setRepeatCount(1000);
+		rotate.setRepeatCount(Animation.INFINITE);
 
 		startAnimation(rotate);
 	}

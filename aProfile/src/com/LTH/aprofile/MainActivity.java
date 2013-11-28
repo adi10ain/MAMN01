@@ -2,7 +2,6 @@ package com.LTH.aprofile;
 
 import java.util.ArrayList;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -11,21 +10,25 @@ import android.net.ConnectivityManager;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.LTH.aprofile.Classes.GestureActivity;
-import com.LTH.aprofile.Classes.GestureSelector;
 import com.LTH.aprofile.Classes.Profile;
+import com.LTH.aprofile.Classes.ProfileExchanger;
 import com.LTH.aprofile.Classes.Settings;
 import com.LTH.aprofile.Classes.WiFiHotspot;
+import com.LTH.aprofile.Classes.Sensors.GestureActivity;
+import com.LTH.aprofile.Classes.Sensors.GestureSelector;
 import com.LTH.aprofile.Preferences.BrightnessPreference;
 import com.LTH.aprofile.Preferences.Preference;
 import com.LTH.aprofile.Preferences.SoundLevelPreference;
+import com.LTH.aprofile.Preferences.VibrationPreference;
 
 public class MainActivity extends GestureActivity {
 	
@@ -46,19 +49,22 @@ public class MainActivity extends GestureActivity {
 	public static Settings settings;
 
 	// experimental
-	private Profile currentProfile;
+	public static Profile currentProfile;
 
 	public static Profile targetProfile;
 
 	private ArrayList<Integer> desiredPref = new ArrayList<Integer>();
 
 	private WifiReceiver wifiReceiver;
+	
+	private ProfileExchanger profileExchanger;
 
 	/* Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
+		profileExchanger = new ProfileExchanger(this);
 		setGestureUpdateInterval(100);
 		addListenForGesture(GESTURE_UP);
 		addListenForGesture(GESTURE_DOWN);
@@ -78,24 +84,31 @@ public class MainActivity extends GestureActivity {
 
 		gestSelect = new GestureSelector(this);
 
-		wifiReceiver = new WifiReceiver();
-		this.registerReceiver(wifiReceiver, new IntentFilter(
-				ConnectivityManager.CONNECTIVITY_ACTION));
+		//temporary disabled wifi to check functionality of ProfileExchanger
+		
+	//	wifiReceiver = new WifiReceiver();
+	//	this.registerReceiver(wifiReceiver, new IntentFilter(
+	//			ConnectivityManager.CONNECTIVITY_ACTION));
 		showProfiles();
+		
+		
+		
 
 	}
+
 
 	// temporary button, simulates a new connection to WiFi AP
 	public void scanButton(View view) {
 
-		targetProfile = settings.getProfile("00:11:22:A8:66:9B");
+		WiFiHotspot eduroam = new WiFiHotspot("Eduroam", "00:11:22:A8:66:9B");
+		targetProfile = settings.getProfile(eduroam);
 
 		newProfileConnected();
 
 	}
 
 	public void newProfileConnected() {
-
+		VibrationPreference.vibrate(VibrationPreference.VIBRATE_PROFILE_CONNECTED);
 		Intent myIntent = new Intent(this, NewprofileActivity.class);
 		this.startActivityForResult(myIntent, REQUEST_CODE_NEW_PROFILE);
 	}
@@ -103,6 +116,7 @@ public class MainActivity extends GestureActivity {
 	public void confirmButton(View view) {
 		Intent myIntent = new Intent(this, Test_Orientation.class);
 		this.startActivity(myIntent);
+		
 
 	}
 
@@ -112,7 +126,7 @@ public class MainActivity extends GestureActivity {
 			ImageView icon = new ImageView(this);
 			icon.setImageResource(p.getIconResId());
 			LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-					10, LinearLayout.LayoutParams.MATCH_PARENT, 1f);
+					10, LayoutParams.MATCH_PARENT, 1f);
 			icon.setLayoutParams(layoutParams);
 			// icon.setBackgroundColor(p.getColorCode());
 			icon.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
@@ -128,6 +142,10 @@ public class MainActivity extends GestureActivity {
 		// settingsProfile = settings.getProfile("00:11:22:A8:66:9B");
 		Intent myIntent = new Intent(this, SettingsActivity.class);
 		this.startActivityForResult(myIntent, REQUEST_CODE_SETTINGS);
+	}
+	
+	public void shareProfileButton(View view) {
+		profileExchanger.sendBroadcastRequest();
 	}
 
 	// Shows the current profile, its desired preferences and a list of all
@@ -158,6 +176,7 @@ public class MainActivity extends GestureActivity {
 	}
 
 	// Method called when returning from called activity
+	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
 		if (requestCode == REQUEST_CODE_NEW_PROFILE) {
@@ -179,12 +198,16 @@ public class MainActivity extends GestureActivity {
 
 		// generate fake profiles;
 
-		Profile p1 = new Profile("EDUROAM", "00:11:22:A8:66:9B");
+		Profile p1 = new Profile();
 		p1.setName("EDUROAM");
+		WiFiHotspot eduroam = new WiFiHotspot("Eduroam", "00:11:22:A8:66:9B");
+		p1.addHotspot(eduroam);
 		SoundLevelPreference pref2 = new SoundLevelPreference(20, this);
 		BrightnessPreference pref3 = new BrightnessPreference(50, this);
+		VibrationPreference pref4 = new VibrationPreference(0, this);
 		p1.addPref(pref2);
 		p1.addPref(pref3);
+		p1.addPref(pref4);
 
 
 

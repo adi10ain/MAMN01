@@ -33,30 +33,33 @@ public final class R {
         public static final int arrow_up=0x7f020003;
         public static final int brightness64=0x7f020004;
         public static final int ic_launcher=0x7f020005;
-        public static final int volume64=0x7f020006;
+        public static final int vibration_icon=0x7f020006;
+        public static final int volume64=0x7f020007;
     }
     public static final class id {
         public static final int ButtonSettings=0x7f09000e;
-        public static final int GestureToggle=0x7f090017;
-        public static final int ProfileName=0x7f090010;
-        public static final int acceptProfile=0x7f090013;
-        public static final int action_settings=0x7f090019;
+        public static final int GestureToggle=0x7f090019;
+        public static final int ProfileName=0x7f090011;
+        public static final int acceptProfile=0x7f090014;
+        public static final int action_settings=0x7f09001b;
         public static final int addWIFI=0x7f090007;
         public static final int bottomButtons=0x7f09000c;
         public static final int button_confirm=0x7f09000f;
         public static final int button_scan=0x7f09000d;
+        public static final int button_shareProfile=0x7f090010;
         public static final int currentProfile=0x7f09000a;
-        public static final int declineProfile=0x7f090012;
+        public static final int declineProfile=0x7f090013;
         public static final int desiredPreferences=0x7f09000b;
+        public static final int hello=0x7f090017;
         public static final int image=0x7f090003;
         public static final int linearLayout1=0x7f090009;
-        public static final int listProfiles=0x7f090018;
-        public static final int pieChart=0x7f090011;
+        public static final int listProfiles=0x7f09001a;
+        public static final int pieChart=0x7f090012;
         public static final int profileName=0x7f090005;
-        public static final int row=0x7f090016;
+        public static final int row=0x7f090018;
         public static final int statusPanel=0x7f090008;
-        public static final int textView1=0x7f090014;
-        public static final int textView2=0x7f090015;
+        public static final int textView1=0x7f090015;
+        public static final int textView2=0x7f090016;
         public static final int textview1=0x7f090000;
         public static final int textview2=0x7f090001;
         public static final int textview3=0x7f090002;
@@ -69,9 +72,10 @@ public final class R {
         public static final int activity_main=0x7f030002;
         public static final int activity_newprofile=0x7f030003;
         public static final int activity_set_brightness=0x7f030004;
-        public static final int activity_test__orientation=0x7f030005;
-        public static final int activity_test_orient2=0x7f030006;
-        public static final int settings=0x7f030007;
+        public static final int activity_settings_chart=0x7f030005;
+        public static final int activity_test__orientation=0x7f030006;
+        public static final int activity_test_orient2=0x7f030007;
+        public static final int settings=0x7f030008;
     }
     public static final class menu {
         public static final int add_profile=0x7f080000;

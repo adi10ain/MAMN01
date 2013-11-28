@@ -1,25 +1,17 @@
 package com.LTH.aprofile.Classes;
 
 import com.LTH.aprofile.R;
-import com.LTH.aprofile.R.id;
-import com.LTH.aprofile.R.layout;
-
 import android.os.Bundle;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.WindowManager;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
-import android.view.animation.ScaleAnimation;
-import android.view.animation.TranslateAnimation;
 import android.app.Activity;
 import android.content.Context;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class SetBrightness extends Activity {
 
@@ -60,6 +52,7 @@ public class SetBrightness extends Activity {
 		
 
 		linearLayout.setOnTouchListener(new OnTouchListener() {
+			@Override
 			public boolean onTouch(View v, MotionEvent me) {
 
 				int action = me.getActionMasked();
@@ -76,7 +69,7 @@ public class SetBrightness extends Activity {
 							
 							currentHeight =(linearLayout.getChildAt(0)).getHeight();
 							add = (prevY > currentYPosition) ? -add : add;
-							int height = (int) currentHeight + add;
+							int height = currentHeight + add;
 							
 							
 							//((TextView) (linearLayout.getChildAt(0)))

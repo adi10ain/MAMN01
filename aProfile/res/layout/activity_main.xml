@@ -68,6 +68,16 @@
             android:onClick="confirmButton"
             android:text="Test"
             android:textColor="@color/WHITE" />
+        
+         <Button
+            android:id="@+id/button_shareProfile"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@color/METRO_LIGHT_BROWN"
+            android:onClick="shareProfileButton"
+            android:text="Share"
+            android:textColor="@color/WHITE" />
     </LinearLayout>
 
 </RelativeLayout>

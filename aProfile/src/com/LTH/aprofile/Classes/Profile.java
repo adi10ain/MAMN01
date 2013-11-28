@@ -3,25 +3,23 @@ package com.LTH.aprofile.Classes;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.LTH.aprofile.Preferences.BrightnessPreference;
 import com.LTH.aprofile.Preferences.Preference;
+import com.LTH.aprofile.Preferences.SoundLevelPreference;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.view.View;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 public class Profile {
 
 	private String profileName;
-	// WiFi identifiers
-	private String ESSID; // ex. "NETGEAR"
-	private String BSSID; // ex. "00:11:22:33:44:55"
 
 	// CONSTANTS
 	public static final int SOUNDLEVEL = 0;
 	public static final int BRIGHTNESS = 1;
+	public static final int VIBRATION = 2;
 
 	// preferences
 	public HashMap<Integer, Preference> preferences = new HashMap<Integer, Preference>();
@@ -30,16 +28,6 @@ public class Profile {
 
 	public Profile() {
 		this.profileName = "New profile";
-		this.BSSID = "Not set";
-		this.ESSID = "Not set";
-		hotspots = new ArrayList<WiFiHotspot>();
-
-	}
-
-	public Profile(String ESSID, String BSSID) {
-		this.profileName = "Not Connected";
-		this.ESSID = ESSID;
-		this.BSSID = BSSID;
 		hotspots = new ArrayList<WiFiHotspot>();
 
 	}
@@ -104,15 +92,57 @@ public class Profile {
 	}
 
 	/*
-	 * compares the argument with the BSSID of the profile Returns true if they
-	 * are equal
+	 * compares the argument with the current linked WiFi hotspots to this
+	 * profile, Returns true if the hotspot already exists
 	 */
-	public boolean compareBSSID(String BSSID) {
-		return (BSSID.equals(this.BSSID));
+	public boolean containsHotspot(WiFiHotspot ap) {
+		return (hotspots.contains(ap));
 	}
 
+	@Override
 	public String toString() {
 		return profileName;
+	}
+
+	// returns a string representation of a Profile
+	public String profileToString() {
+		String profileString = profileName;
+
+		for (Preference pref : getPref().values())
+			profileString += pref; // adds each pref to the reutrn string
+
+		return profileString;
+	}
+
+	// returns a Profile of a Profile string representation
+	public static Profile profileFromString(String profileString, Activity activity) {
+
+		String[] separatedValues = profileString.split(";");
+		Profile profile = new Profile();
+		profile.setName(separatedValues[0]); // name
+
+		Preference preference = null;
+		Log.d("heeelo", "length "+separatedValues.length);
+		for (int i = 1; i < separatedValues.length; i++) {
+			String[] pref = separatedValues[i].split(":");
+			int type = Integer.parseInt(pref[0]);
+			int prefValue = Integer.parseInt(pref[1]);
+			switch (type) {
+			case Profile.BRIGHTNESS:
+				preference = new BrightnessPreference(prefValue, activity);
+				Log.d("heeelo", "brightness pref");
+				break;
+			case Profile.SOUNDLEVEL:
+				preference = new SoundLevelPreference(prefValue, activity);
+				Log.d("heeelo", "sound pref");
+				break;
+
+			}
+
+			profile.addPref(preference);
+		}
+
+		return profile;
 	}
 
 	public HashMap<Integer, Preference> getPref() {

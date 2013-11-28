@@ -1,15 +1,12 @@
-package com.LTH.aprofile.Classes;
+package com.LTH.aprofile.Classes.Sensors;
 
 import java.util.ArrayList;
 
-import com.LTH.aprofile.Test_Orientation;
-
-import android.app.Activity;
+import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.util.Log;
 
 public class GestureSensor implements SensorEventListener {
 	private static final float SHAKE_THRESHOLD = 2000;
@@ -37,7 +34,7 @@ public class GestureSensor implements SensorEventListener {
 		this.gestureListener = gestureListener;
 
 		sensorManager = (SensorManager) gestureListener
-				.getSystemService(gestureListener.SENSOR_SERVICE);
+				.getSystemService(Context.SENSOR_SERVICE);
 		sensorManager.registerListener(this,
 				sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
 				SensorManager.SENSOR_DELAY_NORMAL);
@@ -79,27 +76,27 @@ public class GestureSensor implements SensorEventListener {
 			 */
 
 			long actualTime = System.currentTimeMillis();
-			int gesture = gestureListener.GESTURE_NOT_FOUND;
+			int gesture = GestureActivity.GESTURE_NOT_FOUND;
 			long diffTime = (actualTime - lastUpdate);
 
 			float shakeSpeed = Math.abs(x + y + z - last_x - last_y - last_z)
 					/ diffTime * 10000;
 
-			if (listenForTheseGestures.contains(gestureListener.GESTURE_SHAKE)
+			if (listenForTheseGestures.contains(GestureActivity.GESTURE_SHAKE)
 					&& shakeSpeed > SHAKE_THRESHOLD)
-				gesture = gestureListener.GESTURE_SHAKE;
+				gesture = GestureActivity.GESTURE_SHAKE;
 			else if (listenForTheseGestures
-					.contains(gestureListener.GESTURE_LEFT) && x > 3.0000)
-				gesture = gestureListener.GESTURE_LEFT;
+					.contains(GestureActivity.GESTURE_LEFT) && x > 3.0000)
+				gesture = GestureActivity.GESTURE_LEFT;
 			else if (listenForTheseGestures
-					.contains(gestureListener.GESTURE_RIGHT) && x < -3.0000)
-				gesture = gestureListener.GESTURE_RIGHT;
+					.contains(GestureActivity.GESTURE_RIGHT) && x < -3.0000)
+				gesture = GestureActivity.GESTURE_RIGHT;
 			else if (listenForTheseGestures
-					.contains(gestureListener.GESTURE_DOWN) && z > 8 && y > 1)
-				gesture = gestureListener.GESTURE_DOWN;
+					.contains(GestureActivity.GESTURE_DOWN) && z > 8 && y > 1)
+				gesture = GestureActivity.GESTURE_DOWN;
 			else if (listenForTheseGestures
-					.contains(gestureListener.GESTURE_UP) && z > 8 && y < -1)
-				gesture = gestureListener.GESTURE_UP;
+					.contains(GestureActivity.GESTURE_UP) && z > 8 && y < -1)
+				gesture = GestureActivity.GESTURE_UP;
 
 			if ((actualTime - lastUpdate) > minUpdateInterval) {
 				

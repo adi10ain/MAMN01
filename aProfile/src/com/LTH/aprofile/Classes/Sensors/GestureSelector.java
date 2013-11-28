@@ -1,4 +1,4 @@
-package com.LTH.aprofile.Classes;
+package com.LTH.aprofile.Classes.Sensors;
 
 import java.util.ArrayList;
 

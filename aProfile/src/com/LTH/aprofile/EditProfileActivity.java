@@ -7,7 +7,6 @@ import com.LTH.aprofile.Classes.WiFiHotspot;
 import com.LTH.aprofile.Preferences.Preference;
 
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -23,6 +22,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -65,13 +65,16 @@ public class EditProfileActivity extends Activity {
 		wifiList = (TextView) findViewById(R.id.wifiList);
 
 		profileName.addTextChangedListener(new TextWatcher() {
+			@Override
 			public void afterTextChanged(Editable s) {
 			}
 
+			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count,
 					int after) {
 			}
 
+			@Override
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
 				profile.setName("" + s);
@@ -112,21 +115,21 @@ public class EditProfileActivity extends Activity {
 			LinearLayout col = new LinearLayout(this);
 			col.setOrientation(LinearLayout.VERTICAL);
 			LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-					LinearLayout.LayoutParams.WRAP_CONTENT,
-					LinearLayout.LayoutParams.MATCH_PARENT, 1f);
+					LayoutParams.WRAP_CONTENT,
+					LayoutParams.MATCH_PARENT, 1f);
 			col.setLayoutParams(layoutParams);
 			col.setId(p.getType());
 
 			layoutParams = new LinearLayout.LayoutParams(
-					LinearLayout.LayoutParams.MATCH_PARENT,
-					LinearLayout.LayoutParams.WRAP_CONTENT);
+					LayoutParams.MATCH_PARENT,
+					LayoutParams.WRAP_CONTENT);
 
 			TextView tv_status = new TextView(this);
 			tv_status.setLayoutParams(layoutParams);
 
 			layoutParams = new LinearLayout.LayoutParams(
-					LinearLayout.LayoutParams.MATCH_PARENT,
-					LinearLayout.LayoutParams.MATCH_PARENT);
+					LayoutParams.MATCH_PARENT,
+					LayoutParams.MATCH_PARENT);
 
 			TextView tv_colorBar = new TextView(this);
 			tv_colorBar.setLayoutParams(layoutParams);
@@ -141,7 +144,7 @@ public class EditProfileActivity extends Activity {
 			ImageView icon = new ImageView(this);
 			icon.setImageResource(p.getIconResId());
 			layoutParams = new LinearLayout.LayoutParams(0,
-					LinearLayout.LayoutParams.MATCH_PARENT, 1f);
+					LayoutParams.MATCH_PARENT, 1f);
 			icon.setLayoutParams(layoutParams);
 			icon.setBackgroundColor(p.getColorCode());
 			icon.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
@@ -180,6 +183,7 @@ public class EditProfileActivity extends Activity {
 	private void setTouchListener(final LinearLayout linearLayout,
 			final Activity activity) {
 		linearLayout.setOnTouchListener(new OnTouchListener() {
+			@Override
 			public boolean onTouch(View v, MotionEvent me) {
 				for (View col : barStatusMap.keySet()) {
 

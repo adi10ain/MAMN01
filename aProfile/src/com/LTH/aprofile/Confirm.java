@@ -8,7 +8,6 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.app.Activity;
-import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -47,6 +46,7 @@ public class Confirm extends Activity implements SensorEventListener {
 
 	}
 
+	@Override
 	public void onSensorChanged(SensorEvent event) {
 		TextView tvX = (TextView) findViewById(R.id.textview1);
 		TextView tvY = (TextView) findViewById(R.id.textview2);

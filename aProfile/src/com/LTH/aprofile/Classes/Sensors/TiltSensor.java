@@ -1,8 +1,7 @@
-package com.LTH.aprofile.Classes;
-
-import com.LTH.aprofile.R;
+package com.LTH.aprofile.Classes.Sensors;
 
 import android.app.Activity;
+import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -36,7 +35,7 @@ public class TiltSensor implements SensorEventListener {
 		super();
 		this.gestSelect = gestSelect;
 		sensorManager = (SensorManager) activity
-				.getSystemService(activity.SENSOR_SERVICE);
+				.getSystemService(Context.SENSOR_SERVICE);
 		sensorManager.registerListener(this,
 				sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
 				SensorManager.SENSOR_DELAY_NORMAL);

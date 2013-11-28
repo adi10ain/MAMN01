@@ -2,10 +2,10 @@ package com.LTH.aprofile;
 
 import java.util.Iterator;
 
-import com.LTH.aprofile.Classes.GestureActivity;
-import com.LTH.aprofile.Classes.GestureSelector;
 import com.LTH.aprofile.Classes.Profile;
 import com.LTH.aprofile.Classes.Settings;
+import com.LTH.aprofile.Classes.Sensors.GestureActivity;
+import com.LTH.aprofile.Classes.Sensors.GestureSelector;
 import com.LTH.aprofile.Preferences.BrightnessPreference;
 import com.LTH.aprofile.Preferences.SoundLevelPreference;
 
@@ -134,6 +134,7 @@ public class SettingsActivity extends GestureActivity {
 		settings.setGestureToggle(cb.isChecked());
 	}
 
+	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
 		listAllProfiles();

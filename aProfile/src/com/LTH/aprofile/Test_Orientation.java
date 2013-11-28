@@ -2,7 +2,7 @@ package com.LTH.aprofile;
 
 import java.util.ArrayList;
 
-import com.LTH.aprofile.Classes.GestureActivity;
+import com.LTH.aprofile.Classes.Sensors.GestureActivity;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -57,6 +57,7 @@ public class Test_Orientation extends GestureActivity {
 	}
 
 	// Called whenever a gesture is detected
+	@Override
 	public void onGesture(int gesture) {
 		if (gesture != GestureActivity.GESTURE_NOT_FOUND
 				&& currentPos < MAX_AMOUNT_GESTURES - 1) {

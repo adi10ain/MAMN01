@@ -4,6 +4,7 @@ import com.LTH.aprofile.R;
 import com.LTH.aprofile.Classes.Profile;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.util.Log;
@@ -21,7 +22,7 @@ public class SoundLevelPreference extends Preference {
 		iconResId = R.drawable.volume64;
 		
 		type = Profile.SOUNDLEVEL;
-		audioManager = (AudioManager)callingActivity.getSystemService(Activity.AUDIO_SERVICE);
+		audioManager = (AudioManager)callingActivity.getSystemService(Context.AUDIO_SERVICE);
 		
 		ringMaxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_RING);
 		systemMaxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_SYSTEM);

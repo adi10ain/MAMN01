@@ -1,4 +1,4 @@
-package com.LTH.aprofile.Classes;
+package com.LTH.aprofile.Classes.Sensors;
 
 import java.util.ArrayList;
 
@@ -26,6 +26,7 @@ public abstract class GestureActivity extends Activity {
 	// determines if same gestures could be sent in a row
 	private Boolean repeatSameGestures;
 
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		listenForTheseGestures = new ArrayList<Integer>();

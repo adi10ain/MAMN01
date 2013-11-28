@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import android.util.Log;
-
 public class Settings {
 	private ArrayList<Profile> profiles;
 
@@ -51,15 +49,15 @@ public class Settings {
 		profiles.remove(profile);
 	}
 
-	// returns a Profile with specific BSSID, returns null if not found
-	public Profile getProfile(String BSSID) {
+	// returns a Profile with specific WiFi hotspot, returns null if not found
+	public Profile getProfile(WiFiHotspot ap) {
 
 		Profile ret = null;
 		Iterator<Profile> it = profiles.iterator();
 
 		while (it.hasNext()) {
-			Profile p = (Profile) it.next();
-			if (p.compareBSSID(BSSID)) {
+			Profile p = it.next();
+			if (p.containsHotspot(ap)) {
 				ret = p;
 				break;
 			}
