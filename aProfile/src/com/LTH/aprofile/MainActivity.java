@@ -10,9 +10,12 @@ import android.net.ConnectivityManager;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -22,6 +25,7 @@ import android.widget.TextView;
 import com.LTH.aprofile.Classes.Profile;
 import com.LTH.aprofile.Classes.ProfileExchanger;
 import com.LTH.aprofile.Classes.Settings;
+import com.LTH.aprofile.Classes.SoundMeter;
 import com.LTH.aprofile.Classes.WiFiHotspot;
 import com.LTH.aprofile.Classes.Sensors.GestureActivity;
 import com.LTH.aprofile.Classes.Sensors.GestureSelector;
@@ -31,6 +35,28 @@ import com.LTH.aprofile.Preferences.SoundLevelPreference;
 import com.LTH.aprofile.Preferences.VibrationPreference;
 
 public class MainActivity extends GestureActivity {
+	// SoundMeter
+	private SoundMeter mSensor;
+	private Handler mHandler;
+	private static final int POLL_INTERVAL = 300;
+	private int mTickCount = 0;
+	private boolean lock = false;
+	
+	private Runnable mPollTask = new Runnable() {
+		public void run() {
+			double amp = mSensor.getAmplitudeEMA();
+			if (mSensor.isKnock(amp)) {
+				mTickCount++;
+			} else {
+				mTickCount = 0;
+			}
+			if (mTickCount >= 3) {
+				unlockScreen();
+			}
+			mHandler.postDelayed(mPollTask, POLL_INTERVAL);
+		}
+
+	};
 
 	// CONSTANTS
 	public static final int REQUEST_CODE_NEW_PROFILE = 1;
@@ -55,7 +81,7 @@ public class MainActivity extends GestureActivity {
 	private ArrayList<Integer> desiredPref = new ArrayList<Integer>();
 
 	private WifiReceiver wifiReceiver;
-	
+
 	private ProfileExchanger profileExchanger;
 
 	/* Called when the activity is first created. */
@@ -83,33 +109,33 @@ public class MainActivity extends GestureActivity {
 
 		gestSelect = new GestureSelector(this);
 
-		//temporary disabled wifi to check functionality of ProfileExchanger
-		
-	//	wifiReceiver = new WifiReceiver();
-	//	this.registerReceiver(wifiReceiver, new IntentFilter(
-	//			ConnectivityManager.CONNECTIVITY_ACTION));
+		// temporary disabled wifi to check functionality of ProfileExchanger
+
+		// wifiReceiver = new WifiReceiver();
+		// this.registerReceiver(wifiReceiver, new IntentFilter(
+		// ConnectivityManager.CONNECTIVITY_ACTION));
 		showProfiles();
 		
-		
-		
+		//SoundMeter
+		mSensor = new SoundMeter();
+		mHandler = new Handler();
+		start();
 
 	}
-
 
 	// temporary button, simulates a new connection to WiFi AP
 	public void scanButton(View view) {
 
-
 		WiFiHotspot eduroam = new WiFiHotspot("Eduroam", "00:11:22:A8:66:9B");
 		targetProfile = settings.getProfile(eduroam);
-
 
 		newProfileConnected();
 
 	}
 
 	public void newProfileConnected() {
-		VibrationPreference.vibrate(VibrationPreference.VIBRATE_PROFILE_CONNECTED);
+		VibrationPreference
+				.vibrate(VibrationPreference.VIBRATE_PROFILE_CONNECTED);
 		Intent myIntent = new Intent(this, NewprofileActivity.class);
 		this.startActivityForResult(myIntent, REQUEST_CODE_NEW_PROFILE);
 	}
@@ -117,7 +143,6 @@ public class MainActivity extends GestureActivity {
 	public void confirmButton(View view) {
 		Intent myIntent = new Intent(this, SettingsChartActivity.class);
 		this.startActivity(myIntent);
-		
 
 	}
 
@@ -144,7 +169,7 @@ public class MainActivity extends GestureActivity {
 		Intent myIntent = new Intent(this, SettingsActivity.class);
 		this.startActivityForResult(myIntent, REQUEST_CODE_SETTINGS);
 	}
-	
+
 	public void shareProfileButton(View view) {
 		profileExchanger.sendBroadcastRequest();
 	}
@@ -194,8 +219,6 @@ public class MainActivity extends GestureActivity {
 		}
 		showProfiles();
 	}
-	
-
 
 	private void loadSettings() {
 
@@ -207,14 +230,12 @@ public class MainActivity extends GestureActivity {
 		WiFiHotspot eduroam = new WiFiHotspot("Eduroam", "00:11:22:A8:66:9B");
 		p1.addHotspot(eduroam);
 
-
 		SoundLevelPreference pref2 = new SoundLevelPreference(20, this);
 		BrightnessPreference pref3 = new BrightnessPreference(50, this);
 		VibrationPreference pref4 = new VibrationPreference(0, this);
 		p1.addPref(pref2);
 		p1.addPref(pref3);
 		p1.addPref(pref4);
-
 
 		settings.addProfile(p1);
 
@@ -254,5 +275,48 @@ public class MainActivity extends GestureActivity {
 		gestSelect.onGesture(gesture);
 
 	};
+
+	protected void onPause() {
+		super.onPause();
+		lock = true;
+
+	}
+
+	protected void onResume() {
+		super.onResume();
+		// stop();
+		// mSensor.calibrate();
+		lock = false;
+
+	}
+
+	public void start() {
+		mSensor.startRec();
+		mHandler.postDelayed(mPollTask, POLL_INTERVAL);
+		//mSensor.calibrate();
+	}
+
+	public void stop() {
+
+		mHandler.removeCallbacks(mPollTask);
+		mSensor.stopRec();
+
+	}
+
+	private void unlockScreen() {
+		Log.d("dialog", "unlocking screen now");
+
+		Window wind = this.getWindow();
+		if (lock) {
+			wind.addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+			wind.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+			wind.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+		} else {
+			wind.clearFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+			wind.clearFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+			wind.clearFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+		}
+
+	}
 
 }
