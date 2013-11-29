@@ -69,7 +69,7 @@ public class SoundMeter {
     }
     
     public boolean isKnock(double dB){
-    	if(dB > 2.2){
+    	if(dB > 3.2){
     		return true;
     	} else {
     		return false;

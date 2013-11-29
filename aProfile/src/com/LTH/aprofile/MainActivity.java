@@ -2,6 +2,8 @@ package com.LTH.aprofile;
 
 import java.util.ArrayList;
 
+import android.app.KeyguardManager;
+import android.app.KeyguardManager.KeyguardLock;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +14,8 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -45,6 +49,7 @@ public class MainActivity extends GestureActivity {
 	private Runnable mPollTask = new Runnable() {
 		public void run() {
 			double amp = mSensor.getAmplitudeEMA();
+		//	Log.d("SoundMeter", ""+ amp);
 			if (mSensor.isKnock(amp)) {
 				mTickCount++;
 			} else {
@@ -119,7 +124,7 @@ public class MainActivity extends GestureActivity {
 		//SoundMeter
 		mSensor = new SoundMeter();
 		mHandler = new Handler();
-		start();
+
 
 	}
 
@@ -278,13 +283,14 @@ public class MainActivity extends GestureActivity {
 
 	protected void onPause() {
 		super.onPause();
+		start();
 		lock = true;
 
 	}
 
 	protected void onResume() {
 		super.onResume();
-		// stop();
+		 stop();
 		// mSensor.calibrate();
 		lock = false;
 
@@ -304,19 +310,27 @@ public class MainActivity extends GestureActivity {
 	}
 
 	private void unlockScreen() {
-		Log.d("dialog", "unlocking screen now");
-
-		Window wind = this.getWindow();
-		if (lock) {
-			wind.addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
-			wind.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
-			wind.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
-		} else {
-			wind.clearFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
-			wind.clearFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
-			wind.clearFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
-		}
-
+		  Log.d("dialog", "trying to unlock");
+	      Window wind = this.getWindow();
+	      if(lock){
+	   // 	  Log.d("SoundMeter", "unlocking screen now");
+		    wind.addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+		    wind.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+		    wind.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+		   //ful lösning, kommer att fixa till.
+		    PowerManager pm = (PowerManager) getApplicationContext().getSystemService(Context.POWER_SERVICE);
+            WakeLock wakeLock = pm.newWakeLock((PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP), "TAG");
+            wakeLock.acquire();
+            KeyguardManager keyguardManager = (KeyguardManager) getApplicationContext().getSystemService(Context.KEYGUARD_SERVICE); 
+            KeyguardLock keyguardLock =  keyguardManager.newKeyguardLock("TAG");
+            keyguardLock.disableKeyguard();
+	      } else {
+	    	//  Log.d("SoundMeter", "Lock is off");
+	   	    wind.clearFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+	   	    wind.clearFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+	   	    wind.clearFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+         
+	      }
 	}
 
 }
