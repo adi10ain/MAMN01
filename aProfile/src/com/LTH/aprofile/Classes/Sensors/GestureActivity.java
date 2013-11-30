@@ -2,6 +2,7 @@ package com.LTH.aprofile.Classes.Sensors;
 
 import java.util.ArrayList;
 
+
 import android.app.Activity;
 import android.os.Bundle;
 
@@ -9,11 +10,12 @@ public abstract class GestureActivity extends Activity {
 
 	// CONSTANTS
 	public static final int GESTURE_NOT_FOUND = -1;
-	public static final int GESTURE_UP = 0;
-	public static final int GESTURE_RIGHT = 1;
-	public static final int GESTURE_DOWN = 2;
-	public static final int GESTURE_LEFT = 3;
-	public static final int GESTURE_SHAKE = 4;
+	public static final int GESTURE_HOLD = 0;
+	public static final int GESTURE_UP = 1;
+	public static final int GESTURE_RIGHT = 2;
+	public static final int GESTURE_DOWN = 3;
+	public static final int GESTURE_LEFT = 4;
+	public static final int GESTURE_SHAKE = 5;
 
 	// minimum time between a new gesture is reported (0 for no limit)
 	private int minUpdateInterval;
@@ -21,7 +23,7 @@ public abstract class GestureActivity extends Activity {
 	// list of gestures to listen for
 	private ArrayList<Integer> listenForTheseGestures;
 
-	protected GestureSensor gestureSensor;
+	protected GestureSensor2 gestureSensor;
 
 	// determines if same gestures could be sent in a row
 	private Boolean repeatSameGestures;
@@ -32,7 +34,7 @@ public abstract class GestureActivity extends Activity {
 		listenForTheseGestures = new ArrayList<Integer>();
 		minUpdateInterval = 0;
 		repeatSameGestures = true;
-		gestureSensor = new GestureSensor(this);
+		gestureSensor = new GestureSensor2(this);
 		
 
 	}

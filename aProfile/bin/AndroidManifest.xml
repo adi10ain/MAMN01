@@ -44,7 +44,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.LTH.aprofile.NewprofileActivity"
+            android:name="com.LTH.aprofile.ConnectProfileActivity"
             android:label="@string/title_activity_newprofile" >
         </activity>
         <activity

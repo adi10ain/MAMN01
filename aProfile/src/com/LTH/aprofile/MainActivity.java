@@ -95,7 +95,7 @@ public class MainActivity extends GestureActivity {
 
 		super.onCreate(savedInstanceState);
 		profileExchanger = new ProfileExchanger(this);
-		setGestureUpdateInterval(100);
+		setGestureUpdateInterval(1000);
 		addListenForGesture(GESTURE_UP);
 		addListenForGesture(GESTURE_DOWN);
 		addListenForGesture(GESTURE_RIGHT);
@@ -141,7 +141,7 @@ public class MainActivity extends GestureActivity {
 	public void newProfileConnected() {
 		VibrationPreference
 				.vibrate(VibrationPreference.VIBRATE_PROFILE_CONNECTED);
-		Intent myIntent = new Intent(this, NewprofileActivity.class);
+		Intent myIntent = new Intent(this, ConnectProfileActivity.class);
 		this.startActivityForResult(myIntent, REQUEST_CODE_NEW_PROFILE);
 	}
 
