@@ -5,6 +5,7 @@
     <color name="METRO_VERY_LIGHT_BROWN">#f5f0EC</color>
     <color name="METRO_DARK_BROWN">#64584C</color>
     <color name="METRO_BACKGROUND_BROWN">#c9c4bf</color>
+    <color name="METRO_GREEN">#4daf7c</color>
     <color name="WHITE">#FFFFFF</color>
 
 </resources>

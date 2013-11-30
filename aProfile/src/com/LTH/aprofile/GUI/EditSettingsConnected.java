@@ -22,8 +22,24 @@ public class EditSettingsConnected extends EditSettings {
 
 	public EditSettingsConnected(Activity activity, Profile profile) {
 		super(activity, profile);
-		statusPanel.setPadding((int) (15 * scale), 0, (int) (15 * scale), 0);
-		touchPanel.setPadding((int) (15 * scale), 0, (int) (15 * scale), 0);
+		statusPanel.setPadding((int) (30 * scale), 0, (int) (30 * scale), 0);
+		touchPanel.setPadding((int) (30 * scale), 0, (int) (30 * scale), 0);
+
+	}
+	@Override
+	protected void preferenceChanged(View col, float targetValue) {
+
+		TextView statusChanger = barStatusMap.get(col);
+		targetValue = (targetValue <= 0) ? 1 : targetValue;
+
+		int height = ((int) (((100 - targetValue) / 100) * col.getHeight()));
+
+		statusChanger.setHeight(height);
+
+		int prefId = col.getId();
+		Preference pref = profile.getPref().get(prefId);
+		pref.set((int) targetValue, activity);
+		pref.setPrefValue((int) targetValue);
 
 	}
 

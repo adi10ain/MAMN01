@@ -23,19 +23,17 @@ public class Profile {
 	public static final int VIBRATION = 2;
 
 	// preferences
-	public HashMap<Integer, Preference> preferences ;
+	public HashMap<Integer, Preference> preferences;
 
 	ArrayList<WiFiHotspot> hotspots;
 
 	public Profile() {
-		this.profileName = "New profile";
+		this.profileName = "Not connected";
 		hotspots = new ArrayList<WiFiHotspot>();
 		hotspots = new ArrayList<WiFiHotspot>();
 		preferences = new HashMap<Integer, Preference>();
 
 	}
-
-
 
 	public Boolean addHotspot(WiFiHotspot w) {
 		Boolean ret = false;
@@ -120,7 +118,8 @@ public class Profile {
 	}
 
 	// returns a Profile of a Profile string representation
-	public static Profile profileFromString(String profileString, Activity activity) {
+	public static Profile profileFromString(String profileString,
+			Activity activity) {
 
 		String[] separatedValues = profileString.split(";");
 		Profile profile = new Profile();

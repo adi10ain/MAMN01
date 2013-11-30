@@ -180,7 +180,7 @@ public class EditSettings {
 	}
 
 	// targetValue should be between 0 and 100
-	void preferenceChanged(View col, float targetValue) {
+	protected void preferenceChanged(View col, float targetValue) {
 
 		TextView statusChanger = barStatusMap.get(col);
 		targetValue = (targetValue <= 0) ? 1 : targetValue;

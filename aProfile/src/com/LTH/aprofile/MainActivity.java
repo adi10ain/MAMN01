@@ -2,12 +2,16 @@ package com.LTH.aprofile;
 
 import java.util.ArrayList;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.app.KeyguardManager;
 import android.app.KeyguardManager.KeyguardLock;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -21,6 +25,8 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.ViewGroup.LayoutParams;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -51,7 +57,7 @@ public class MainActivity extends GestureActivity {
 	private Runnable mPollTask = new Runnable() {
 		public void run() {
 			double amp = mSensor.getAmplitudeEMA();
-		//	Log.d("SoundMeter", ""+ amp);
+			// Log.d("SoundMeter", ""+ amp);
 			if (mSensor.isKnock(amp)) {
 				mTickCount++;
 			} else {
@@ -77,6 +83,8 @@ public class MainActivity extends GestureActivity {
 	Button buttonScan;
 
 	private TextView TW_currentProfile;
+	private TextView TW_connectionStatusBar;
+	private LinearLayout screenLayout;
 
 	public static Settings settings;
 
@@ -108,37 +116,25 @@ public class MainActivity extends GestureActivity {
 
 		// get UI elements
 		TW_currentProfile = (TextView) findViewById(R.id.currentProfile);
+		TW_connectionStatusBar = (TextView) findViewById(R.id.connectionStatusBar);
+		screenLayout = (LinearLayout) findViewById(R.id.settings);
 
 		settings = new Settings();
 		loadSettings();
 
 		currentProfile = new Profile();
-		
 
 		gestSelect = new GestureSelector(this);
 
-		// temporary disabled wifi to check functionality of ProfileExchanger
+		wifiReceiver = new WifiReceiver();
+		this.registerReceiver(wifiReceiver, new IntentFilter(
+				ConnectivityManager.CONNECTIVITY_ACTION));
 
-		// wifiReceiver = new WifiReceiver();
-		// this.registerReceiver(wifiReceiver, new IntentFilter(
-		// ConnectivityManager.CONNECTIVITY_ACTION));
-		showProfiles();
-		
-		//SoundMeter
+		// SoundMeter
 		mSensor = new SoundMeter();
 		mHandler = new Handler();
-		
-		//temporary
 
-		WiFiHotspot eduroam = new WiFiHotspot("Eduroam", "00:11:22:A8:66:9B");
-		currentProfile = settings.getProfile(eduroam);
-		
-		LinearLayout screenLayout = (LinearLayout) findViewById(R.id.linearLayout1);
-		
-		EditSettingsConnected settingsPanel = new EditSettingsConnected(this, currentProfile);
-		screenLayout.addView(settingsPanel.getSettingsPanel());
-		
-
+		showProfiles();
 
 	}
 
@@ -165,8 +161,6 @@ public class MainActivity extends GestureActivity {
 
 	}
 
-
-
 	public void settingsButton(View view) {
 		// settingsProfile = settings.getProfile("00:11:22:A8:66:9B");
 		Intent myIntent = new Intent(this, SettingsActivity.class);
@@ -186,20 +180,31 @@ public class MainActivity extends GestureActivity {
 		// Displays current active profile
 		TW_currentProfile.setText("" + currentProfile);
 
+		//
+		if (currentProfile.toString().equals("Not connected")) {
+			TW_connectionStatusBar.setBackgroundColor(Color.GRAY);
+		} else {
+			int color = getResources().getColor(R.color.METRO_GREEN);
+			TW_connectionStatusBar.setBackgroundColor(color);
+//			AlphaAnimation animation1 = new AlphaAnimation(0.5f, 0.8f);
+//		    animation1.setDuration(1000);
+//		    animation1.setRepeatCount(Animation.INFINITE);
+//		    animation1.setRepeatMode(Animation.REVERSE);
+//		    animation1.start();
+//		    TW_connectionStatusBar.setAnimation(animation1);
+		    
+		   
+		}
+
 		// Displays current preferences of active profile
+		screenLayout.removeAllViews();
+		EditSettingsConnected settingsPanel = new EditSettingsConnected(this,
+				currentProfile);
+		screenLayout.addView(settingsPanel.getSettingsPanel());
 
-		// linearLayout.addView(currentProfile.genPrefButtons(this,
-		// desiredPref));
-		// LinearLayout preferenceButtons = (LinearLayout) ((LinearLayout)
-		// findViewById(R.id.desiredPreferences))
-		// .getChildAt(0);
-
-		// if (currentProfile.preferences.size() > 0)
-		// gestSelect.addChildrenToRow(preferenceButtons);
-
+		// add bottom buttons to gesture selector
 		LinearLayout bottomButtons = (LinearLayout) findViewById(R.id.bottomButtons);
 		gestSelect.addChildrenToRow(bottomButtons);
-
 
 	}
 
@@ -287,7 +292,7 @@ public class MainActivity extends GestureActivity {
 
 	protected void onResume() {
 		super.onResume();
-		 stop();
+		stop();
 		// mSensor.calibrate();
 		lock = false;
 
@@ -296,7 +301,7 @@ public class MainActivity extends GestureActivity {
 	public void start() {
 		mSensor.startRec();
 		mHandler.postDelayed(mPollTask, POLL_INTERVAL);
-		//mSensor.calibrate();
+		// mSensor.calibrate();
 	}
 
 	public void stop() {
@@ -307,27 +312,33 @@ public class MainActivity extends GestureActivity {
 	}
 
 	private void unlockScreen() {
-		  Log.d("dialog", "trying to unlock");
-	      Window wind = this.getWindow();
-	      if(lock){
-	   // 	  Log.d("SoundMeter", "unlocking screen now");
-		    wind.addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
-		    wind.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
-		    wind.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
-		   //ful lösning, kommer att fixa till.
-		    PowerManager pm = (PowerManager) getApplicationContext().getSystemService(Context.POWER_SERVICE);
-            WakeLock wakeLock = pm.newWakeLock((PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP), "TAG");
-            wakeLock.acquire();
-            KeyguardManager keyguardManager = (KeyguardManager) getApplicationContext().getSystemService(Context.KEYGUARD_SERVICE); 
-            KeyguardLock keyguardLock =  keyguardManager.newKeyguardLock("TAG");
-            keyguardLock.disableKeyguard();
-	      } else {
-	    	//  Log.d("SoundMeter", "Lock is off");
-	   	    wind.clearFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
-	   	    wind.clearFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
-	   	    wind.clearFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
-         
-	      }
+		Log.d("dialog", "trying to unlock");
+		Window wind = this.getWindow();
+		if (lock) {
+			// Log.d("SoundMeter", "unlocking screen now");
+			wind.addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+			wind.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+			wind.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+			// ful lösning, kommer att fixa till.
+			PowerManager pm = (PowerManager) getApplicationContext()
+					.getSystemService(Context.POWER_SERVICE);
+			WakeLock wakeLock = pm
+					.newWakeLock(
+							(PowerManager.SCREEN_BRIGHT_WAKE_LOCK
+									| PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP),
+							"TAG");
+			wakeLock.acquire();
+			KeyguardManager keyguardManager = (KeyguardManager) getApplicationContext()
+					.getSystemService(Context.KEYGUARD_SERVICE);
+			KeyguardLock keyguardLock = keyguardManager.newKeyguardLock("TAG");
+			keyguardLock.disableKeyguard();
+		} else {
+			// Log.d("SoundMeter", "Lock is off");
+			wind.clearFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+			wind.clearFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+			wind.clearFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+
+		}
 	}
 
 }

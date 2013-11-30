@@ -2,26 +2,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:background="@color/METRO_BACKGROUND_BROWN">
+    android:background="@color/METRO_BACKGROUND_BROWN"
+    tools:context=".MainActivity" >
 
     <LinearLayout
         android:id="@+id/linearLayout1"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:orientation="vertical"
-        android:layout_above="@+id/bottomButtons">
+        android:layout_above="@+id/bottomButtons"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/connectionStatusBar"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:alpha="0.5"
+           />
 
         <TextView
             android:id="@+id/currentProfile"
             android:layout_width="fill_parent"
             android:layout_height="80dp"
             android:gravity="center"
-            android:text="Large Text"
+            android:padding="10dp"
+            android:text="Current profile"
             android:textColor="@color/METRO_DARK_BROWN"
-            android:textSize="22sp"
-            android:padding="10dp"/>
+            android:textSize="22sp" />
+        
+            <LinearLayout
+        android:id="@+id/settings"
+         android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"/>
     </LinearLayout>
+    
 
     <LinearLayout
         android:id="@+id/bottomButtons"
@@ -60,8 +74,8 @@
             android:onClick="confirmButton"
             android:text="Test"
             android:textColor="@color/WHITE" />
-        
-         <Button
+
+        <Button
             android:id="@+id/button_shareProfile"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
@@ -71,5 +85,7 @@
             android:text="Share"
             android:textColor="@color/WHITE" />
     </LinearLayout>
+
+
 
 </RelativeLayout>
