@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import com.LTH.aprofile.Classes.Profile;
 import com.LTH.aprofile.Classes.Sensors.GestureActivity;
 import com.LTH.aprofile.GUI.PiechartOverlayView;
+import com.LTH.aprofile.GUI.PiechartTextView;
 import com.LTH.aprofile.GUI.PiechartView;
 import com.LTH.aprofile.Preferences.Preference;
 import com.LTH.aprofile.Preferences.VibrationPreference;
@@ -32,6 +33,7 @@ public class ConnectProfileActivity extends GestureActivity {
 	private TextView TV_profileName;
 
 	PiechartOverlayView chartSelectionOverlay;
+	PiechartTextView piechartText;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +66,10 @@ public class ConnectProfileActivity extends GestureActivity {
 		chartSelectionOverlay = new PiechartOverlayView(this, 3, 225);
 		pieChartLayout.addView(chartSelectionOverlay);
 		chartSelectionOverlay.createAnimation(null);
+		
+		piechartText = new PiechartTextView(this, 225);
+		pieChartLayout.addView(piechartText);
+		
 
 		// preference buttons, temporary disabled
 		// linearLayout.addView(targetProfile.genPrefButtons(this));
@@ -112,12 +118,15 @@ public class ConnectProfileActivity extends GestureActivity {
 
 		case GESTURE_RIGHT:
 			chartSelectionOverlay.setSelection(0);
+			piechartText.setSelection(0);
 			break;
 		case GESTURE_DOWN:
 			chartSelectionOverlay.setSelection(1);
+			piechartText.setSelection(1);
 			break;
 		case GESTURE_LEFT:
 			chartSelectionOverlay.setSelection(2);
+			piechartText.setSelection(2);
 
 		}
 

@@ -33,8 +33,11 @@ public final class R {
         public static final int arrow_up=0x7f020003;
         public static final int brightness64=0x7f020004;
         public static final int ic_launcher=0x7f020005;
-        public static final int vibration_icon=0x7f020006;
-        public static final int volume64=0x7f020007;
+        public static final int pie_approve=0x7f020006;
+        public static final int pie_decline=0x7f020007;
+        public static final int pie_timer=0x7f020008;
+        public static final int vibration_icon=0x7f020009;
+        public static final int volume64=0x7f02000a;
     }
     public static final class id {
         public static final int ButtonSettings=0x7f09000e;
