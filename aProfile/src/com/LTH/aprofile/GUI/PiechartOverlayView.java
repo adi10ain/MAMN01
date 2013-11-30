@@ -53,7 +53,9 @@ public class PiechartOverlayView extends View {
 		canvas.drawArc(rectf, selectionOffset, 360 / amountSlices, true, paint);
 
 		// draw white circle in center
-		paint.setColor(Color.WHITE);
+		color = getContext().getResources().getColor(
+				R.color.METRO_BACKGROUND_BROWN);
+		paint.setColor(color);
 		canvas.drawCircle(size, size, size * 0.6f, paint);
 
 

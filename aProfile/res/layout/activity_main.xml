@@ -3,32 +3,24 @@
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:background="@color/METRO_VERY_LIGHT_BROWN">
+    android:background="@color/METRO_BACKGROUND_BROWN">
 
     <LinearLayout
         android:id="@+id/linearLayout1"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:layout_above="@+id/bottomButtons">
 
         <TextView
             android:id="@+id/currentProfile"
             android:layout_width="fill_parent"
             android:layout_height="80dp"
-            android:background="#55bc75"
-            android:gravity="bottom"
+            android:gravity="center"
             android:text="Large Text"
-            android:textColor="#FFFFFF"
-            android:textSize="32sp"
+            android:textColor="@color/METRO_DARK_BROWN"
+            android:textSize="22sp"
             android:padding="10dp"/>
-       
-
-        <LinearLayout
-            android:id="@+id/desiredPreferences"
-            android:layout_width="fill_parent"
-             android:layout_height="50dp"
-             android:background="#4daf7c"
-            android:orientation="horizontal"/>
     </LinearLayout>
 
     <LinearLayout

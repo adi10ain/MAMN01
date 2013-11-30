@@ -33,6 +33,8 @@ import com.LTH.aprofile.Classes.SoundMeter;
 import com.LTH.aprofile.Classes.WiFiHotspot;
 import com.LTH.aprofile.Classes.Sensors.GestureActivity;
 import com.LTH.aprofile.Classes.Sensors.GestureSelector;
+import com.LTH.aprofile.GUI.EditSettings;
+import com.LTH.aprofile.GUI.EditSettingsConnected;
 import com.LTH.aprofile.Preferences.BrightnessPreference;
 import com.LTH.aprofile.Preferences.Preference;
 import com.LTH.aprofile.Preferences.SoundLevelPreference;
@@ -45,7 +47,7 @@ public class MainActivity extends GestureActivity {
 	private static final int POLL_INTERVAL = 300;
 	private int mTickCount = 0;
 	private boolean lock = false;
-	
+
 	private Runnable mPollTask = new Runnable() {
 		public void run() {
 			double amp = mSensor.getAmplitudeEMA();
@@ -111,6 +113,7 @@ public class MainActivity extends GestureActivity {
 		loadSettings();
 
 		currentProfile = new Profile();
+		
 
 		gestSelect = new GestureSelector(this);
 
@@ -124,6 +127,17 @@ public class MainActivity extends GestureActivity {
 		//SoundMeter
 		mSensor = new SoundMeter();
 		mHandler = new Handler();
+		
+		//temporary
+
+		WiFiHotspot eduroam = new WiFiHotspot("Eduroam", "00:11:22:A8:66:9B");
+		currentProfile = settings.getProfile(eduroam);
+		
+		LinearLayout screenLayout = (LinearLayout) findViewById(R.id.linearLayout1);
+		
+		EditSettingsConnected settingsPanel = new EditSettingsConnected(this, currentProfile);
+		screenLayout.addView(settingsPanel.getSettingsPanel());
+		
 
 
 	}
@@ -151,23 +165,7 @@ public class MainActivity extends GestureActivity {
 
 	}
 
-	private void showSettingsButtons() {
-		for (Preference p : currentProfile.getPref().values()) {
-			LinearLayout settingsBar = (LinearLayout) findViewById(R.id.desiredPreferences);
-			ImageView icon = new ImageView(this);
-			icon.setImageResource(p.getIconResId());
-			LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-					10, LayoutParams.MATCH_PARENT, 1f);
-			icon.setLayoutParams(layoutParams);
-			// icon.setBackgroundColor(p.getColorCode());
-			icon.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-			int padding = 25;
-			icon.setPadding(padding, padding, padding, padding);
-			// icon.getBackground().setAlpha(150);
-			settingsBar.addView(icon);
 
-		}
-	}
 
 	public void settingsButton(View view) {
 		// settingsProfile = settings.getProfile("00:11:22:A8:66:9B");
@@ -189,8 +187,7 @@ public class MainActivity extends GestureActivity {
 		TW_currentProfile.setText("" + currentProfile);
 
 		// Displays current preferences of active profile
-		LinearLayout linearLayout = (LinearLayout) findViewById(R.id.desiredPreferences);
-		linearLayout.removeAllViews();
+
 		// linearLayout.addView(currentProfile.genPrefButtons(this,
 		// desiredPref));
 		// LinearLayout preferenceButtons = (LinearLayout) ((LinearLayout)
@@ -202,7 +199,7 @@ public class MainActivity extends GestureActivity {
 
 		LinearLayout bottomButtons = (LinearLayout) findViewById(R.id.bottomButtons);
 		gestSelect.addChildrenToRow(bottomButtons);
-		showSettingsButtons();
+
 
 	}
 

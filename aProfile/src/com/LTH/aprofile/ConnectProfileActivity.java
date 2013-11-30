@@ -52,8 +52,6 @@ public class ConnectProfileActivity extends GestureActivity {
 		TV_profileName = (TextView) findViewById(R.id.ProfileName);
 		TV_profileName.setText("" + targetProfile);
 
-		LinearLayout linearLayout = (LinearLayout) findViewById(R.id.desiredPreferences);
-
 		// first row of buttons
 		ArrayList<View> rowButtons1 = new ArrayList<View>();
 		rowButtons1.add(findViewById(R.id.declineProfile));

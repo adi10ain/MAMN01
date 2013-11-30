@@ -5,10 +5,10 @@
     tools:context=".EditProfileActivity" >
 
     <LinearLayout
+        android:id="@+id/screenLayout"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:orientation="vertical"
-        android:layout_above="@+id/touchPanel" >
+        android:orientation="vertical" >
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -20,9 +20,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="15" >
-                
 
-                <requestFocus />
+                <requestFocus android:layout_width="wrap_content" />
+
             </EditText>
 
             <TextView
@@ -39,22 +39,9 @@
                 android:clickable="false"
                 android:onClick="btn_addWiFiHotspot"
                 android:text="Add WiFi hotspot" />
-
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/statusPanel"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="horizontal" />
+     
     </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/touchPanel"
-        android:layout_width="fill_parent"
-        android:layout_height="100dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:orientation="horizontal" />
 
 </RelativeLayout>
