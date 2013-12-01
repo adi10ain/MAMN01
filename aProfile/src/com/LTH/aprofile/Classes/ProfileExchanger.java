@@ -16,8 +16,6 @@ package com.LTH.aprofile.Classes;
  *    limitations under the License.
  */
 
-
-
 import org.alljoyn.bus.BusAttachment;
 import org.alljoyn.bus.BusException;
 import org.alljoyn.bus.BusObject;
@@ -25,13 +23,10 @@ import org.alljoyn.bus.SignalEmitter;
 import org.alljoyn.bus.Status;
 import org.alljoyn.bus.annotation.BusSignalHandler;
 
-
 import com.LTH.aprofile.MainActivity;
 import com.LTH.aprofile.Classes.Sensors.ProximitySensor;
 import com.LTH.aprofile.Preferences.VibrationPreference;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Handler;
 import android.os.HandlerThread;
 
@@ -50,8 +45,6 @@ public class ProfileExchanger {
 	ProximitySensor proxSens;
 	private MainActivity activity;
 
-
-
 	/* Load the native alljoyn_java library. */
 	static {
 
@@ -67,10 +60,8 @@ public class ProfileExchanger {
 		mBusHandler.sendEmptyMessage(BusHandlerCallback.CONNECT);
 
 		myId = (int) (Math.random() * 10000);
-		proxSens = new ProximitySensor(activity);
+		// proxSens = new ProximitySensor(activity);
 		this.activity = activity;
-
-
 
 	}
 
@@ -177,7 +168,6 @@ public class ProfileExchanger {
 				// send profile if a broadcast accept was received
 			} else if (flag == BROADCAST_ACCEPT && receiver == myId) {
 
-
 				VibrationPreference
 						.vibrate(VibrationPreference.VIBRATE_SHARE_PROFILE_SEND);
 
@@ -198,7 +188,6 @@ public class ProfileExchanger {
 				MainActivity.settings.addProfile(receivedProfile);
 				MainActivity.targetProfile = receivedProfile;
 				activity.newProfileConnected();
-			
 
 			}
 
@@ -355,6 +344,5 @@ public class ProfileExchanger {
 		mHandler.sendMessage(toastMsg);
 		Log.e(TAG, log, ex);
 	}
-
 
 }

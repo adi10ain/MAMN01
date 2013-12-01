@@ -41,7 +41,7 @@ public class BrightnessPreference extends Preference {
 		
 		dynamicIcon.setAlpha(125);
 		if (targetValue <= 0) {
-			targetValue = 0;
+			targetValue = 1;
 			dynamicIcon.setAlpha(50);
 		} else if (targetValue >= 100) {
 			targetValue = 100;
