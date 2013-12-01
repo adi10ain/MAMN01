@@ -2,11 +2,11 @@ package com.LTH.aprofile;
 
 import java.util.ArrayList;
 
-import android.animation.ArgbEvaluator;
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
+
+
 import android.app.KeyguardManager;
 import android.app.KeyguardManager.KeyguardLock;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -17,33 +17,35 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.ViewGroup.LayoutParams;
-import android.view.animation.AlphaAnimation;
+
 import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.RotateAnimation;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
-import android.widget.ImageView;
+
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.LTH.aprofile.Classes.Profile;
-import com.LTH.aprofile.Classes.ProfileExchanger;
+
 import com.LTH.aprofile.Classes.ProfileExchanger2;
 import com.LTH.aprofile.Classes.Settings;
 import com.LTH.aprofile.Classes.SoundMeter;
 import com.LTH.aprofile.Classes.WiFiHotspot;
 import com.LTH.aprofile.Classes.Sensors.GestureActivity;
 import com.LTH.aprofile.Classes.Sensors.GestureSelector;
-import com.LTH.aprofile.GUI.EditSettings;
+
 import com.LTH.aprofile.GUI.EditSettingsConnected;
 import com.LTH.aprofile.Preferences.BrightnessPreference;
-import com.LTH.aprofile.Preferences.Preference;
 import com.LTH.aprofile.Preferences.SoundLevelPreference;
 import com.LTH.aprofile.Preferences.VibrationPreference;
 
@@ -84,12 +86,10 @@ public class MainActivity extends GestureActivity {
 	Button buttonScan;
 
 	private TextView TW_currentProfile;
-	private TextView TW_connectionStatusBar;
 	private LinearLayout screenLayout;
 
 	public static Settings settings;
 
-	// experimental
 	public static Profile currentProfile;
 
 	public static Profile targetProfile;
@@ -117,7 +117,7 @@ public class MainActivity extends GestureActivity {
 
 		// get UI elements
 		TW_currentProfile = (TextView) findViewById(R.id.currentProfile);
-		TW_connectionStatusBar = (TextView) findViewById(R.id.connectionStatusBar);
+		
 		screenLayout = (LinearLayout) findViewById(R.id.settings);
 
 		settings = new Settings();
@@ -169,7 +169,39 @@ public class MainActivity extends GestureActivity {
 	}
 
 	public void shareProfileButton(View view) {
-		profileExchanger.sendBroadcastRequest();
+		if ((currentProfile.toString()).equals("Not connected")) {
+
+			AnimationSet animSet = new AnimationSet(true);
+			
+			Animation rotateAnim2 = new RotateAnimation(0, -5,
+					Animation.RELATIVE_TO_SELF, 0.3f,
+					Animation.RELATIVE_TO_SELF, 0.5f);
+			rotateAnim2.setRepeatMode(Animation.REVERSE);
+			rotateAnim2.setRepeatCount(3);
+			rotateAnim2.setDuration(300);
+		
+			rotateAnim2.setInterpolator(new DecelerateInterpolator());
+			
+	
+			animSet.addAnimation(rotateAnim2);
+		
+			
+			
+			TW_currentProfile.startAnimation(rotateAnim2);
+		} else {
+			LinearLayout screen = (LinearLayout)findViewById(R.id.linearLayout1);
+			
+			 TranslateAnimation animation = new TranslateAnimation(0.0f, 0.0f,
+			            -50.0f, 0.0f);         
+			    animation.setDuration(300); 
+			    animation.setRepeatCount(30); 
+			    animation.setRepeatMode(Animation.REVERSE);
+			    animation.setInterpolator(new DecelerateInterpolator());
+			   
+			    screen.startAnimation(animation);
+			profileExchanger.startBroadcasting(animation);
+		}
+
 	}
 
 	// Shows the current profile, its desired preferences and a list of all
@@ -181,21 +213,7 @@ public class MainActivity extends GestureActivity {
 		// Displays current active profile
 		TW_currentProfile.setText("" + currentProfile);
 
-		//
-		if (currentProfile.toString().equals("Not connected")) {
-			TW_connectionStatusBar.setBackgroundColor(Color.GRAY);
-		} else {
-			int color = getResources().getColor(R.color.METRO_GREEN);
-			TW_connectionStatusBar.setBackgroundColor(color);
-//			AlphaAnimation animation1 = new AlphaAnimation(0.5f, 0.8f);
-//		    animation1.setDuration(1000);
-//		    animation1.setRepeatCount(Animation.INFINITE);
-//		    animation1.setRepeatMode(Animation.REVERSE);
-//		    animation1.start();
-//		    TW_connectionStatusBar.setAnimation(animation1);
-		    
-		   
-		}
+
 
 		// Displays current preferences of active profile
 		screenLayout.removeAllViews();
