@@ -12,7 +12,7 @@ import android.graphics.Paint;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 
-public class PiechartView extends View {
+public final class PiechartView extends View {
 	protected Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	protected int size;
 	protected int amountSlices;
@@ -24,7 +24,7 @@ public class PiechartView extends View {
 	protected Bitmap icon_timer;
 
 	protected Matrix matrix_icon;
-	
+
 	// Make this view size independent of screen resolution
 	final float scale;
 
@@ -32,7 +32,6 @@ public class PiechartView extends View {
 	public PiechartView(Context context, int amountSlices, int sizeDP) {
 		super(context);
 
-		
 		scale = getResources().getDisplayMetrics().density;
 		size = (int) (sizeDP * scale);
 
@@ -75,13 +74,13 @@ public class PiechartView extends View {
 
 		paint.setAlpha(85);
 		// draw icons
-		matrix_icon.setScale(0.04f, 0.04f, 194f*scale, 75f*scale);
+		matrix_icon.setScale(0.04f, 0.04f, 194f * scale, 75f * scale);
 		canvas.drawBitmap(icon_approve, matrix_icon, paint);
 
-		matrix_icon.setScale(0.04f, 0.04f, 18f*scale, 75f*scale);
+		matrix_icon.setScale(0.04f, 0.04f, 18f * scale, 75f * scale);
 		canvas.drawBitmap(icon_decline, matrix_icon, paint);
-		
-		matrix_icon.setScale(0.04f, 0.04f, 106f*scale, 200f*scale);
+
+		matrix_icon.setScale(0.04f, 0.04f, 106f * scale, 200f * scale);
 		canvas.drawBitmap(icon_timer, matrix_icon, paint);
 
 	}

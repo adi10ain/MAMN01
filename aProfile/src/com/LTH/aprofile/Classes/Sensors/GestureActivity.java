@@ -3,6 +3,7 @@ package com.LTH.aprofile.Classes.Sensors;
 import java.util.ArrayList;
 
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Bundle;
 
@@ -31,6 +32,7 @@ public abstract class GestureActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+//s
 		listenForTheseGestures = new ArrayList<Integer>();
 		minUpdateInterval = 0;
 		repeatSameGestures = true;

@@ -1,11 +1,10 @@
 package com.LTH.aprofile;
 
-import java.util.HashMap;
+
 
 import com.LTH.aprofile.Classes.Profile;
 import com.LTH.aprofile.Classes.WiFiHotspot;
 import com.LTH.aprofile.GUI.EditSettings;
-import com.LTH.aprofile.Preferences.Preference;
 
 import android.net.ConnectivityManager;
 import android.net.wifi.WifiInfo;
@@ -16,22 +15,17 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Rect;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnTouchListener;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import android.widget.TextView;
 
-public class EditProfileActivity extends Activity {
+public final class EditProfileActivity extends Activity {
 
 	private Profile profile;
 	private EditText profileName;

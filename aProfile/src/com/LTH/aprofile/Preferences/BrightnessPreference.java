@@ -12,19 +12,19 @@ import android.view.WindowManager;
 public class BrightnessPreference extends Preference {
 
 	private WindowManager.LayoutParams lp;
-	
+
 	// Brightness preference, prefValue should be between 0-255
 	public BrightnessPreference(int prefValue, Activity callingActivity) {
 		super(prefValue, callingActivity);
-		
+
 		colorCode = Color.parseColor("#8000ABA9");
 
 		type = Profile.BRIGHTNESS;
 		name = "Brightness";
 		iconResId = R.drawable.brightness64;
-		
-		//Settings.System.putInt(callingActivity.getContentResolver(),
-		//		Settings.System.SCREEN_BRIGHTNESS, prefValue);
+
+		// Settings.System.putInt(callingActivity.getContentResolver(),
+		// Settings.System.SCREEN_BRIGHTNESS, prefValue);
 		lp = callingActivity.getWindow().getAttributes();
 
 	}
@@ -38,13 +38,20 @@ public class BrightnessPreference extends Preference {
 
 	@Override
 	public void set(int targetValue, Activity activity) {
-		Log.d("this ", ""+targetValue);
-		float target = targetValue/100f;
+		
+		dynamicIcon.setAlpha(125);
+		if (targetValue <= 0) {
+			targetValue = 0;
+			dynamicIcon.setAlpha(50);
+		} else if (targetValue >= 100) {
+			targetValue = 100;
+			dynamicIcon.setAlpha(200);
+		}
+	
+		
+		float target = targetValue / 100f;
 		lp.screenBrightness = target;
 		activity.getWindow().setAttributes(lp);
-		
-		
 
 	}
-
 }

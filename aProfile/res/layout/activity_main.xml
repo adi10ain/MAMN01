@@ -22,10 +22,11 @@
         <TextView
             android:id="@+id/currentProfile"
             android:layout_width="fill_parent"
-            android:layout_height="100dp"
+            android:layout_height="150dp"
             android:gravity="center"
             android:padding="10dp"
             android:text="Current profile"
+            android:fontFamily="sans-serif-thin" 
             android:textColor="@color/METRO_DARK_BROWN"
             android:textSize="22sp" />
         

@@ -26,22 +26,7 @@ public class EditSettingsConnected extends EditSettings {
 		touchPanel.setPadding((int) (30 * scale), 0, (int) (30 * scale), 0);
 
 	}
-	@Override
-	protected void preferenceChanged(View col, float targetValue) {
 
-		TextView statusChanger = barStatusMap.get(col);
-		targetValue = (targetValue <= 0) ? 1 : targetValue;
-
-		int height = ((int) (((100 - targetValue) / 100) * col.getHeight()));
-
-		statusChanger.setHeight(height);
-
-		int prefId = col.getId();
-		Preference pref = profile.getPref().get(prefId);
-		pref.set((int) targetValue, activity);
-		pref.setPrefValue((int) targetValue);
-
-	}
 
 	@Override
 	protected void generateBars() {
@@ -81,6 +66,7 @@ public class EditSettingsConnected extends EditSettings {
 
 			// add icon
 			ImageView icon = new ImageView(activity);
+			p.setDynamicIcon(icon);
 			icon.setImageResource(p.getIconResId());
 			layoutParams = new LinearLayout.LayoutParams((int) (20 * scale),
 					(int) (20 * scale), 1f);
@@ -90,6 +76,7 @@ public class EditSettingsConnected extends EditSettings {
 			
 			icon.setAlpha(150);
 			padding = (int) (20 * scale);
+			
 			// icon.setPadding(padding, padding, padding, padding);
 
 			touchPanel.addView(icon);

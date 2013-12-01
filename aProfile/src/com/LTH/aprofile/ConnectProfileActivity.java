@@ -27,7 +27,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class ConnectProfileActivity extends GestureActivity {
+public final class ConnectProfileActivity extends GestureActivity {
 	private Profile targetProfile;
 
 	private TextView TV_profileName;

@@ -116,6 +116,7 @@ public class EditSettings {
 			int padding = 50;
 			icon.setPadding(padding, padding, padding, padding);
 			icon.getBackground().setAlpha(150);
+			p.setDynamicIcon(icon);
 
 			touchPanel.addView(icon);
 
@@ -160,10 +161,6 @@ public class EditSettings {
 						int touchPanelHeight = linearLayout.getHeight();
 
 						float targetValue = (int) me.getY();
-						if (targetValue < 0)
-							targetValue = 0;
-						if (targetValue > touchPanelHeight)
-							targetValue = touchPanelHeight;
 
 						targetValue = 100 - (targetValue / touchPanelHeight) * 100;
 
@@ -183,7 +180,6 @@ public class EditSettings {
 	protected void preferenceChanged(View col, float targetValue) {
 
 		TextView statusChanger = barStatusMap.get(col);
-		targetValue = (targetValue <= 0) ? 1 : targetValue;
 
 		int height = ((int) (((100 - targetValue) / 100) * col.getHeight()));
 

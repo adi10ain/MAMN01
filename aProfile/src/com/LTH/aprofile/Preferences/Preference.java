@@ -2,7 +2,6 @@ package com.LTH.aprofile.Preferences;
 
 import android.app.Activity;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -18,6 +17,9 @@ public abstract class Preference {
 
 	protected int type;
 
+	// if icon should change depending on prefValue
+	protected ImageView dynamicIcon;
+
 	protected Activity callingActivity;
 
 	// prefValue should be between 0 and 100
@@ -25,6 +27,8 @@ public abstract class Preference {
 		this.prefValue = prefValue;
 		this.callingActivity = callingActivity;
 		colorCode = Color.GRAY;
+		
+		this.dynamicIcon = new ImageView(callingActivity);
 	}
 
 	public abstract void load();
@@ -57,12 +61,17 @@ public abstract class Preference {
 		return colorCode;
 	}
 
-	/*returns a string of preference ID and prefered value ex. ";1:50"
-	 * Used when sending and receiving profiles
+	public void setDynamicIcon(ImageView dynamicIcon) {
+		this.dynamicIcon = dynamicIcon;
+	}
+
+	/*
+	 * returns a string of preference ID and prefered value ex. ";1:50" Used
+	 * when sending and receiving profiles
 	 */
 	@Override
 	public String toString() {
-		String ret = ";"+type + ":" + prefValue;
+		String ret = ";" + type + ":" + prefValue;
 		return ret;
 	}
 
@@ -91,28 +100,6 @@ public abstract class Preference {
 			}
 		});
 
-		// imageView.setOnTouchListener(new OnTouchListener() {
-		//
-		// @Override
-		// public boolean onTouch(View v, MotionEvent event) {
-		//
-		// int action = event.getAction();
-		// int x = (int) event.getX();
-		// int y = (int) event.getY();
-		// switch (action) {
-		// case MotionEvent.ACTION_DOWN:
-		// Intent myIntent = new Intent(callingActivity,
-		// SetBrightness.class);
-		//
-		// callingActivity.startActivityForResult(myIntent,
-		// MainActivity.REQUEST_CODE_NEW_PROFILE);
-		// break;
-		//
-		// }
-		//
-		// return true;
-		// }
-		// });
 
 		return imageView;
 
