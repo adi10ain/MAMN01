@@ -191,15 +191,8 @@ public class MainActivity extends GestureActivity {
 		} else {
 			LinearLayout screen = (LinearLayout)findViewById(R.id.linearLayout1);
 			
-			 TranslateAnimation animation = new TranslateAnimation(0.0f, 0.0f,
-			            -50.0f, 0.0f);         
-			    animation.setDuration(300); 
-			    animation.setRepeatCount(30); 
-			    animation.setRepeatMode(Animation.REVERSE);
-			    animation.setInterpolator(new DecelerateInterpolator());
-			   
-			    screen.startAnimation(animation);
-			profileExchanger.startBroadcasting(animation);
+			
+			profileExchanger.startBroadcasting(screen);
 		}
 
 	}
