@@ -1,348 +1,341 @@
 package com.LTH.aprofile.Classes;
 
+import android.os.Bundle;
+import android.os.Message;
+import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.RotateAnimation;
+import android.view.animation.TranslateAnimation;
+import android.app.Activity;
+
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.MulticastSocket;
+
+//import android.util.Log;
+
 /*
- * Copyright 2013, Qualcomm Innovation Center, Inc.
- * 
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- * 
- *        http://www.apache.org/licenses/LICENSE-2.0
- * 
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
+ * This class tries to send a broadcast UDP packet over your wifi network to discover the boxee service. 
  */
 
-import org.alljoyn.bus.BusAttachment;
-import org.alljoyn.bus.BusException;
-import org.alljoyn.bus.BusObject;
-import org.alljoyn.bus.SignalEmitter;
-import org.alljoyn.bus.Status;
-import org.alljoyn.bus.annotation.BusSignalHandler;
+import android.content.*;
+import android.net.wifi.*;
+import java.net.*;
+import java.util.*;
 
 import com.LTH.aprofile.MainActivity;
 import com.LTH.aprofile.Classes.Sensors.ProximitySensor;
 import com.LTH.aprofile.Preferences.VibrationPreference;
 
-import android.os.Handler;
-import android.os.HandlerThread;
-
-import android.os.Message;
-import android.util.Log;
-
 public class ProfileExchanger {
+	private static final int PORT = 2624;
+
+	MulticastSocket receiveSock;
+	DatagramSocket transmitSock;
+	private WifiManager.MulticastLock mLock;
+	private ProximitySensor proxSens;
+
+	protected StringBuilder logText = new StringBuilder();
+
+	private MainActivity activity;
 
 	// flags in header message
 	final static int BROADCAST_REQUEST = 0;
 	final static int BROADCAST_ACCEPT = 1;
 	final static int PROFILE_SEND = 2;
 
-	protected final int myId;
+	private boolean broadcastAllowed;
 
-	ProximitySensor proxSens;
-	private MainActivity activity;
+	// bouncing animation (only active when broadcasting)
+	private View animView;
 
-	/* Load the native alljoyn_java library. */
-	static {
+	String myId;
 
-		System.loadLibrary("alljoyn_java");
-	}
-
-	public ProfileExchanger(final MainActivity activity) {
-		HandlerThread busThread = new HandlerThread("BusHandler");
-		busThread.start();
-		mBusHandler = new Handler(busThread.getLooper(),
-				new BusHandlerCallback());
-
-		mBusHandler.sendEmptyMessage(BusHandlerCallback.CONNECT);
-
-		myId = (int) (Math.random() * 10000);
-		// proxSens = new ProximitySensor(activity);
+	public ProfileExchanger(MainActivity activity) {
 		this.activity = activity;
+		proxSens = new ProximitySensor(activity, this);
+
+		broadcastAllowed = false;
+		resume();
 
 	}
 
-	public void sendBroadcastRequest() {
-		String header = BROADCAST_REQUEST + ";" + myId + ";" + "-1";
-		Message msg = mBusHandler.obtainMessage(BusHandlerCallback.CHAT,
-				new PingInfo(header, "BROADCAST_REQUEST"));
+	public void resume() {
+		try {
 
-		mBusHandler.sendMessage(msg);
-	}
+			transmitSock = new DatagramSocket();
 
-	private static final String TAG = "SessionlessChat";
+			WifiManager wifi = (WifiManager) activity
+					.getSystemService(Context.WIFI_SERVICE);
+			myId = wifi.getConnectionInfo().getMacAddress();
 
-	/*
-	 * Handler for UI messages This handler updates the UI depending on the
-	 * message received.
-	 */
-	private static final int MESSAGE_CHAT = 1;
-	private static final int MESSAGE_POST_TOAST = 2;
+			mLock = wifi.createMulticastLock("pseudo-ssdp");
+			mLock.acquire();
+			receiveSock = makeMulticastListenSocket();
+			receiveSock.joinGroup(ssdpSiteLocalV6());
 
-	private class PingInfo {
-		private String senderName;
-		private String message;
+			Thread t = new Thread(new ReceiveMsg(), "multicast listener");
+			t.start();
 
-		public PingInfo(String senderName, String message) {
-			this.senderName = senderName;
-			this.message = message;
-		}
-
-		public String getSenderName() {
-			return this.senderName;
-		}
-
-		public String getMessage() {
-			return this.message;
+		} catch (IOException e) {
 		}
 	}
 
-	private Handler mHandler = new Handler(new Handler.Callback() {
-
-		@Override
-		public boolean handleMessage(Message msg) {
-			switch (msg.what) {
-			case MESSAGE_CHAT:
-				/* Add the chat message received to the List View */
-				String ping = (String) msg.obj;
-				break;
-			case MESSAGE_POST_TOAST:
-				/* Post a toast to the UI */
-
-				break;
-			default:
-				break;
-			}
-
-			return true;
-		}
-	});
-
-	/* Handler used to make calls to AllJoyn methods. See onCreate(). */
-	private Handler mBusHandler;
-
-	// *****************************ALL THE IMPORTANT STUFF / HERE IS WHERE THE
-	// SENDING AND RECEIVING TAKES PLACE
-
-	/* The class that is our AllJoyn service. It implements the ChatInterface. */
-	class ChatService implements ChatInterface, BusObject {
-		public ChatService(BusAttachment bus) {
-			this.bus = bus;
-		}
-
-		/*
-		 * This is the Signal Handler code which has the interface name and the
-		 * name of the signal which is sent by the client. It prints out the
-		 * string it receives as parameter in the signal on the UI.
-		 * 
-		 * This code also prints the string it received from the user and the
-		 * string it is returning to the user to the screen.
-		 */
-		@BusSignalHandler(iface = "org.alljoyn.bus.samples.slchat", signal = "Chat")
-		public void Chat(String senderName, String message) {
-			Log.i(TAG, "Signal  : " + senderName + ": " + message);
-			sendUiMessage(MESSAGE_CHAT, senderName + ": " + message);
-
-			// added by me
-			String[] separateHeader = senderName.split(";");
-			int flag = Integer.parseInt(separateHeader[0]);
-			int sender = Integer.parseInt(separateHeader[1]);
-			int receiver = Integer.parseInt(separateHeader[2]);
-
-			// do nothing if message was sent by me or if proximity sensor is
-			// not near
-			Log.d("prox near", "2");
-			Log.d("prox near", proxSens.proximityNear() + "");
-			if (sender == myId || !proxSens.proximityNear()) {
-				Log.d("prox near", proxSens.proximityNear() + "");
-			} else if (flag == BROADCAST_REQUEST) {
-				String header = BROADCAST_ACCEPT + ";" + myId + ";" + sender;
-				Message msg = mBusHandler.obtainMessage(
-						BusHandlerCallback.CHAT, new PingInfo(header,
-								"BROADCAST_ACCEPT"));
-				mBusHandler.sendMessage(msg);
-
-				// send profile if a broadcast accept was received
-			} else if (flag == BROADCAST_ACCEPT && receiver == myId) {
-
-				VibrationPreference
-						.vibrate(VibrationPreference.VIBRATE_SHARE_PROFILE_SEND);
-
-				String sendProf = MainActivity.currentProfile.profileToString();
-
-				String header = PROFILE_SEND + ";" + myId + ";" + sender;
-				Message msg = mBusHandler
-						.obtainMessage(BusHandlerCallback.CHAT, new PingInfo(
-								header, sendProf));
-				mBusHandler.sendMessage(msg);
-
-				// receive profile if it was sent to me
-			} else if (flag == PROFILE_SEND && receiver == myId) {
-				VibrationPreference
-						.vibrate(VibrationPreference.VIBRATE_SHARE_PROFILE_RECEIVE);
-				Profile receivedProfile = Profile.profileFromString(message,
-						activity);
-				MainActivity.settings.addProfile(receivedProfile);
-				MainActivity.targetProfile = receivedProfile;
-				activity.newProfileConnected();
-
-			}
-
-		}
-
-		// *******************************************************************CRAP
-
-		/* Helper function to send a message to the UI thread. */
-		private void sendUiMessage(int what, Object obj) {
-			mHandler.sendMessage(mHandler.obtainMessage(what, obj));
-		}
-
-		private BusAttachment bus;
+	public void pause() {
+		receiveSock.close();
+		transmitSock.close();
+		mLock.release();
 	}
 
-	/* This Callback class will handle all AllJoyn calls. See onCreate(). */
-	class BusHandlerCallback implements Handler.Callback {
+	public void startBroadcasting(View view) {
+		broadcastAllowed = true;
+		this.animView = view;
+		
+//		 TranslateAnimation animation = new TranslateAnimation(0.0f, 0.0f,
+//		            -50.0f, 0.0f);         
+//		    animation.setDuration(300); 
+//		    animation.setRepeatCount(30); 
+//		    animation.setRepeatMode(Animation.REVERSE);
+//		    animation.setInterpolator(new DecelerateInterpolator());
+//		    
+		    RotateAnimation rotation = new RotateAnimation(-8.0f, 8.0f,
+	                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
+	               0.0f);
+		    rotation.setDuration(700); 
+		    rotation.setRepeatCount(20); 
+		    rotation.setRepeatMode(Animation.REVERSE);
+		    rotation.setInterpolator(new DecelerateInterpolator());
+		   
+		    
+		    rotation.setAnimationListener(new Animation.AnimationListener() {
 
-		/* The AllJoyn BusAttachment */
-		private BusAttachment mBus;
-
-		/* The AllJoyn SignalEmitter used to emit sessionless signals */
-		private SignalEmitter emitter;
-
-		private ChatInterface mChatInterface = null;
-		private ChatService myChatService = null;
-
-		/* These are the messages sent to the BusHandlerCallback from the UI. */
-		public static final int CONNECT = 1;
-		public static final int DISCONNECT = 2;
-		public static final int CHAT = 3;
-
-		@Override
-		public boolean handleMessage(Message msg) {
-			switch (msg.what) {
-			/* Connect to the bus and register to obtain chat messages. */
-			case CONNECT: {
-
-				mBus = new BusAttachment("aProfile",
-						BusAttachment.RemoteMessage.Receive);
-
-				/*
-				 * Create and register a bus object
-				 */
-				myChatService = new ChatService(mBus);
-				Status status = mBus.registerBusObject(myChatService,
-						"/ChatService");
-				if (Status.OK != status) {
-					logStatus("BusAttachment.registerBusObject()", status);
-					return false;
-				}
-
-				/*
-				 * Connect the BusAttachment to the bus.
-				 */
-				status = mBus.connect();
-				logStatus("BusAttachment.connect()", status);
-				if (status != Status.OK) {
-					// finish();
-					return false;
-				}
-
-				/*
-				 * We register our signal handler which is implemented inside
-				 * the ChatService
-				 */
-				status = mBus.registerSignalHandlers(myChatService);
-				if (status != Status.OK) {
-					Log.i(TAG, "Problem while registering signal handler");
-					return false;
-				}
-
-				/*
-				 * Add rule to receive chat messages(sessionless signals)
-				 */
-				status = mBus.addMatch("sessionless='t'");
-				if (status == Status.OK) {
-					Log.i(TAG, "AddMatch was called successfully");
-				}
-
-				break;
+			@Override
+			public void onAnimationStart(Animation arg0) {
 			}
 
-			/* Release all resources acquired in connect. */
-			case DISCONNECT: {
-				/*
-				 * It is important to unregister the BusObject before
-				 * disconnecting from the bus. Failing to do so could result in
-				 * a resource leak.
-				 */
-				mBus.disconnect();
-				mBusHandler.getLooper().quit();
-				break;
+			@Override
+			public void onAnimationRepeat(Animation arg0) {
 			}
-			/*
-			 * Call the service's Ping method through the ProxyBusObject.
-			 * 
-			 * This will also print the String that was sent to the service and
-			 * the String that was received from the service to the user
-			 * interface.
-			 */
-			case CHAT: {
+
+			@Override
+			public void onAnimationEnd(Animation arg0) {
+				// disallow sharing profile when animation has finished
+				broadcastAllowed = false;
+			}
+			
+			
+		});
+		    view.startAnimation(rotation);
+		sendBroadcastRequest();
+
+	}
+
+	private void sendBroadcastRequest() {
+		if (broadcastAllowed && proxSens.proximityNear()) {
+			Packet packet = new Packet(BROADCAST_REQUEST, myId, "BROADCAST");
+			sendMessage("" + packet);
+
+		}
+	}
+
+	public void sendMessage(final String msg) {
+
+		Runnable r = new Runnable() {
+			public void run() {
 				try {
-					if (emitter == null) {
-						/*
-						 * Create an emitter to emit a sessionless signal with
-						 * the desired message. The session ID is set to zero
-						 * and the sessionless flag is set to true.
-						 */
-						emitter = new SignalEmitter(myChatService, 0,
-								SignalEmitter.GlobalBroadcast.Off);
-						emitter.setSessionlessFlag(true);
-						/* Get the ChatInterface for the emitter */
-						mChatInterface = emitter
-								.getInterface(ChatInterface.class);
-					}
-					if (mChatInterface != null) {
-						PingInfo info = (PingInfo) msg.obj;
-						/*
-						 * Send a sessionless signal using the chat interface we
-						 * obtained.
-						 */
-						Log.i(TAG, "Sending chat " + info.getSenderName()
-								+ ": " + info.getMessage());
-						mChatInterface.Chat(info.getSenderName(),
-								info.getMessage());
-					}
-				} catch (BusException ex) {
-					logException("ChatInterface.Chat()", ex);
+					byte[] bytes = msg.getBytes("UTF-8");
+					transmitSock.send(new DatagramPacket(bytes, bytes.length,
+							ssdpSiteLocalV6(), PORT));
+				} catch (IOException e) {
 				}
-				break;
 			}
-			default:
-				break;
+		};
+		new Thread(r, "transmit").start();
+	}
+
+	private class ReceiveMsg implements Runnable {
+		public void run() {
+
+			byte[] buffer = new byte[4 << 10];
+			DatagramPacket pkt = new DatagramPacket(buffer, buffer.length);
+
+			try {
+				while (true) {
+					receiveSock.receive(pkt);
+
+					String message = new String(pkt.getData(), 0,
+							pkt.getLength(), "UTF-8");
+
+					Packet receivedPacket = new Packet(message);
+					int flag = receivedPacket.getFlag();
+					String sender = receivedPacket.getSender();
+
+					// do nothing if packet was sent by me
+					if (receivedPacket.checkSender(myId)) {
+
+					} else if (flag == BROADCAST_REQUEST) {
+
+						Packet packet = new Packet(BROADCAST_ACCEPT, myId,
+								sender);
+						sendMessage("" + packet);
+
+						// send profile if a broadcast accept was received
+					} else if (flag == BROADCAST_ACCEPT
+							&& receivedPacket.checkReceiver(myId)) {
+
+						VibrationPreference
+								.vibrate(VibrationPreference.VIBRATE_SHARE_PROFILE_SEND);
+
+						String sendProf = MainActivity.currentProfile
+								.profileToString();
+
+						Packet packet = new Packet(PROFILE_SEND, myId, sender,
+								sendProf);
+						sendMessage("" + packet);
+
+						
+						//animate when profile was sent
+						Animation anim = animView.getAnimation();
+						animView.clearAnimation();
+						anim = new RotateAnimation(360.0f, 0.0f,
+								Animation.RELATIVE_TO_SELF, 0.5f,
+								Animation.RELATIVE_TO_SELF, 0.0f);
+						anim.setDuration(2000);
+
+						anim.setInterpolator(new AccelerateDecelerateInterpolator());
+						animView.setAnimation(anim);
+						anim.start();
+						broadcastAllowed = false;
+
+						// receive profile if it was sent to me
+					} else if (flag == PROFILE_SEND
+							&& receivedPacket.checkReceiver(myId)) {
+						VibrationPreference
+								.vibrate(VibrationPreference.VIBRATE_SHARE_PROFILE_RECEIVE);
+						String profile = receivedPacket.getBody();
+
+						Profile receivedProfile = Profile.profileFromString(
+								profile, activity);
+						MainActivity.settings.addProfile(receivedProfile);
+						MainActivity.targetProfile = receivedProfile;
+						activity.newProfileConnected();
+
+					}
+
+				}
+			} catch (Exception e) {
+
 			}
-			return true;
 		}
 	}
 
-	private void logStatus(String msg, Status status) {
-		String log = String.format("%s: %s", msg, status);
-		if (status == Status.OK) {
-			Log.i(TAG, log);
-		} else {
-			Message toastMsg = mHandler.obtainMessage(MESSAGE_POST_TOAST, log);
-			mHandler.sendMessage(toastMsg);
-			Log.e(TAG, log);
+	private MulticastSocket makeMulticastListenSocket() throws IOException {
+		if (true) {
+			MulticastSocket rval = new MulticastSocket(PORT);
+			NetworkInterface nif = NetworkInterface.getByName("wlan0");
+			if (null != nif) {
+				rval.setNetworkInterface(nif);
+			}
+			return rval; // this should have worked
 		}
+
+		InetAddress addr = pickWlan0IPV6();
+
+		return new MulticastSocket(new InetSocketAddress(addr, PORT));
 	}
 
-	private void logException(String msg, BusException ex) {
-		String log = String.format("%s: %s", msg, ex);
-		Message toastMsg = mHandler.obtainMessage(MESSAGE_POST_TOAST, log);
-		mHandler.sendMessage(toastMsg);
-		Log.e(TAG, log, ex);
+	private InetAddress pickWlan0IPV6() throws SocketException {
+		NetworkInterface nif = NetworkInterface.getByName("wlan0");
+
+		InetAddress addr = null;
+		Enumeration<InetAddress> en = nif.getInetAddresses();
+		while (en.hasMoreElements()) {
+			InetAddress x = en.nextElement();
+			if (x instanceof Inet6Address)
+				addr = x;
+			else if (addr == null)
+				addr = x;
+		}
+		return addr;
+	}
+
+	public static InetAddress ssdpSiteLocalV6() throws UnknownHostException {
+		return InetAddress.getByName("FF05::c");
+	}
+
+	public void proximityChanged(Boolean proximityNear) {
+
+		if (proximityNear) {
+			resume();
+			if (broadcastAllowed)
+				sendBroadcastRequest();
+
+		} else
+			pause();
+
+	}
+
+}
+
+class Packet {
+	private int flag;
+	private String sender;
+	private String receiver;
+	private String body;
+
+	public Packet(String fromString) {
+		String[] explode = fromString.split("#");
+		String header = explode[0];
+
+		String[] separateHeader = header.split(";");
+		flag = Integer.parseInt(separateHeader[0]);
+		sender = separateHeader[1];
+		receiver = separateHeader[2];
+
+		body = explode[1];
+	}
+
+	public Packet(int flag, String sender, String receiver) {
+		this(flag, sender, receiver, "NO BODY");
+	}
+
+	public Packet(int flag, String sender, String receiver, String body) {
+		this.flag = flag;
+		this.sender = sender;
+		this.receiver = receiver;
+		this.body = body;
+	}
+
+	@Override
+	public String toString() {
+		String header = flag + ";" + sender + ";" + receiver + "#";
+		String packet = header + body;
+		return packet;
+	}
+
+	public Boolean checkSender(String sender) {
+		return ((this.sender).equals(sender));
+	}
+
+	public Boolean checkReceiver(String receiver) {
+		return ((this.receiver).equals(receiver));
+	}
+
+	public int getFlag() {
+		return flag;
+	}
+
+	public String getSender() {
+		return sender;
+	}
+
+	public String getBody() {
+		return body;
+
 	}
 
 }

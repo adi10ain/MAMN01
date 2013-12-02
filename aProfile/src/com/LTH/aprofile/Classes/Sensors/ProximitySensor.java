@@ -1,7 +1,6 @@
 package com.LTH.aprofile.Classes.Sensors;
 
 import com.LTH.aprofile.Classes.ProfileExchanger;
-import com.LTH.aprofile.Classes.ProfileExchanger2;
 
 import android.app.Activity;
 import android.content.Context;
@@ -20,9 +19,9 @@ public class ProximitySensor implements SensorEventListener {
 
 	private int proximityValue;
 	
-	private ProfileExchanger2 profExchanger;
+	private ProfileExchanger profExchanger;
 
-	public ProximitySensor(Activity activity, ProfileExchanger2 profExchanger) {
+	public ProximitySensor(Activity activity, ProfileExchanger profileExchanger) {
 		mSensorManager = (SensorManager) activity
 				.getSystemService(activity.SENSOR_SERVICE);
 		mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
@@ -33,7 +32,7 @@ public class ProximitySensor implements SensorEventListener {
 
 		proximityValue = PROXIMITY_NEAR;
 		
-		this.profExchanger = profExchanger;
+		this.profExchanger = profileExchanger;
 	}
 
 	@Override

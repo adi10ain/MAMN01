@@ -37,7 +37,7 @@ import android.widget.TextView;
 
 import com.LTH.aprofile.Classes.Profile;
 
-import com.LTH.aprofile.Classes.ProfileExchanger2;
+import com.LTH.aprofile.Classes.ProfileExchanger;
 import com.LTH.aprofile.Classes.Settings;
 import com.LTH.aprofile.Classes.SoundMeter;
 import com.LTH.aprofile.Classes.WiFiHotspot;
@@ -98,14 +98,14 @@ public class MainActivity extends GestureActivity {
 
 	private WifiReceiver wifiReceiver;
 
-	private ProfileExchanger2 profileExchanger;
+	private ProfileExchanger profileExchanger;
 
 	/* Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-		profileExchanger = new ProfileExchanger2(this);
+		profileExchanger = new ProfileExchanger(this);
 		setGestureUpdateInterval(1000);
 		addListenForGesture(GESTURE_UP);
 		addListenForGesture(GESTURE_DOWN);
