@@ -67,7 +67,7 @@ public class Settings {
 	}
 
 	// returns iterator of all profiles
-	public Iterator<Profile> getProfiles() {
-		return profiles.iterator();
+	public ArrayList<Profile> getProfiles() {
+		return profiles;
 	}
 }

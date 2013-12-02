@@ -28,7 +28,7 @@ public class Profile {
 	ArrayList<WiFiHotspot> hotspots;
 
 	public Profile() {
-		this.profileName = "Not connected";
+		this.profileName = "New profile";
 		hotspots = new ArrayList<WiFiHotspot>();
 		hotspots = new ArrayList<WiFiHotspot>();
 		preferences = new HashMap<Integer, Preference>();

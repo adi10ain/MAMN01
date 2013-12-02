@@ -18,11 +18,9 @@
 	<uses-permission android:name="android.permission.STORAGE" />
 	<uses-permission android:name="android.permission.WAKE_LOCK" />
  	<uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
-    <!-- Permission required to use the Bluetooth transport -->
-    <uses-permission android:name="android.permission.BLUETOOTH" >
-    </uses-permission>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" >
-    </uses-permission>
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -46,11 +44,6 @@
         <activity
             android:name="com.LTH.aprofile.ConnectProfileActivity"
             android:label="@string/title_activity_newprofile" >
-        </activity>
-        <activity
-            android:name="com.LTH.aprofile.Classes.SetBrightness"
-            android:label="@string/title_activity_set_brightness"
-            android:theme="@style/Theme.Transparent" >
         </activity>
         <activity
             android:name="com.LTH.aprofile.SettingsActivity"

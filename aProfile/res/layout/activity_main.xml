@@ -62,6 +62,7 @@
             android:text="Settings"
             android:textColor="@color/WHITE" />
 
+        <!-- Temporairly disabled to avoid confusion during presentation
         <Button
             android:id="@+id/button_confirm"
             android:layout_width="fill_parent"
@@ -71,6 +72,8 @@
             android:onClick="confirmButton"
             android:text="Test"
             android:textColor="@color/WHITE" />
+            
+             -->
 
         <Button
             android:id="@+id/button_shareProfile"

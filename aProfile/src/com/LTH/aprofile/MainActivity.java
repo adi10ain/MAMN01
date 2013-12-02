@@ -11,7 +11,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -29,7 +28,6 @@ import android.view.animation.AnimationSet;
 
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.RotateAnimation;
-import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 
 import android.widget.LinearLayout;
@@ -124,6 +122,7 @@ public class MainActivity extends GestureActivity {
 		loadSettings();
 
 		currentProfile = new Profile();
+		currentProfile.setName("Not connected");
 
 		gestSelect = new GestureSelector(this);
 

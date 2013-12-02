@@ -204,7 +204,7 @@ public class ProfileExchanger {
 						anim = new RotateAnimation(360.0f, 0.0f,
 								Animation.RELATIVE_TO_SELF, 0.5f,
 								Animation.RELATIVE_TO_SELF, 0.0f);
-						anim.setDuration(2000);
+						anim.setDuration(1000);
 
 						anim.setInterpolator(new AccelerateDecelerateInterpolator());
 						animView.setAnimation(anim);

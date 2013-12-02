@@ -1,7 +1,5 @@
 package com.LTH.aprofile;
 
-
-
 import com.LTH.aprofile.Classes.Profile;
 import com.LTH.aprofile.Classes.WiFiHotspot;
 import com.LTH.aprofile.GUI.EditSettings;
@@ -41,7 +39,16 @@ public final class EditProfileActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_edit_profile);
 
-		profile = SettingsActivity.selectedProfile;
+		// get profile to be edited
+		Bundle extras = getIntent().getExtras();
+		if (extras != null) {
+			int profIndex = extras.getInt("PROFILE_TO_EDIT");
+			profile = MainActivity.settings.getProfiles().get(profIndex);
+		} else {
+			profile = new Profile();
+			profile.setName("ERROR");
+		}
+
 		wifiReceiver = new WifiReceiver();
 		this.registerReceiver(wifiReceiver, new IntentFilter(
 				ConnectivityManager.CONNECTIVITY_ACTION));
@@ -70,9 +77,8 @@ public final class EditProfileActivity extends Activity {
 			}
 		});
 
-		
 		LinearLayout screenLayout = (LinearLayout) findViewById(R.id.screenLayout);
-		
+
 		EditSettings settingsPanel = new EditSettings(this, profile);
 		screenLayout.addView(settingsPanel.getSettingsPanel());
 
