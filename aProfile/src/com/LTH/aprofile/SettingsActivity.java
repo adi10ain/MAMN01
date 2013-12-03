@@ -7,11 +7,11 @@ import java.util.ListIterator;
 
 import com.LTH.aprofile.Classes.Profile;
 import com.LTH.aprofile.Classes.Settings;
+import com.LTH.aprofile.Classes.Preferences.BrightnessPreference;
+import com.LTH.aprofile.Classes.Preferences.SoundLevelPreference;
+import com.LTH.aprofile.Classes.Preferences.VibrationPreference;
 import com.LTH.aprofile.Classes.Sensors.GestureActivity;
 import com.LTH.aprofile.Classes.Sensors.GestureSelector;
-import com.LTH.aprofile.Preferences.BrightnessPreference;
-import com.LTH.aprofile.Preferences.SoundLevelPreference;
-import com.LTH.aprofile.Preferences.VibrationPreference;
 
 import android.os.Bundle;
 import android.app.ActionBar.LayoutParams;
@@ -101,7 +101,11 @@ public class SettingsActivity extends GestureActivity {
 			TextView tv = new TextView(this);
 			tv.setText("" + profile);
 			tv.setTextSize(16.0f);
-			tv.setPadding(25, 60, 0, 25);
+			
+			// Make this view size independent of screen resolution
+			final int scale = (int) getResources().getDisplayMetrics().density;
+			tv.setPadding(10* scale, 25* scale, 0* scale, 10* scale);
+			
 			tv.setLayoutParams(params);
 			tv.setTextColor(Color.WHITE);
 			tv.setBackgroundColor(color);
@@ -150,6 +154,7 @@ public class SettingsActivity extends GestureActivity {
 											myIntent.putExtra(
 													"PROFILE_TO_EDIT",
 													profIndex);
+											
 											activity.startActivityForResult(
 													myIntent,
 													REQUEST_CODE_CHANGE_PROFILE);
@@ -177,9 +182,10 @@ public class SettingsActivity extends GestureActivity {
 		gestSelect.addChildrenToRows(list_Profiles);
 
 	}
+	
 
 	public void btn_addNewProfile(View view) {
-		Log.d("test", "test");
+
 		// Add new profile item
 		final Profile newProfile = new Profile();
 		SoundLevelPreference pref1 = new SoundLevelPreference(50, this);

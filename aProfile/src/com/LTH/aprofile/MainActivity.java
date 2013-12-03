@@ -39,13 +39,14 @@ import com.LTH.aprofile.Classes.ProfileExchanger;
 import com.LTH.aprofile.Classes.Settings;
 import com.LTH.aprofile.Classes.SoundMeter;
 import com.LTH.aprofile.Classes.WiFiHotspot;
+import com.LTH.aprofile.Classes.Preferences.BrightnessPreference;
+import com.LTH.aprofile.Classes.Preferences.SoundLevelPreference;
+import com.LTH.aprofile.Classes.Preferences.VibrationPreference;
 import com.LTH.aprofile.Classes.Sensors.GestureActivity;
 import com.LTH.aprofile.Classes.Sensors.GestureSelector;
 
 import com.LTH.aprofile.GUI.EditSettingsConnected;
-import com.LTH.aprofile.Preferences.BrightnessPreference;
-import com.LTH.aprofile.Preferences.SoundLevelPreference;
-import com.LTH.aprofile.Preferences.VibrationPreference;
+
 
 public class MainActivity extends GestureActivity {
 	// SoundMeter
@@ -351,5 +352,9 @@ public class MainActivity extends GestureActivity {
 
 		}
 	}
+	
+	
+
+
 
 }

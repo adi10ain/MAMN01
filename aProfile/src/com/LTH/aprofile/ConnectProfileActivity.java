@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import com.LTH.aprofile.Classes.Profile;
+import com.LTH.aprofile.Classes.Preferences.Preference;
 import com.LTH.aprofile.Classes.Sensors.GestureActivity;
 import com.LTH.aprofile.GUI.PiechartOverlayView;
 import com.LTH.aprofile.GUI.PiechartTextView;
 import com.LTH.aprofile.GUI.PiechartView;
-import com.LTH.aprofile.Preferences.Preference;
-import com.LTH.aprofile.Preferences.VibrationPreference;
+
 
 import android.os.Bundle;
 import android.content.Context;

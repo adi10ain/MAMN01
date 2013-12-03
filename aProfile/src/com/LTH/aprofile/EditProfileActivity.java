@@ -37,6 +37,9 @@ public final class EditProfileActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		// override activity transition animation to slide in and out from left
+
 		setContentView(R.layout.activity_edit_profile);
 
 		// get profile to be edited
@@ -102,6 +105,15 @@ public final class EditProfileActivity extends Activity {
 		}
 		wifiList.setText(s);
 	}
+
+	// remove all field text if profile name is "New profile"
+	public void OnClick_profileName(View view) {
+		EditText et = (EditText) view;
+		if (profile.toString().equals("New profile")) {
+			et.setText("");
+		}
+
+	}
 }
 
 class WifiReceiver extends BroadcastReceiver {
@@ -124,4 +136,5 @@ class WifiReceiver extends BroadcastReceiver {
 		}
 
 	}
+
 };

@@ -4,11 +4,11 @@ import java.util.Collection;
 
 
 import com.LTH.aprofile.Classes.Profile;
+import com.LTH.aprofile.Classes.Preferences.BrightnessPreference;
+import com.LTH.aprofile.Classes.Preferences.Preference;
+import com.LTH.aprofile.Classes.Preferences.SoundLevelPreference;
+import com.LTH.aprofile.Classes.Preferences.VibrationPreference;
 import com.LTH.aprofile.Classes.Sensors.GestureActivity;
-import com.LTH.aprofile.Preferences.BrightnessPreference;
-import com.LTH.aprofile.Preferences.Preference;
-import com.LTH.aprofile.Preferences.SoundLevelPreference;
-import com.LTH.aprofile.Preferences.VibrationPreference;
 
 import android.os.Bundle;
 import android.app.Activity;

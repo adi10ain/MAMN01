@@ -175,7 +175,7 @@ public class GestureSelector {
 		animation.setFillAfter(true);
 
 		Animation fadeOut = new AlphaAnimation(1, 0.05f);
-		fadeOut.setInterpolator(new DecelerateInterpolator()); // add this
+		fadeOut.setInterpolator(new DecelerateInterpolator());
 		fadeOut.setStartTime(duration);
 		fadeOut.setDuration(SELECT_BUTTON_TIMER);
 		fadeOut.setFillAfter(false);

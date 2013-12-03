@@ -28,8 +28,9 @@ import java.net.*;
 import java.util.*;
 
 import com.LTH.aprofile.MainActivity;
+import com.LTH.aprofile.Classes.Preferences.VibrationPreference;
 import com.LTH.aprofile.Classes.Sensors.ProximitySensor;
-import com.LTH.aprofile.Preferences.VibrationPreference;
+
 
 public class ProfileExchanger {
 	private static final int PORT = 2624;

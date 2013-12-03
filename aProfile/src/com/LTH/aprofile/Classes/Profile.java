@@ -3,10 +3,12 @@ package com.LTH.aprofile.Classes;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.LTH.aprofile.Preferences.BrightnessPreference;
-import com.LTH.aprofile.Preferences.Preference;
-import com.LTH.aprofile.Preferences.SoundLevelPreference;
-import com.LTH.aprofile.Preferences.VibrationPreference;
+import com.LTH.aprofile.Classes.Preferences.BrightnessPreference;
+import com.LTH.aprofile.Classes.Preferences.Preference;
+import com.LTH.aprofile.Classes.Preferences.SoundLevelPreference;
+import com.LTH.aprofile.Classes.Preferences.VibrationPreference;
+
+
 
 import android.app.Activity;
 import android.util.Log;
