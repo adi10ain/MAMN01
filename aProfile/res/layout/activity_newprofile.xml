@@ -49,11 +49,10 @@
                 android:id="@+id/acceptProfile"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
-                android:layout_below="@+id/ProfileName"
                 android:layout_weight="1"
                 android:background="@color/METRO_LIGHT_BROWN"
                 android:onClick="btnApprove"
-                android:text="Accept"
+                android:text="Approve"
                 android:textColor="@color/WHITE" />
         </LinearLayout>
 

@@ -55,16 +55,23 @@
         android1:text="PROFILES"
         android1:textAppearance="?android:attr/textAppearanceSmall" />
 
-    <LinearLayout
-        android1:id="@+id/listProfiles"
+    <ScrollView
         android1:layout_width="fill_parent"
-        android1:layout_height="wrap_content"
-        android1:layout_alignParentLeft="true"
+        android1:layout_height="fill_parent"
         android1:layout_below="@+id/textView2"
-        android1:orientation="vertical"
-        android1:paddingLeft="10dp"
-        android1:paddingTop="10dp" >
-    </LinearLayout>
+         android1:layout_above="@+id/button_shareProfile" >
+
+        <LinearLayout
+            android1:id="@+id/listProfiles"
+            android1:layout_width="fill_parent"
+            android1:layout_height="wrap_content"
+            android1:layout_alignParentLeft="true"
+            
+            android1:orientation="vertical"
+            android1:paddingLeft="10dp"
+            android1:paddingTop="10dp" >
+        </LinearLayout>
+    </ScrollView>
 
     <Button
         android1:id="@+id/button_shareProfile"

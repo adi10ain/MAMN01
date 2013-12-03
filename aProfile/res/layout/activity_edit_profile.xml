@@ -2,46 +2,111 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/METRO_BACKGROUND_BROWN"
     tools:context=".EditProfileActivity" >
+
+    <TextView
+        android:id="@+id/textSettingsEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="sans-serif-thin"
+        android:gravity="bottom"
+        android:padding="10dp"
+        android:text="Edit profile"
+        android:textColor="@color/METRO_DARK_BROWN"
+        android:textSize="22sp" />
 
     <LinearLayout
         android:id="@+id/screenLayout"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:layout_below="@+id/textSettingsEdit"
         android:orientation="vertical" >
 
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="50pt"
+            android:layout_height="wrap_content"
             android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
+                android:paddingTop="20dp"
+                android:text="PROFILE NAME"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/METRO_DARK_BROWN"
+                android:textSize="12sp" />
 
             <EditText
                 android:id="@+id/profileName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="15" >
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/METRO_LIGHT_BROWN"
+                android:ems="15"
+                android:onClick="OnClick_profileName"
+                android:padding="10dp"
+                android:singleLine="true"
+                android:textAllCaps="true"
+                android:textColor="@color/WHITE" >
 
-                <requestFocus android:layout_width="wrap_content" />
-
+                <requestFocus />
             </EditText>
 
             <TextView
-                android:id="@+id/wifiList"
+                android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Medium Text"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:paddingLeft="5dp"
+                android:paddingTop="10dp"
+                android:text="ATTACHED HOTSPOTS"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/METRO_DARK_BROWN"
+                android:textSize="12sp" />
 
-            <Button
-                android:id="@+id/addWIFI"
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/wifiList"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:paddingLeft="10dp"
+                    android:text="Hotspot"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/METRO_DARK_BROWN" />
+
+                <Button
+                    android:id="@+id/addWIFI"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_marginRight="10dp"
+                    android:background="@color/METRO_LIGHT_BROWN"
+                    android:clickable="false"
+                    android:onClick="btn_addWiFiHotspot"
+                    android:padding="10dp"
+                    android:text="Add AP"
+                    android:textColor="@color/WHITE" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:clickable="false"
-                android:onClick="btn_addWiFiHotspot"
-                android:text="Add WiFi hotspot" />
+                android:paddingLeft="5dp"
+                android:paddingTop="10dp"
+                android:text="PREFERENCES"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/METRO_DARK_BROWN"
+                android:textSize="12sp" />
         </LinearLayout>
-
-     
     </LinearLayout>
 
 </RelativeLayout>

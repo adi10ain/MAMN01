@@ -3,12 +3,12 @@ TO-DO list:
 Gestures
 [X] Correct bug in gesture-selector
 [X] Use pre-made gesture-sensor with modification
-[ ] Calibrate and make the scrolling speed dependent on the tilt angle
+[r] Calibrate and make the scrolling speed dependent on the tilt angle (remove?)
 [X] "Gesture" for pressing selected button // works well - need better animation
 [o] Shake gesture //implemented in GestureSelector, needs to be used
 [X] Make gesture-selector able to jump to closest view in the y-axis rather than the first one
 [ ] Make the gesture-sensor usable in different angles
-[ ] Implement gesture profile selector
+[r] Implement gesture profile selector (remove?)
 
 
 Wi-Fi
