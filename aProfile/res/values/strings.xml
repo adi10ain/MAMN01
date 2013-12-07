@@ -13,5 +13,5 @@
     <string name="title_activity_test__orientation">Test_Orientation</string>
     <string name="title_activity_test_orient2">Test_orient2</string>
     <string name="title_activity_settings_chart">SettingsChartActivity</string>
-
+	<string name="select2">Select network to remove</string>
 </resources>
