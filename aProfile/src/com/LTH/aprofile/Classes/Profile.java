@@ -45,7 +45,19 @@ public class Profile {
 		}
 		return ret;
 	}
+	
+	public WiFiHotspot removeHotspotIndex(int index){
+		return hotspots.remove(index);
+	}
 
+	public ArrayList<String> getHotSpotNames(){
+		ArrayList<String> hotspotNames = new ArrayList<String>();
+		for(int i=0; i<hotspots.size(); i++){
+			hotspotNames.add(hotspots.get(i).getName());
+		}
+		return hotspotNames;
+	}
+	
 	public ArrayList<WiFiHotspot> getHotspots() {
 		return hotspots;
 	}

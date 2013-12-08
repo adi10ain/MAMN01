@@ -23,7 +23,11 @@ public class Settings {
 	public void addProfile(Profile profile) {
 		profiles.add(profile);
 	}
-
+	
+	public void removeWiFiHotspot(WiFiHotspot w) {
+		AP_Profile_link.remove(w);
+	}
+	
 	public Profile checkIfLinkedWifi(WiFiHotspot wifi) {
 		return AP_Profile_link.get(wifi);
 	}

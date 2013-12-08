@@ -17,9 +17,13 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import android.widget.TextView;
 
@@ -28,8 +32,10 @@ public final class EditProfileActivity extends Activity {
 	private Profile profile;
 	private EditText profileName;
 
-	private TextView wifiList;
+	// private TextView wifiList;
 	public Button btn_addWIFI;
+	public Button btn_removeWifi;
+	public Spinner spinner2;
 
 	private WifiReceiver wifiReceiver;
 	public static WiFiHotspot connectedWiFi;
@@ -58,10 +64,12 @@ public final class EditProfileActivity extends Activity {
 
 		profileName = (EditText) findViewById(R.id.profileName);
 		profileName.setText("" + profile);
+		addItemsOnSpinner2();
+		addListenerOnButton();
 
 		btn_addWIFI = (Button) findViewById(R.id.addWIFI);
 
-		wifiList = (TextView) findViewById(R.id.wifiList);
+		// wifiList = (TextView) findViewById(R.id.wifiList);
 
 		profileName.addTextChangedListener(new TextWatcher() {
 			@Override
@@ -85,28 +93,37 @@ public final class EditProfileActivity extends Activity {
 		EditSettings settingsPanel = new EditSettings(this, profile);
 		screenLayout.addView(settingsPanel.getSettingsPanel());
 
-		showWiFiList();
+		// showWiFiList();
 
 	}
 
 	public void btn_addWiFiHotspot(View view) {
 		if (connectedWiFi != null
 				&& MainActivity.settings.addWifiProfileLink(connectedWiFi,
-						profile))
+						profile)) {
 			profile.addHotspot(connectedWiFi);
-		showWiFiList();
-	}
+			MainActivity.settings.addWifiProfileLink(connectedWiFi, profile);
+			this.addItemsOnSpinner2();
+			Toast.makeText(
+					EditProfileActivity.this,
+					"Network " + connectedWiFi.getName()
+							+ " has been added to the profile",
+					Toast.LENGTH_SHORT).show();
 
-	private void showWiFiList() {
-		String s = "";
-
-		for (WiFiHotspot w : profile.getHotspots()) {
-			s += " " + w.getName() + " ";
 		}
-		wifiList.setText(s);
+		// showWiFiList();
 	}
 
-	// remove all field text if profile name is "New profile"
+	// private void showWiFiList() {
+	// String s = "";
+	//
+	// for (WiFiHotspot w : profile.getHotspots()) {
+	// s += " " + w.getName() + " ";
+	// }
+	// wifiList.setText(s);
+	// }
+
+	// remove all field text if profile name is "New profile."
 	public void OnClick_profileName(View view) {
 		EditText et = (EditText) view;
 		if (profile.toString().equals("New profile")) {
@@ -114,6 +131,48 @@ public final class EditProfileActivity extends Activity {
 		}
 
 	}
+
+	public void addItemsOnSpinner2() {
+
+		spinner2 = (Spinner) findViewById(R.id.spinner2);
+
+		// lagg till massa networks har
+		ArrayAdapter dataAdapter = new ArrayAdapter(this,
+				android.R.layout.simple_spinner_item, profile.getHotSpotNames());
+		dataAdapter
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinner2.setAdapter(dataAdapter);
+
+	}
+
+	public void addListenerOnButton() {
+
+		spinner2 = (Spinner) findViewById(R.id.spinner2);
+		btn_removeWifi = (Button) findViewById(R.id.removeWiFi);
+		btn_removeWifi.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+				if (spinner2.getCount() != 0) {
+					int index = spinner2.getSelectedItemPosition();
+					WiFiHotspot deletedHotspot = profile
+							.removeHotspotIndex(index);
+					MainActivity.settings.removeWiFiHotspot(deletedHotspot);
+					addItemsOnSpinner2();
+
+					Toast.makeText(
+							EditProfileActivity.this,
+							"Network " + deletedHotspot.getName()
+									+ " has been removed from the profile",
+							Toast.LENGTH_SHORT).show();
+				}
+				return;
+			}
+
+		});
+	}
+
 }
 
 class WifiReceiver extends BroadcastReceiver {

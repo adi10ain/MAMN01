@@ -54,7 +54,10 @@
                 android:textAllCaps="true"
                 android:textColor="@color/WHITE" >
 
-                <requestFocus />
+                <requestFocus
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
             </EditText>
 
             <TextView
@@ -73,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal" >
 
-                <TextView
+               <!--  <TextView
                     android:id="@+id/wifiList"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
@@ -81,7 +84,34 @@
                     android:paddingLeft="10dp"
                     android:text="Hotspot"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/METRO_DARK_BROWN" />
+                    android:textColor="@color/METRO_DARK_BROWN" /> -->
+                    
+                    <Spinner
+                android:id="@+id/spinner2"
+                 android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:paddingLeft="10dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/METRO_DARK_BROWN"
+                android:prompt="@string/select2" />
+                    
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <Button
+                    android:id="@+id/removeWiFi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                                 android:layout_marginRight="10dp"
+                    android:background="@color/METRO_LIGHT_BROWN"
+                    android:padding="10dp"
+                    android:textColor="@color/WHITE"
+                    android:text="remove wifi" />
 
                 <Button
                     android:id="@+id/addWIFI"
@@ -95,18 +125,24 @@
                     android:text="Add AP"
                     android:textColor="@color/WHITE" />
             </LinearLayout>
-
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingTop="10dp"
-                android:text="PREFERENCES"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/METRO_DARK_BROWN"
-                android:textSize="12sp" />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:paddingTop="10dp"
+            android:text="PREFERENCES"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/METRO_DARK_BROWN"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" >
+
     </LinearLayout>
 
 </RelativeLayout>
