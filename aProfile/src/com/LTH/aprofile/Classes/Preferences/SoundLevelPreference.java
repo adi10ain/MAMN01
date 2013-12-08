@@ -1,6 +1,5 @@
 package com.LTH.aprofile.Classes.Preferences;
 
-
 import com.LTH.aprofile.R;
 import com.LTH.aprofile.Classes.Profile;
 
@@ -41,11 +40,10 @@ public class SoundLevelPreference extends Preference {
 
 	@Override
 	public void set(int targetValue, Activity activity) {
-		dynamicIcon.setAlpha(125);
+
 		// no sound no vibration
 		if (targetValue <= -40) {
 			dynamicIcon.setImageResource(R.drawable.mute64);
-			dynamicIcon.setAlpha(50);
 
 			// vibrate
 		} else if (targetValue <= 0) {
@@ -69,7 +67,6 @@ public class SoundLevelPreference extends Preference {
 							| AudioManager.FLAG_PLAY_SOUND);
 
 			if (targetValue >= 100) {
-				dynamicIcon.setAlpha(200);
 			}
 		}
 	}

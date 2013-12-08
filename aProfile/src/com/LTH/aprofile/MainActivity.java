@@ -19,6 +19,7 @@ import android.os.Handler;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -352,6 +353,8 @@ public class MainActivity extends GestureActivity {
 
 		}
 	}
+	
+
 	
 	
 

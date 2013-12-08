@@ -9,8 +9,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
-import android.view.animation.TranslateAnimation;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -107,7 +105,7 @@ public class EditSettings {
 					R.color.METRO_DARK_BROWN);
 
 			tv_colorBar.setBackgroundColor(color);
-			tv_colorBar.getBackground().setAlpha(45);
+			tv_colorBar.getBackground().setAlpha(120);
 
 			col.addView(tv_status);
 			col.addView(tv_colorBar);
@@ -123,10 +121,10 @@ public class EditSettings {
 			icon.setLayoutParams(layoutParams);
 
 			icon.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-			
+
 			icon.setAlpha(150);
 			padding = (int) (20 * scale);
-			
+
 			// icon.setPadding(padding, padding, padding, padding);
 
 			touchPanel.addView(icon);
@@ -146,13 +144,15 @@ public class EditSettings {
 					Preference p = profile.getPref().get(col.getId());
 					TextView statusChanger = barStatusMap.get(col);
 					float targetValue = p.getPrefValue();
-					int height = ((int) (((100 - targetValue) / 100) * col.getHeight()));
+					int height = ((int) (((100 - targetValue) / 100) * col
+							.getHeight()));
 					statusChanger.setHeight(col.getHeight());
-					ResizeAnimation anim = new ResizeAnimation(statusChanger, col.getHeight(), height);
+					ResizeAnimation anim = new ResizeAnimation(statusChanger,
+							col.getHeight(), height);
 
 					statusChanger.startAnimation(anim);
-				
-					//preferenceChanged(col, p.getPrefValue());
+
+					// preferenceChanged(col, p.getPrefValue());
 				}
 
 			}
@@ -168,26 +168,39 @@ public class EditSettings {
 		linearLayout.setOnTouchListener(new OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent me) {
-				for (View col : barStatusMap.keySet()) {
+				if (me.getAction() == android.view.MotionEvent.ACTION_MOVE) {
 
-					Rect r = new Rect(col.getLeft(), col.getTop(), col
-							.getRight(), col.getBottom());
+					for (View col : barStatusMap.keySet()) {
 
-					// only consider x-axis to determine which button was
-					// touched
-					if (r.contains((int) me.getX(), 0)) {
+						Rect r = new Rect(col.getLeft(), col.getTop(), col
+								.getRight(), col.getBottom());
 
-						int touchPanelHeight = linearLayout.getHeight();
+						// only consider x-axis to determine which button was
+						// touched
+						if (r.contains((int) me.getX(), 0)) {
 
-						float targetValue = (int) me.getY();
+							int touchPanelHeight = linearLayout.getHeight();
 
-						targetValue = 100 - (targetValue / touchPanelHeight) * 100;
+							float targetValue = (int) me.getY();
 
-						preferenceChanged(col, targetValue);
+							targetValue = 100 - (targetValue / touchPanelHeight) * 100;
 
-						break;
+							preferenceChanged(col, targetValue, (int) me.getX());
+
+							break;
+						}
+
+						// reset status bar width
+
 					}
 
+				} else if (me.getAction() == android.view.MotionEvent.ACTION_UP) {
+					for (View col : barStatusMap.keySet()) {
+						TextView statusChanger = barStatusMap.get(col);
+
+						statusChanger.setWidth(100);
+
+					}
 				}
 
 				return true;
@@ -196,15 +209,27 @@ public class EditSettings {
 	}
 
 	// targetValue should be between 0 and 100
-	protected void preferenceChanged(View col, float targetValue) {
+	protected void preferenceChanged(View bar, float targetValue, int xPos) {
 
-		TextView statusChanger = barStatusMap.get(col);
+		for (View col : barStatusMap.keySet()) {
+			TextView statusChanger = barStatusMap.get(col);
 
-		int height = ((int) (((100 - targetValue) / 100) * col.getHeight()));
+			int posDif = Math.abs(xPos - col.getLeft());
+
+			int width = 100 - (int) (posDif * 0.05);
+			statusChanger.setWidth(100 + width);
+
+		}
+
+		TextView statusChanger = barStatusMap.get(bar);
+		Log.d("log ", "" + xPos + " - " + bar.getLeft());
+
+		int height = ((int) (((100 - targetValue) / 100) * bar.getHeight()));
 
 		statusChanger.setHeight(height);
+		statusChanger.setWidth(200);
 
-		int prefId = col.getId();
+		int prefId = bar.getId();
 		Preference pref = profile.getPref().get(prefId);
 		pref.set((int) targetValue, activity);
 		pref.setPrefValue((int) targetValue);

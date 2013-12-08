@@ -18,13 +18,6 @@ public final class PiechartView extends View {
 	protected int amountSlices;
 	protected int selectionOffset;
 
-	// icons
-	protected Bitmap icon_approve;
-	protected Bitmap icon_decline;
-	protected Bitmap icon_timer;
-
-	protected Matrix matrix_icon;
-
 	// Make this view size independent of screen resolution
 	final float scale;
 
@@ -40,18 +33,6 @@ public final class PiechartView extends View {
 
 		this.setLayoutParams(new LayoutParams(size, size));
 		size = size / 2;
-
-		// initate icons
-		icon_approve = BitmapFactory.decodeResource(context.getResources(),
-				R.drawable.pie_approve);
-
-		icon_decline = BitmapFactory.decodeResource(context.getResources(),
-				R.drawable.pie_decline);
-
-		icon_timer = BitmapFactory.decodeResource(context.getResources(),
-				R.drawable.pie_timer);
-
-		matrix_icon = new Matrix();
 
 	}
 
@@ -71,17 +52,6 @@ public final class PiechartView extends View {
 			canvas.drawLine(size, size, size * (float) Math.cos(angle) + size,
 					size * (float) Math.sin(angle) + size, paint);
 		}
-
-		paint.setAlpha(85);
-		// draw icons
-		matrix_icon.setScale(0.04f, 0.04f, 194f * scale, 75f * scale);
-		canvas.drawBitmap(icon_approve, matrix_icon, paint);
-
-		matrix_icon.setScale(0.04f, 0.04f, 18f * scale, 75f * scale);
-		canvas.drawBitmap(icon_decline, matrix_icon, paint);
-
-		matrix_icon.setScale(0.04f, 0.04f, 106f * scale, 200f * scale);
-		canvas.drawBitmap(icon_timer, matrix_icon, paint);
 
 	}
 

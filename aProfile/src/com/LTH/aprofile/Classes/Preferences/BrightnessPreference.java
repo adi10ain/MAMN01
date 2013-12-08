@@ -1,6 +1,5 @@
 package com.LTH.aprofile.Classes.Preferences;
 
-
 import com.LTH.aprofile.R;
 import com.LTH.aprofile.Classes.Profile;
 
@@ -17,7 +16,6 @@ public class BrightnessPreference extends Preference {
 	// Brightness preference, prefValue should be between 0-255
 	public BrightnessPreference(int prefValue, Activity callingActivity) {
 		super(prefValue, callingActivity);
-
 
 		type = Profile.BRIGHTNESS;
 		name = "Brightness";
@@ -38,17 +36,12 @@ public class BrightnessPreference extends Preference {
 
 	@Override
 	public void set(int targetValue, Activity activity) {
-		
-		dynamicIcon.setAlpha(125);
-		if (targetValue <= 0) {
+
+		if (targetValue <= 0)
 			targetValue = 1;
-			dynamicIcon.setAlpha(50);
-		} else if (targetValue >= 100) {
+		else if (targetValue >= 100)
 			targetValue = 100;
-			dynamicIcon.setAlpha(200);
-		}
-	
-		
+
 		float target = targetValue / 100f;
 		lp.screenBrightness = target;
 		activity.getWindow().setAttributes(lp);
