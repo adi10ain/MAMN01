@@ -11,12 +11,13 @@ public final class R {
     public static final class attr {
     }
     public static final class color {
-        public static final int METRO_BACKGROUND_BROWN=0x7f040003;
+        public static final int METRO_BACKGROUND_BROWN=0x7f040004;
         public static final int METRO_DARK_BROWN=0x7f040002;
-        public static final int METRO_GREEN=0x7f040004;
+        public static final int METRO_DARK_BROWN_OPC20=0x7f040003;
+        public static final int METRO_GREEN=0x7f040005;
         public static final int METRO_LIGHT_BROWN=0x7f040000;
         public static final int METRO_VERY_LIGHT_BROWN=0x7f040001;
-        public static final int WHITE=0x7f040005;
+        public static final int WHITE=0x7f040006;
     }
     public static final class dimen {
         /**  Default screen margins, per the Android Design guidelines. 

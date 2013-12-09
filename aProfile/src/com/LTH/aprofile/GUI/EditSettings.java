@@ -9,6 +9,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -51,7 +54,7 @@ public class EditSettings {
 		touchPanel.setOrientation(LinearLayout.HORIZONTAL);
 
 		generateBars();
-		setTouchListener(touchPanel, activity);
+		setTouchListener(activity);
 
 	}
 
@@ -79,6 +82,7 @@ public class EditSettings {
 
 	protected void generateBars() {
 		View lastView = new View(activity);
+
 		for (Preference p : profile.getPref().values()) {
 			// add status bar
 			LinearLayout col = new LinearLayout(activity);
@@ -88,7 +92,7 @@ public class EditSettings {
 			col.setLayoutParams(layoutParams);
 			col.setId(p.getType());
 			int padding = (int) (20 * scale);
-			col.setPadding(padding, padding, padding, padding);
+			col.setPadding(padding, padding, padding, 0);
 
 			layoutParams = new LinearLayout.LayoutParams(
 					LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
@@ -123,10 +127,10 @@ public class EditSettings {
 			icon.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
 
 			icon.setAlpha(150);
-			padding = (int) (20 * scale);
 
 			// icon.setPadding(padding, padding, padding, padding);
 
+			// touchPanel.setPadding(0, padding, 0, padding);
 			touchPanel.addView(icon);
 
 			barStatusMap.put(col, tv_status);
@@ -155,6 +159,9 @@ public class EditSettings {
 					// preferenceChanged(col, p.getPrefValue());
 				}
 
+				int padding = (int) (20 * scale);
+				touchPanel.setPadding(0, padding, 0, 0);
+
 			}
 
 		});
@@ -162,14 +169,20 @@ public class EditSettings {
 	}
 
 	// used separate method to make main method cleaner, only supposed to be
-	// used with touchPanel
-	private void setTouchListener(final LinearLayout linearLayout,
-			final Activity activity) {
-		linearLayout.setOnTouchListener(new OnTouchListener() {
+	// used with touchPanel and statusPanel
+	private void setTouchListener(final Activity activity) {
+
+		// touch panel
+		touchPanel.setOnTouchListener(new OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent me) {
-				if (me.getAction() == android.view.MotionEvent.ACTION_MOVE) {
 
+				if (me.getAction() == android.view.MotionEvent.ACTION_MOVE
+						|| me.getAction() == android.view.MotionEvent.ACTION_DOWN) {
+
+					int color = activity.getResources().getColor(
+							R.color.METRO_DARK_BROWN_OPC20);
+					touchPanel.setBackgroundColor(color);
 					for (View col : barStatusMap.keySet()) {
 
 						Rect r = new Rect(col.getLeft(), col.getTop(), col
@@ -179,7 +192,7 @@ public class EditSettings {
 						// touched
 						if (r.contains((int) me.getX(), 0)) {
 
-							int touchPanelHeight = linearLayout.getHeight();
+							int touchPanelHeight = touchPanel.getHeight();
 
 							float targetValue = (int) me.getY();
 
@@ -195,12 +208,56 @@ public class EditSettings {
 					}
 
 				} else if (me.getAction() == android.view.MotionEvent.ACTION_UP) {
-					for (View col : barStatusMap.keySet()) {
-						TextView statusChanger = barStatusMap.get(col);
+					int color = activity.getResources().getColor(
+							R.color.METRO_BACKGROUND_BROWN);
+					touchPanel.setBackgroundColor(color);
+				}
 
-						statusChanger.setWidth(100);
+				return true;
+			}
+		});
 
-					}
+		// status panel
+		statusPanel.setOnTouchListener(new OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent me) {
+
+				if (me.getAction() == android.view.MotionEvent.ACTION_DOWN) {
+
+					int color = activity.getResources().getColor(
+							R.color.METRO_DARK_BROWN_OPC20);
+					touchPanel.setBackgroundColor(color);
+
+					AlphaAnimation animation = new AlphaAnimation(1, 0.4f);
+					animation.setDuration(250);
+					animation.setRepeatCount(3); 
+					animation.setRepeatMode(Animation.REVERSE);
+					animation.setInterpolator(new DecelerateInterpolator());
+					
+					animation.setAnimationListener(new Animation.AnimationListener() {
+
+								 AlphaAnimation animation = new AlphaAnimation(1, 0.4f);
+		
+								public void onAnimationStart(Animation arg0) {
+								}
+
+								@Override
+								public void onAnimationRepeat(Animation arg0) {
+								}
+
+								@Override
+								public void onAnimationEnd(Animation arg0) {
+									int color = activity.getResources().getColor(
+											R.color.METRO_BACKGROUND_BROWN);
+									touchPanel.setBackgroundColor(color);
+								}});
+					
+					touchPanel.startAnimation(animation);
+
+				} else if (me.getAction() == android.view.MotionEvent.ACTION_UP) {
+					int color = activity.getResources().getColor(
+							R.color.METRO_BACKGROUND_BROWN);
+					//touchPanel.setBackgroundColor(color);
 				}
 
 				return true;
@@ -211,23 +268,11 @@ public class EditSettings {
 	// targetValue should be between 0 and 100
 	protected void preferenceChanged(View bar, float targetValue, int xPos) {
 
-		for (View col : barStatusMap.keySet()) {
-			TextView statusChanger = barStatusMap.get(col);
-
-			int posDif = Math.abs(xPos - col.getLeft());
-
-			int width = 100 - (int) (posDif * 0.05);
-			statusChanger.setWidth(100 + width);
-
-		}
-
 		TextView statusChanger = barStatusMap.get(bar);
-		Log.d("log ", "" + xPos + " - " + bar.getLeft());
 
 		int height = ((int) (((100 - targetValue) / 100) * bar.getHeight()));
 
 		statusChanger.setHeight(height);
-		statusChanger.setWidth(200);
 
 		int prefId = bar.getId();
 		Preference pref = profile.getPref().get(prefId);

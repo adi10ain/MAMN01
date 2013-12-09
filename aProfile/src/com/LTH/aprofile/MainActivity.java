@@ -45,8 +45,9 @@ import com.LTH.aprofile.Classes.Preferences.SoundLevelPreference;
 import com.LTH.aprofile.Classes.Preferences.VibrationPreference;
 import com.LTH.aprofile.Classes.Sensors.GestureActivity;
 import com.LTH.aprofile.Classes.Sensors.GestureSelector;
+import com.LTH.aprofile.GUI.EditSettings;
 
-import com.LTH.aprofile.GUI.EditSettingsConnected;
+
 
 
 public class MainActivity extends GestureActivity {
@@ -211,7 +212,7 @@ public class MainActivity extends GestureActivity {
 
 		// Displays current preferences of active profile
 		screenLayout.removeAllViews();
-		EditSettingsConnected settingsPanel = new EditSettingsConnected(this,
+		EditSettings settingsPanel = new EditSettings(this,
 				currentProfile);
 		screenLayout.addView(settingsPanel.getSettingsPanel());
 
